@@ -123,7 +123,7 @@ export default function MacroMath() {
                     {r.label}
                   </dt>
                   <dd className="text-right">
-                    <div className="font-mono text-xs text-mute tnum">
+                    <div className="text-xs text-mute tnum">
                       {Math.round(r.pct * 100)}% of {num(kcal)} = {num(kcal * r.pct)} kcal &divide; {r.per}
                     </div>
                     <div className="mt-0.5 text-xl font-semibold tracking-[-0.04em] tnum">{r.grams}g</div>

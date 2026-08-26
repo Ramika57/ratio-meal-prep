@@ -260,7 +260,7 @@ export function labelTexture(lines: { kcal: number; protein: number; carbs: numb
   ctx.fillText(lines.name.slice(0, 24), 350, h / 2 - 34);
 
   ctx.fillStyle = "#7C736A";
-  ctx.font = "500 40px ui-monospace, Menlo, monospace";
+  ctx.font = "500 40px -apple-system, 'Helvetica Neue', Arial, sans-serif";
   ctx.fillText("KEEP AT 3°C  ·  COOKED IN MELBOURNE", 350, h / 2 + 44);
 
   // Macro block, right aligned.
@@ -273,7 +273,7 @@ export function labelTexture(lines: { kcal: number; protein: number; carbs: numb
   cols.forEach(([label, value], i) => {
     const x = 1180 + i * 218;
     ctx.fillStyle = "#8A8078";
-    ctx.font = "500 34px ui-monospace, Menlo, monospace";
+    ctx.font = "600 34px -apple-system, 'Helvetica Neue', Arial, sans-serif";
     ctx.fillText(label, x, h / 2 - 42);
     ctx.fillStyle = "#141110";
     ctx.font = "700 76px -apple-system, Helvetica, Arial, sans-serif";

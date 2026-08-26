@@ -49,7 +49,7 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
           <h1 className="mt-5 text-display-m font-semibold">
             You are in, {order.customer.name.split(" ")[0]}.
           </h1>
-          <p className="mt-5 max-w-[52ch] text-[1rem] leading-relaxed text-bone/60">
+          <p className="mt-5 max-w-[52ch] text-base leading-relaxed text-bone/60">
             Nothing has been charged. We have your plan and your postcode, and we will email{" "}
             {order.customer.email} when {order.customer.postcode} opens for its first cook.
           </p>
@@ -57,18 +57,18 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
           <div className="mt-10 flex flex-wrap items-center gap-4 rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
             <div>
               <p className="eyebrow text-mute">Reservation code</p>
-              <p className="mt-2 font-mono text-[1.75rem] font-semibold tracking-[-0.02em]">{order.code}</p>
+              <p className="mt-2 text-2xl font-semibold tracking-[0.05em] tnum">{order.code}</p>
             </div>
             <div className="ml-auto text-right">
               <p className="eyebrow text-mute">Placed</p>
-              <p className="mt-2 text-[0.9375rem] tnum">{placed}</p>
+              <p className="mt-2 text-base tnum">{placed}</p>
             </div>
           </div>
 
           <section className="mt-4 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
               <h2 className="eyebrow text-mute">The plan</h2>
-              <dl className="mt-5 space-y-3 text-[0.9375rem] tnum">
+              <dl className="mt-5 space-y-3 text-base tnum">
                 <Row label="Goal" value={goalInfo(order.plan.goal).label} />
                 <Row label="Daily target" value={`${num(order.plan.dailyKcal)} kcal`} />
                 <Row label="Length" value={`${order.plan.days} days, ${order.plan.mealsPerDay} a day`} />
@@ -79,14 +79,14 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
 
             <div className="rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
               <h2 className="eyebrow text-mute">Price held</h2>
-              <dl className="mt-5 space-y-2.5 text-[0.9375rem] tnum">
+              <dl className="mt-5 space-y-2.5 text-base tnum">
                 <Row label="Subtotal" value={money(order.totals.subtotal)} />
                 {order.totals.discount > 0 ? (
                   <Row label="Volume discount" value={`−${money(order.totals.discount)}`} />
                 ) : null}
                 <Row label="Delivery" value={order.totals.delivery === 0 ? "Free" : money(order.totals.delivery)} />
               </dl>
-              <p className="mt-5 border-t border-bone/12 pt-5 text-[2rem] font-semibold tracking-[-0.05em] tnum">
+              <p className="mt-5 border-t border-bone/12 pt-5 text-3xl font-semibold tracking-[-0.05em] tnum">
                 {money(order.totals.total)}
               </p>
             </div>
@@ -94,11 +94,11 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
 
           <section className="mt-4 rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
             <h2 className="eyebrow text-mute">What the trays deliver</h2>
-            <p className="mt-4 text-[1.5rem] font-semibold tracking-[-0.04em] tnum">
+            <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] tnum">
               {avg.kcal} kcal and {avg.protein}g protein a tray
             </p>
             <MacroBar macros={avg} className="mt-4" />
-            <p className="mt-5 text-[0.875rem] leading-relaxed text-bone/60 tnum">
+            <p className="mt-5 text-sm leading-relaxed text-bone/60 tnum">
               Across a day that is {num(actual.covered.kcal)} kcal and {actual.covered.protein}g of protein from
               us, computed from the trays you actually chose. You fill the remaining{" "}
               {num(actual.remaining.kcal)} kcal and {actual.remaining.protein}g yourself.
@@ -111,11 +111,11 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
               {lines.map(({ line, meal }) =>
                 meal ? (
                   <li key={meal.id} className="flex items-baseline justify-between gap-4 py-3">
-                    <span className="flex-1 text-[0.9375rem]">
+                    <span className="flex-1 text-base">
                       <span className="text-mute tnum">{line.qty} &times; </span>
                       {meal.name}
                     </span>
-                    <span className="text-[0.8125rem] text-mute tnum">
+                    <span className="text-sm text-mute tnum">
                       {scaleMeal(meal, order.plan.portion).kcal} kcal
                     </span>
                   </li>
@@ -127,20 +127,20 @@ export default async function OrderPage({ params }: PageProps<"/order/[code]">) 
           {order.notes ? (
             <section className="mt-4 rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
               <h2 className="eyebrow text-mute">Your note</h2>
-              <p className="mt-4 text-[0.9375rem] leading-relaxed text-bone/75">{order.notes}</p>
+              <p className="mt-4 text-base leading-relaxed text-bone/75">{order.notes}</p>
             </section>
           ) : null}
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
               href="/build"
-              className="inline-flex h-12 items-center rounded-full border border-bone/20 px-6 text-[0.9375rem] transition-colors hover:border-bone/45"
+              className="inline-flex h-12 items-center rounded-full border border-bone/20 px-6 text-base transition-colors hover:border-bone/45"
             >
               Build another plan
             </Link>
             <Link
               href="/"
-              className="inline-flex h-12 items-center rounded-full px-6 text-[0.9375rem] text-bone/60 transition-colors hover:text-bone"
+              className="inline-flex h-12 items-center rounded-full px-6 text-base text-bone/60 transition-colors hover:text-bone"
             >
               Back to the site
             </Link>

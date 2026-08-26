@@ -21,13 +21,13 @@ export default async function InsightsPage() {
         <div>
           <p className="eyebrow text-mute">Internal</p>
           <h1 className="mt-3 text-display-s font-semibold">Demand insights</h1>
-          <p className="mt-3 max-w-[60ch] text-[0.9375rem] leading-relaxed text-bone/60">
+          <p className="mt-3 max-w-[60ch] text-base leading-relaxed text-bone/60">
             First party analytics, read straight from <code className="text-bone/80">data/events.json</code> and{" "}
             <code className="text-bone/80">data/orders.json</code>. No cookies, no IP addresses, no third party
             script required.
           </p>
         </div>
-        <Link href="/" className="text-[0.8125rem] text-bone/55 underline underline-offset-4 hover:text-bone">
+        <Link href="/" className="text-sm text-bone/55 underline underline-offset-4 hover:text-bone">
           Back to the site
         </Link>
       </header>
@@ -48,7 +48,7 @@ export default async function InsightsPage() {
       {/* Funnel */}
       <section className="mt-14">
         <h2 className="eyebrow text-mute">Funnel</h2>
-        <p className="mt-3 max-w-[60ch] text-[0.875rem] leading-relaxed text-bone/55">
+        <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-bone/55">
           Counted by session, not by event, so a person who drags the calorie slider twenty times still counts
           once. The step with the largest drop is where the next test belongs.
         </p>
@@ -61,8 +61,8 @@ export default async function InsightsPage() {
             return (
               <li key={stage.key} className="rounded-xl border border-bone/10 bg-ink-2/50 p-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
-                  <span className="text-[0.9375rem] font-medium">{stage.label}</span>
-                  <span className="text-[0.75rem] text-mute tnum">
+                  <span className="text-base font-medium">{stage.label}</span>
+                  <span className="text-xs text-mute tnum">
                     {stage.fromPrevious !== null ? (
                       <span className={worst ? "text-macro-fat" : ""}>
                         {pct(stage.fromPrevious)} of previous ·{" "}
@@ -78,8 +78,8 @@ export default async function InsightsPage() {
                   />
                 </div>
                 <div className="mt-2 flex items-baseline justify-between gap-3">
-                  <span className="text-[0.6875rem] text-mute">{stage.note}</span>
-                  <span className="text-[1.125rem] font-semibold tnum">{num(stage.sessions)}</span>
+                  <span className="text-2xs text-mute">{stage.note}</span>
+                  <span className="text-lg font-semibold tnum">{num(stage.sessions)}</span>
                 </div>
               </li>
             );
@@ -90,7 +90,7 @@ export default async function InsightsPage() {
       {/* Price */}
       <section className="mt-14">
         <h2 className="eyebrow text-mute">Price on screen</h2>
-        <p className="mt-3 max-w-[64ch] text-[0.875rem] leading-relaxed text-bone/55">
+        <p className="mt-3 max-w-[64ch] text-sm leading-relaxed text-bone/55">
           Recorded when the review step loads, which is the first moment a complete plan and a total appear
           together. Comparing the two columns is the closest this artefact gets to a willingness to pay reading,
           and it is observed behaviour rather than a stated preference.
@@ -117,16 +117,16 @@ export default async function InsightsPage() {
           {[...data.distributions, data.sources].map((d) => (
             <div key={d.label} className="rounded-2xl border border-bone/10 bg-ink-2/50 p-6">
               <div className="flex items-baseline justify-between gap-3">
-                <h3 className="text-[0.9375rem] font-medium">{d.label}</h3>
-                <span className="text-[0.6875rem] text-mute tnum">n = {num(d.total)}</span>
+                <h3 className="text-base font-medium">{d.label}</h3>
+                <span className="text-2xs text-mute tnum">n = {num(d.total)}</span>
               </div>
               {d.buckets.length === 0 ? (
-                <p className="mt-4 text-[0.8125rem] text-mute">Nothing recorded yet.</p>
+                <p className="mt-4 text-sm text-mute">Nothing recorded yet.</p>
               ) : (
                 <ul className="mt-4 space-y-2.5">
                   {d.buckets.map((b) => (
                     <li key={b.key}>
-                      <div className="flex items-baseline justify-between gap-3 text-[0.8125rem]">
+                      <div className="flex items-baseline justify-between gap-3 text-sm">
                         <span className="text-bone/75">{b.key}</span>
                         <span className="text-mute tnum">
                           {num(b.count)} · {pct(b.share)}
@@ -148,10 +148,10 @@ export default async function InsightsPage() {
       <section className="mt-14">
         <h2 className="eyebrow text-mute">Reservations</h2>
         {data.orders.length === 0 ? (
-          <p className="mt-5 text-[0.9375rem] text-mute">None yet.</p>
+          <p className="mt-5 text-base text-mute">None yet.</p>
         ) : (
           <div className="mt-7 overflow-x-auto rounded-2xl border border-bone/10">
-            <table className="w-full min-w-[46rem] text-left text-[0.8125rem]">
+            <table className="w-full min-w-[46rem] text-left text-sm">
               <thead className="bg-ink-2/70 text-mute">
                 <tr>
                   {["Code", "Placed", "Postcode", "Goal", "kcal", "Plan", "Trays", "Total"].map((h) => (
@@ -164,7 +164,7 @@ export default async function InsightsPage() {
               <tbody className="divide-y divide-bone/10">
                 {data.orders.map((o) => (
                   <tr key={o.code}>
-                    <td className="px-4 py-3 font-mono">{o.code}</td>
+                    <td className="px-4 py-3 font-medium tracking-[0.04em] tnum">{o.code}</td>
                     <td className="px-4 py-3 text-mute tnum">{o.createdAt.slice(0, 10)}</td>
                     <td className="px-4 py-3 tnum">{o.customer.postcode}</td>
                     <td className="px-4 py-3 capitalize">{o.plan.goal}</td>
@@ -182,7 +182,7 @@ export default async function InsightsPage() {
         )}
       </section>
 
-      <p className="mt-14 border-t border-bone/10 pt-6 text-[0.75rem] text-mute tnum">
+      <p className="mt-14 border-t border-bone/10 pt-6 text-xs text-mute tnum">
         Window: {data.firstEvent?.slice(0, 16).replace("T", " ") ?? "n/a"} to{" "}
         {data.lastEvent?.slice(0, 16).replace("T", " ") ?? "n/a"} · generated{" "}
         {data.generatedAt.slice(0, 16).replace("T", " ")}
@@ -195,8 +195,8 @@ function Stat({ label, value, note }: { label: string; value: string; note: stri
   return (
     <div className="rounded-2xl border border-bone/10 bg-ink-2/50 p-6">
       <p className="eyebrow text-mute">{label}</p>
-      <p className="mt-3 text-[2rem] font-semibold leading-none tracking-[-0.05em] tnum">{value}</p>
-      <p className="mt-2 text-[0.75rem] text-mute tnum">{note}</p>
+      <p className="mt-3 text-3xl font-semibold leading-none tracking-[-0.05em] tnum">{value}</p>
+      <p className="mt-2 text-xs text-mute tnum">{note}</p>
     </div>
   );
 }

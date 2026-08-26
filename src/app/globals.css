@@ -130,13 +130,15 @@
   font-feature-settings: "tnum";
 }
 
-/* Small uppercase label used above section headings and on data rows. */
+/* Small uppercase label used above section headings and on data rows.
+   SF Pro with wide tracking, the way Apple sets overlines. The mono stack is
+   reserved for literal code snippets and nothing customer facing. */
 @utility eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.6875rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 @utility shell {
