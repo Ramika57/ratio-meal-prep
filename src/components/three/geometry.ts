@@ -1,8 +1,10 @@
 import {
   BoxGeometry,
+  BufferAttribute,
   BufferGeometry,
   CanvasTexture,
   CapsuleGeometry,
+  Color,
   ExtrudeGeometry,
   IcosahedronGeometry,
   Path,
@@ -46,14 +48,42 @@ function displace(
   return geo;
 }
 
+const smoothstep = (e0: number, e1: number, x: number) => {
+  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+  return t * t * (3 - 2 * t);
+};
+
+/**
+ * Writes a colour per vertex. This is what separates rendered food from
+ * plastic: cooked food is never one colour, and the variation follows the
+ * geometry (seared outside, pale cut face, char in patches), so it has to be
+ * computed from positions and normals rather than painted on as a texture.
+ */
+function vertexColors(
+  geo: BufferGeometry,
+  fn: (x: number, y: number, z: number, nx: number, ny: number, nz: number, out: Color) => void,
+) {
+  const pos = geo.attributes.position;
+  const nrm = geo.attributes.normal;
+  const colors = new Float32Array(pos.count * 3);
+  const c = new Color();
+  for (let i = 0; i < pos.count; i++) {
+    fn(pos.getX(i), pos.getY(i), pos.getZ(i), nrm.getX(i), nrm.getY(i), nrm.getZ(i), c);
+    colors[i * 3] = c.r;
+    colors[i * 3 + 1] = c.g;
+    colors[i * 3 + 2] = c.b;
+  }
+  geo.setAttribute("color", new BufferAttribute(colors, 3));
+}
+
 /**
  * A broccoli floret head. Broccoli is close to self similar, so three octaves
  * of noise on a subdivided icosphere gets remarkably close.
  */
-export function floretGeometry(radius: number, seed: number) {
+export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22") {
   const noise = new Noise3D(seed);
   const geo = new IcosahedronGeometry(radius, 4);
-  displace(geo, noise, { amp: radius * 0.34, freq: 7 / radius, octaves: 4 });
+  displace(geo, noise, { amp: radius * 0.36, freq: 8 / radius, octaves: 5 });
   // Flatten the underside so it sits on the tray instead of floating.
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
@@ -62,6 +92,21 @@ export function floretGeometry(radius: number, seed: number) {
   }
   pos.needsUpdate = true;
   geo.computeVertexNormals();
+
+  // Broccoli runs from deep bottle green in the crown to olive where a bud
+  // catches light, and slightly yellow underneath. One flat green is exactly
+  // what made it read as foam.
+  const deep = new Color("#1F4A14");
+  const base = new Color(baseHex);
+  const olive = new Color("#7FA23B");
+  const under = new Color("#8FA35C");
+  vertexColors(geo, (x, y, z, nx, ny, nz, out) => {
+    const m = noise.fractal((x * 11) / radius, (y * 11) / radius, (z * 11) / radius, 3) * 0.5 + 0.5;
+    out.copy(deep).lerp(base, smoothstep(0.15, 0.85, m));
+    out.lerp(olive, smoothstep(0.58, 1, m) * 0.62);
+    if (ny < -0.25) out.lerp(under, Math.min(1, -ny) * 0.6);
+    out.multiplyScalar(0.9 + m * 0.2);
+  });
   return geo;
 }
 
@@ -87,7 +132,13 @@ export function riceGrainGeometry() {
  * A slice of cooked protein. Built from an irregular closed spline rather than
  * a box, so the silhouette has the asymmetry a knife leaves.
  */
-export function sliceGeometry(width: number, length: number, thickness: number, seed: number) {
+export function sliceGeometry(
+  width: number,
+  length: number,
+  thickness: number,
+  seed: number,
+  baseHex = "#C98F45",
+) {
   const noise = new Noise3D(seed);
   const shape = new Shape();
   const steps = 48;
@@ -112,6 +163,62 @@ export function sliceGeometry(width: number, length: number, thickness: number, 
   geo.center();
   geo.rotateX(-Math.PI / 2);
   displace(geo, noise, { amp: thickness * 0.2, freq: 5, octaves: 3 });
+
+  // A slice of grilled chicken is three colours, not one: the broad faces are
+  // the pale interior the knife exposed, the rim is the seared exterior, and
+  // the sear carries near black char in patches. Split by normal direction.
+  const base = new Color(baseHex);
+  const face = base.clone().lerp(new Color("#F2DCA9"), 0.5);
+  const rim = base.clone().lerp(new Color("#5E2F0F"), 0.52);
+  const golden = new Color("#B7712A");
+  const sear = new Color("#7A3E12");
+  const char = new Color("#221108");
+  vertexColors(geo, (x, y, z, nx, ny, nz, out) => {
+    const facing = smoothstep(0.35, 0.8, Math.abs(ny));
+    out.copy(rim).lerp(face, facing);
+    // Golden band where the sear grades into the cut face. This gradient is
+    // what says "cooked": raw or fake meat jumps straight from pale to brown.
+    out.lerp(golden, (1 - Math.abs(facing - 0.5) * 2) * 0.45);
+    // The seared long edge: the breast's original surface, so it wraps a
+    // little way onto the cut face rather than stopping at the silhouette.
+    const edge = smoothstep(-length * 0.18, -length * 0.42, z);
+    if (edge > 0) {
+      const wobble = noise.at(x * 5, y * 5, z * 5) * 0.18;
+      out.lerp(sear, Math.min(1, edge * (1.0 + wobble)));
+      const stripe = noise.fractal(x * 12 + 9, y * 4, z * 4, 2);
+      if (stripe > 0.14) out.lerp(char, Math.min(1, (stripe - 0.14) * 2.2) * edge);
+    }
+    // Fibres: fine streaks running across the cut face.
+    const fibre = noise.at(x * 2.4, y * 3, z * 26) * 0.5 + 0.5;
+    out.multiplyScalar(0.95 + facing * fibre * 0.09);
+    // Char: patches on the plain rim too.
+    const patch = noise.fractal(x * 7 + 40, y * 7, z * 7, 2);
+    if (facing < 0.4 && patch > 0.2) out.lerp(char, Math.min(1, (patch - 0.2) * 2.4));
+    // Browning gradient: the rim darkens toward the underside.
+    if (ny < -0.2) out.multiplyScalar(0.88);
+  });
+  return geo;
+}
+
+/**
+ * The mound the grains sit on. Individual grains floating over a visible floor
+ * was half of why the carb compartment looked empty; a filled base with grains
+ * scattered on its surface is how a real portion is packed.
+ */
+export function moundGeometry(radius: number, height: number, seed: number, baseHex = "#DDBC85") {
+  const noise = new Noise3D(seed);
+  const geo = new SphereGeometry(radius, 40, 22, 0, Math.PI * 2, 0, Math.PI / 2);
+  geo.scale(1, height / radius, 0.62);
+  displace(geo, noise, { amp: height * 0.16, freq: 3.4 / radius, octaves: 3 });
+
+  const base = new Color(baseHex).multiplyScalar(0.86);
+  const light = base.clone().lerp(new Color("#E8D9B4"), 0.4);
+  const toast = base.clone().lerp(new Color("#7A4E20"), 0.6);
+  vertexColors(geo, (x, y, z, nx, ny, nz, out) => {
+    const m = noise.fractal((x * 14) / radius, (y * 14) / radius, (z * 14) / radius, 3) * 0.5 + 0.5;
+    out.copy(base).lerp(light, smoothstep(0.4, 1, m));
+    if (m < 0.22) out.lerp(toast, 0.7);
+  });
   return geo;
 }
 

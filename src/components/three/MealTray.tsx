@@ -7,6 +7,7 @@ import { mulberry32, seedFrom } from "@/lib/rand";
 import {
   filmGeometry,
   floretGeometry,
+  moundGeometry,
   labelTexture,
   microNormalTexture,
   riceGrainGeometry,
@@ -41,40 +42,44 @@ const COMPARTMENTS: Compartment[] = [
 
 /* ------------------------------------------------------------------ food -- */
 
+/** Approximate top surface of the shingled slices, for resting garnish on. */
+const sliceTop = (x: number) => 0.13 + (x + 0.46) * 0.09;
+
+/** The grain mound profile used by both the mound and anything resting on it. */
+const moundTop = (x: number, z: number) => {
+  const r = Math.min(1, Math.hypot(x, z / 0.62) / 0.42);
+  return 0.16 * (1 - r * r) * 0.92 + 0.012;
+};
+
 function ProteinSlices({ color, seed }: { color: string; seed: number }) {
   const slices = useMemo(() => {
     const rng = mulberry32(seed);
     return Array.from({ length: 8 }, (_, i) => ({
-      geo: sliceGeometry(0.4, 1.0, 0.105, seed + i * 31),
-      x: -0.44 + i * 0.125 + (rng() - 0.5) * 0.02,
-      z: (rng() - 0.5) * 0.14,
-      y: 0.062 + i * 0.014,
-      rotY: (rng() - 0.5) * 0.34,
-      rotZ: 0.34 + rng() * 0.12,
-      tint: 0.86 + rng() * 0.28,
+      // Colour is baked into the geometry: pale cut face, seared rim, char,
+      // and a seared band along the local -z edge. Keeping rotY small keeps
+      // those bands aligned, so the fan carries one browned ridge.
+      geo: sliceGeometry(0.36 + rng() * 0.09, 0.9 + rng() * 0.2, 0.12, seed + i * 31, color),
+      x: -0.46 + i * 0.118 + (rng() - 0.5) * 0.015,
+      z: (rng() - 0.5) * 0.09,
+      y: 0.06 + i * 0.011,
+      rotY: (rng() - 0.5) * 0.16,
+      rotZ: 0.2 + rng() * 0.07,
+      warmth: 0.94 + rng() * 0.1,
     }));
-  }, [seed]);
-
-  const base = useMemo(() => new Color(color), [color]);
+  }, [seed, color]);
 
   return (
     <group>
-      {slices.map((s, i) => (
-        <mesh
-          key={i}
-          geometry={s.geo}
-          position={[s.x, s.y, s.z]}
-          rotation={[0, s.rotY, s.rotZ]}
-          castShadow
-          receiveShadow
-        >
+      {slices.map((sl, i) => (
+        <mesh key={i} geometry={sl.geo} position={[sl.x, sl.y, sl.z]} rotation={[0, sl.rotY, sl.rotZ]} castShadow receiveShadow>
           <meshPhysicalMaterial
-            color={base.clone().multiplyScalar(s.tint)}
-            roughness={0.52}
-            clearcoat={0.28}
-            clearcoatRoughness={0.55}
-            sheen={0.5}
-            sheenRoughness={0.7}
+            vertexColors
+            color={new Color(sl.warmth, sl.warmth, sl.warmth * 0.98)}
+            roughness={0.44}
+            clearcoat={0.5}
+            clearcoatRoughness={0.38}
+            sheen={0.45}
+            sheenRoughness={0.65}
             sheenColor="#ffd9a8"
           />
         </mesh>
@@ -84,50 +89,46 @@ function ProteinSlices({ color, seed }: { color: string; seed: number }) {
 }
 
 /**
- * The grain bed.
- *
- * Written as ordinary meshes over a handful of shared geometries rather than an
- * InstancedMesh. The instanced version rendered nothing: React StrictMode mounts,
- * unmounts and remounts in development, and R3F disposes a <primitive> on that
- * unmount, so the buffers were gone by the time it came back. Sixty meshes over
- * four shared geometries costs little and is not fragile.
+ * The grain compartment: a coloured mound with individual grains scattered on
+ * its surface. Grains alone over a visible floor read as a half empty tray.
  */
 function GrainBed({ color, seed, radius = 0.4 }: { color: string; seed: number; radius?: number }) {
+  const height = 0.16;
+  const mound = useMemo(() => moundGeometry(radius, height, seed, color), [radius, seed, color]);
   const shapes = useMemo(() => Array.from({ length: 4 }, () => riceGrainGeometry()), []);
 
   const grains = useMemo(() => {
-    const rng = mulberry32(seed);
+    const rng = mulberry32(seed + 5);
     const base = new Color(color);
-    return Array.from({ length: 110 }, (_, i) => {
+    const light = base.clone().lerp(new Color("#F4EBD2"), 0.5);
+    const toast = base.clone().lerp(new Color("#8A5A28"), 0.6);
+    return Array.from({ length: 220 }, (_, i) => {
       const a = rng() * Math.PI * 2;
-      const r = Math.sqrt(rng()) * radius;
-      // Mound: highest in the middle, tapering to the compartment wall.
-      const fall = 1 - (r / radius) ** 2;
+      const r = Math.sqrt(rng()) * radius * 0.94;
+      // Sit each grain on the mound profile rather than the floor.
+      const lift = height * (1 - (r / radius) ** 2);
+      const roll = rng();
       return {
         geo: shapes[i % shapes.length],
         x: Math.cos(a) * r,
-        z: Math.sin(a) * r * 0.52,
-        y: 0.03 + rng() * 0.1 * Math.max(0.25, fall),
+        z: Math.sin(a) * r * 0.62,
+        y: lift * 0.92 + 0.008 + rng() * 0.015,
         rot: [rng() * Math.PI, rng() * Math.PI, rng() * Math.PI] as [number, number, number],
-        scale: 1.35 + rng() * 0.75,
-        color: base.clone().multiplyScalar(0.86 + rng() * 0.28),
+        scale: 1.1 + rng() * 0.55,
+        color:
+          roll < 0.07 ? toast : roll < 0.24 ? base.clone().lerp(toast, 0.3) : base.clone().lerp(light, rng() * 0.8),
       };
     });
   }, [color, seed, radius, shapes]);
 
   return (
     <group>
-      {grains.map((g, i) => (
-        <mesh
-          key={i}
-          geometry={g.geo}
-          position={[g.x, g.y, g.z]}
-          rotation={g.rot}
-          scale={g.scale}
-          castShadow
-          receiveShadow
-        >
-          <meshPhysicalMaterial color={g.color} roughness={0.36} clearcoat={0.45} clearcoatRoughness={0.35} sheen={0.3} />
+      <mesh geometry={mound} castShadow receiveShadow>
+        <meshPhysicalMaterial vertexColors roughness={0.55} clearcoat={0.3} clearcoatRoughness={0.5} sheen={0.25} />
+      </mesh>
+      {grains.map((gr, i) => (
+        <mesh key={i} geometry={gr.geo} position={[gr.x, gr.y, gr.z]} rotation={gr.rot} scale={gr.scale} castShadow receiveShadow>
+          <meshPhysicalMaterial color={gr.color} roughness={0.36} clearcoat={0.45} clearcoatRoughness={0.35} sheen={0.3} />
         </mesh>
       ))}
     </group>
@@ -142,37 +143,59 @@ function Greens({ color, seed }: { color: string; seed: number }) {
       const r = Math.sqrt(rng()) * 0.34;
       const size = 0.115 + rng() * 0.06;
       return {
-        head: floretGeometry(size, seed + i * 17),
+        head: floretGeometry(size, seed + i * 17, color),
         stalk: stalkGeometry(size * 0.3, size * 0.85, seed + i * 23),
         x: Math.cos(a) * r,
         z: Math.sin(a) * r * 0.6,
         size,
         rot: rng() * Math.PI,
         lean: (rng() - 0.5) * 0.4,
-        tint: 0.82 + rng() * 0.4,
       };
     });
-  }, [seed]);
-
-  const base = useMemo(() => new Color(color), [color]);
+  }, [seed, color]);
 
   return (
     <group>
       {florets.map((f, i) => (
         <group key={i} position={[f.x, 0.02, f.z]} rotation={[f.lean, f.rot, f.lean * 0.5]}>
           <mesh geometry={f.stalk} position={[0, f.size * 0.42, 0]} castShadow receiveShadow>
-            <meshPhysicalMaterial color="#C9D6A4" roughness={0.62} sheen={0.4} sheenColor="#eaf5c8" />
+            <meshPhysicalMaterial color="#A9BD7A" roughness={0.66} sheen={0.4} sheenColor="#eaf5c8" />
           </mesh>
           <mesh geometry={f.head} position={[0, f.size * 1.02, 0]} castShadow receiveShadow>
-            <meshPhysicalMaterial
-              color={base.clone().multiplyScalar(f.tint)}
-              roughness={0.74}
-              sheen={0.55}
-              sheenRoughness={0.5}
-              sheenColor="#a8d878"
-            />
+            <meshPhysicalMaterial vertexColors roughness={0.8} sheen={0.4} sheenRoughness={0.55} sheenColor="#9cc86e" />
           </mesh>
         </group>
+      ))}
+    </group>
+  );
+}
+
+function Herbs({ seed, spread, height }: { seed: number; spread: [number, number]; height: (x: number, z: number) => number }) {
+  const flecks = useMemo(() => {
+    const rng = mulberry32(seed + 777);
+    const deep = new Color("#2E5220");
+    const bright = new Color("#5C8A33");
+    return Array.from({ length: 13 }, () => {
+      const x = (rng() - 0.5) * spread[0];
+      const z = (rng() - 0.5) * spread[1];
+      return {
+        x,
+        z,
+        y: height(x, z) + 0.012,
+        rot: [rng() * Math.PI, rng() * Math.PI, rng() * Math.PI] as [number, number, number],
+        s: 0.75 + rng() * 0.7,
+        color: deep.clone().lerp(bright, rng()),
+      };
+    });
+  }, [seed, spread, height]);
+
+  return (
+    <group>
+      {flecks.map((f, i) => (
+        <mesh key={i} position={[f.x, f.y, f.z]} rotation={f.rot} scale={f.s} castShadow>
+          <boxGeometry args={[0.032, 0.004, 0.02]} />
+          <meshPhysicalMaterial color={f.color} roughness={0.7} sheen={0.4} sheenColor="#a8d878" />
+        </mesh>
       ))}
     </group>
   );
@@ -236,9 +259,11 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
       {/* Contents */}
       <group position={[COMPARTMENTS[0].x, FLOOR, COMPARTMENTS[0].z]}>
         <ProteinSlices color={contents.protein} seed={seed} />
+        <Herbs seed={seed} spread={[0.9, 1.0]} height={sliceTop} />
       </group>
-      <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]}>
+      <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]} scale={[1.26, 1, 1.04]}>
         <GrainBed color={contents.carb} seed={seed + 17} radius={0.42} />
+        <Herbs seed={seed + 3} spread={[0.66, 0.44]} height={moundTop} />
       </group>
       <group position={[COMPARTMENTS[2].x, FLOOR, COMPARTMENTS[2].z]}>
         <Greens color={contents.veg} seed={seed + 91} />

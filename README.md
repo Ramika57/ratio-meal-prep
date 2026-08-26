@@ -127,12 +127,16 @@ All visual decisions live in the `@theme` block of `src/app/globals.css` and now
   the display's native density and walks down under load; ambient occlusion runs at half
   resolution because it is low frequency and the difference is invisible.
 
-### Dev server memory
+### Dev server memory and HMR
 
 `next dev` plus a WebGL tab accumulates memory across long editing sessions: Turbopack keeps the
 module graph in RAM and every hot reload of a three.js component can strand the previous
 render targets until the tab reloads. If the dev process or the browser balloons after heavy
 editing, restart `npm run dev` and reload the tab; a production build carries none of this.
+
+Turbopack's HMR has also been seen to panic outright on this app (websocket dies, script chunks
+404, the page serves but renders black). When that happens, restarting dev sometimes recurs; the
+reliable fallback is `npm run build && npm start -- -p 8110`, which has no HMR at all.
 
 ## The nutrition model
 

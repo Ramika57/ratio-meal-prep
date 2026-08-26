@@ -23,9 +23,9 @@ function TrayFallback() {
 const DEFAULT: TrayContents = {
   seed: "chargrilled-chicken-broccolini",
   name: "Chargrilled Chicken",
-  protein: "#D89A4A",
-  carb: "#C9A46E",
-  veg: "#57A82E",
+  protein: "#C98F45",
+  carb: "#DDBC85",
+  veg: "#3E7A22",
   macros: { kcal: 402, protein: 48, carbs: 12, fat: 18 },
 };
 
