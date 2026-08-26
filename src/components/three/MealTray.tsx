@@ -7,10 +7,11 @@ import { mulberry32, seedFrom } from "@/lib/rand";
 import {
   filmGeometry,
   floretGeometry,
+  mergedGrainsGeometry,
+  mergedHerbsGeometry,
   moundGeometry,
   labelTexture,
   microNormalTexture,
-  riceGrainGeometry,
   sliceGeometry,
   stalkGeometry,
   trayBaseGeometry,
@@ -41,15 +42,6 @@ const COMPARTMENTS: Compartment[] = [
 ];
 
 /* ------------------------------------------------------------------ food -- */
-
-/** Approximate top surface of the shingled slices, for resting garnish on. */
-const sliceTop = (x: number) => 0.13 + (x + 0.46) * 0.09;
-
-/** The grain mound profile used by both the mound and anything resting on it. */
-const moundTop = (x: number, z: number) => {
-  const r = Math.min(1, Math.hypot(x, z / 0.62) / 0.42);
-  return 0.16 * (1 - r * r) * 0.92 + 0.012;
-};
 
 function ProteinSlices({ color, seed }: { color: string; seed: number }) {
   const slices = useMemo(() => {
@@ -89,48 +81,22 @@ function ProteinSlices({ color, seed }: { color: string; seed: number }) {
 }
 
 /**
- * The grain compartment: a coloured mound with individual grains scattered on
- * its surface. Grains alone over a visible floor read as a half empty tray.
+ * The grain compartment: a coloured mound with the grains merged into one
+ * geometry. As individual meshes the grains were 220 draw calls; merged they
+ * are one, and the whole thing is cached so the second canvas reuses it.
  */
 function GrainBed({ color, seed, radius = 0.4 }: { color: string; seed: number; radius?: number }) {
-  const height = 0.16;
-  const mound = useMemo(() => moundGeometry(radius, height, seed, color), [radius, seed, color]);
-  const shapes = useMemo(() => Array.from({ length: 4 }, () => riceGrainGeometry()), []);
-
-  const grains = useMemo(() => {
-    const rng = mulberry32(seed + 5);
-    const base = new Color(color);
-    const light = base.clone().lerp(new Color("#F4EBD2"), 0.5);
-    const toast = base.clone().lerp(new Color("#8A5A28"), 0.6);
-    return Array.from({ length: 220 }, (_, i) => {
-      const a = rng() * Math.PI * 2;
-      const r = Math.sqrt(rng()) * radius * 0.94;
-      // Sit each grain on the mound profile rather than the floor.
-      const lift = height * (1 - (r / radius) ** 2);
-      const roll = rng();
-      return {
-        geo: shapes[i % shapes.length],
-        x: Math.cos(a) * r,
-        z: Math.sin(a) * r * 0.62,
-        y: lift * 0.92 + 0.008 + rng() * 0.015,
-        rot: [rng() * Math.PI, rng() * Math.PI, rng() * Math.PI] as [number, number, number],
-        scale: 1.1 + rng() * 0.55,
-        color:
-          roll < 0.07 ? toast : roll < 0.24 ? base.clone().lerp(toast, 0.3) : base.clone().lerp(light, rng() * 0.8),
-      };
-    });
-  }, [color, seed, radius, shapes]);
+  const mound = useMemo(() => moundGeometry(radius, 0.16, seed, color), [radius, seed, color]);
+  const grains = useMemo(() => mergedGrainsGeometry(color, seed, radius), [color, seed, radius]);
 
   return (
     <group>
       <mesh geometry={mound} castShadow receiveShadow>
         <meshPhysicalMaterial vertexColors roughness={0.55} clearcoat={0.3} clearcoatRoughness={0.5} sheen={0.25} />
       </mesh>
-      {grains.map((gr, i) => (
-        <mesh key={i} geometry={gr.geo} position={[gr.x, gr.y, gr.z]} rotation={gr.rot} scale={gr.scale} castShadow receiveShadow>
-          <meshPhysicalMaterial color={gr.color} roughness={0.36} clearcoat={0.45} clearcoatRoughness={0.35} sheen={0.3} />
-        </mesh>
-      ))}
+      <mesh geometry={grains} castShadow receiveShadow>
+        <meshPhysicalMaterial vertexColors roughness={0.36} clearcoat={0.45} clearcoatRoughness={0.35} sheen={0.3} />
+      </mesh>
     </group>
   );
 }
@@ -170,34 +136,12 @@ function Greens({ color, seed }: { color: string; seed: number }) {
   );
 }
 
-function Herbs({ seed, spread, height }: { seed: number; spread: [number, number]; height: (x: number, z: number) => number }) {
-  const flecks = useMemo(() => {
-    const rng = mulberry32(seed + 777);
-    const deep = new Color("#2E5220");
-    const bright = new Color("#5C8A33");
-    return Array.from({ length: 13 }, () => {
-      const x = (rng() - 0.5) * spread[0];
-      const z = (rng() - 0.5) * spread[1];
-      return {
-        x,
-        z,
-        y: height(x, z) + 0.012,
-        rot: [rng() * Math.PI, rng() * Math.PI, rng() * Math.PI] as [number, number, number],
-        s: 0.75 + rng() * 0.7,
-        color: deep.clone().lerp(bright, rng()),
-      };
-    });
-  }, [seed, spread, height]);
-
+function Herbs({ seed, spread, surface }: { seed: number; spread: [number, number]; surface: "slices" | "mound" }) {
+  const geo = useMemo(() => mergedHerbsGeometry(seed, spread[0], spread[1], surface), [seed, spread, surface]);
   return (
-    <group>
-      {flecks.map((f, i) => (
-        <mesh key={i} position={[f.x, f.y, f.z]} rotation={f.rot} scale={f.s} castShadow>
-          <boxGeometry args={[0.032, 0.004, 0.02]} />
-          <meshPhysicalMaterial color={f.color} roughness={0.7} sheen={0.4} sheenColor="#a8d878" />
-        </mesh>
-      ))}
-    </group>
+    <mesh geometry={geo} castShadow>
+      <meshPhysicalMaterial vertexColors roughness={0.7} sheen={0.4} sheenColor="#a8d878" />
+    </mesh>
   );
 }
 
@@ -259,11 +203,11 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
       {/* Contents */}
       <group position={[COMPARTMENTS[0].x, FLOOR, COMPARTMENTS[0].z]}>
         <ProteinSlices color={contents.protein} seed={seed} />
-        <Herbs seed={seed} spread={[0.9, 1.0]} height={sliceTop} />
+        <Herbs seed={seed} spread={[0.9, 1.0]} surface="slices" />
       </group>
       <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]} scale={[1.26, 1, 1.04]}>
         <GrainBed color={contents.carb} seed={seed + 17} radius={0.42} />
-        <Herbs seed={seed + 3} spread={[0.66, 0.44]} height={moundTop} />
+        <Herbs seed={seed + 3} spread={[0.66, 0.44]} surface="mound" />
       </group>
       <group position={[COMPARTMENTS[2].x, FLOOR, COMPARTMENTS[2].z]}>
         <Greens color={contents.veg} seed={seed + 91} />
@@ -272,15 +216,18 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
       {/* Heat sealed film with the slack a real seal leaves */}
       <group ref={lidRef} position={[0, RIM + 0.02, 0]}>
         <mesh geometry={film} castShadow>
+          {/* Alpha blended film washes white at any real opacity, so it runs
+              nearly transparent with the environment reflections boosted: the
+              glints survive, the milk does not. */}
           <meshPhysicalMaterial
             color="#ffffff"
-            transmission={1}
-            thickness={0.015}
-            roughness={0.11}
-            ior={1.46}
+            transparent
+            opacity={0.13}
+            roughness={0.07}
             clearcoat={1}
-            clearcoatRoughness={0.05}
-            reflectivity={0.42}
+            clearcoatRoughness={0.04}
+            envMapIntensity={2.4}
+            depthWrite={false}
             side={2}
           />
         </mesh>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TrayScroll } from "@/components/three/TrayHero";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
+import { useInView } from "@/hooks/useInView";
 
 const CALLOUTS = [
   {
@@ -25,6 +26,10 @@ const CALLOUTS = [
 export default function ProductShowcase() {
   const section = useRef<HTMLElement>(null);
   const progress = useScrollProgress(section);
+  // The canvas, its GL context and its shader compiles do not exist until the
+  // reader is a viewport away. Geometry is shared with the hero via the module
+  // cache, so mounting here costs milliseconds, not another full build.
+  const near = useInView(section, "80%");
   const [stage, setStage] = useState(0);
 
   // Discrete stages rather than a continuous value: three renders across the
@@ -44,7 +49,7 @@ export default function ProductShowcase() {
   return (
     <section ref={section} className="relative h-[280vh] bg-espresso">
       <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
-        <TrayScroll className="absolute inset-0" progressRef={progress} />
+        {near ? <TrayScroll className="absolute inset-0" progressRef={progress} /> : null}
 
         <div className="shell relative z-10 flex h-full flex-col justify-between py-24 md:py-32">
           <div className="max-w-[46ch]">

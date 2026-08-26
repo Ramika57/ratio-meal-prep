@@ -151,12 +151,10 @@
   }
 }
 
-/* Scroll reveal. Elements start hidden and are released by an observer that
-   adds data-shown. No library, no hydration flash, honours reduced motion. */
+/* Scroll reveal. Elements are only hidden once an inline script has stamped
+   .js on the root element, so a reader with no JavaScript, or one still
+   waiting on it, sees the full page instead of a blank dark screen. */
 @utility reveal {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
-  filter: blur(6px);
   transition:
     opacity 0.9s var(--ease-out-quint),
     transform 1s var(--ease-out-quint),
@@ -164,10 +162,10 @@
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-[data-shown="true"].reveal {
-  opacity: 1;
-  transform: none;
-  filter: none;
+:root.js .reveal:not([data-shown="true"]) {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  filter: blur(6px);
 }
 
 @media (prefers-reduced-motion: reduce) {

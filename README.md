@@ -127,6 +127,24 @@ All visual decisions live in the `@theme` block of `src/app/globals.css` and now
   the display's native density and walks down under load; ambient occlusion runs at half
   resolution because it is low frequency and the difference is invisible.
 
+### Load performance
+
+The page serves fully rendered HTML in well under 100ms; what used to feel slow was client side
+work, and it is bounded now:
+
+- Only the hero canvas exists at page load. The scroll section's canvas mounts when the reader
+  is a viewport away, and reuses every buffer through a module level cache, since both render
+  the same meal.
+- All geometry and generated textures are cached by key, so the whole tray is built once per
+  session, not once per canvas.
+- The grains and garnish are merged into single geometries: what was 233 draw calls is 2.
+- The sealed film no longer uses `transmission`, which compiled the heaviest shader three.js has
+  and re-rendered the scene every frame. It is a near transparent clearcoat with boosted
+  reflections instead.
+- Reveal animations only hide content once an inline script has stamped `.js` on the root
+  element, so a reader without JavaScript, or still waiting for it, sees the page instead of a
+  blank screen.
+
 ### Dev server memory and HMR
 
 `next dev` plus a WebGL tab accumulates memory across long editing sessions: Turbopack keeps the

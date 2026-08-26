@@ -7,12 +7,42 @@ import {
   Color,
   ExtrudeGeometry,
   IcosahedronGeometry,
+  Object3D,
   Path,
   RepeatWrapping,
   Shape,
   SphereGeometry,
 } from "three";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { Noise3D } from "@/lib/noise";
+import { mulberry32 } from "@/lib/rand";
+
+/**
+ * Every geometry and texture here is cached at module level. The hero canvas
+ * and the scroll canvas render the same meal, so without a cache the whole
+ * tray was built twice on the main thread during page load; with it, the
+ * second canvas reuses every buffer and mounts in milliseconds.
+ */
+const geoCache = new Map<string, BufferGeometry>();
+const texCache = new Map<string, CanvasTexture>();
+
+function cachedGeo<T extends BufferGeometry>(key: string, make: () => T): T {
+  let geo = geoCache.get(key);
+  if (!geo) {
+    geo = make();
+    geoCache.set(key, geo);
+  }
+  return geo as T;
+}
+
+function cachedTex(key: string, make: () => CanvasTexture): CanvasTexture {
+  let tex = texCache.get(key);
+  if (!tex) {
+    tex = make();
+    texCache.set(key, tex);
+  }
+  return tex;
+}
 
 /**
  * Procedural geometry for the tray and its contents.
@@ -81,6 +111,10 @@ function vertexColors(
  * of noise on a subdivided icosphere gets remarkably close.
  */
 export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22") {
+  return cachedGeo(`floret:${radius.toFixed(4)}:${seed}:${baseHex}`, () => buildFloret(radius, seed, baseHex));
+}
+
+function buildFloret(radius: number, seed: number, baseHex: string) {
   const noise = new Noise3D(seed);
   const geo = new IcosahedronGeometry(radius, 4);
   displace(geo, noise, { amp: radius * 0.36, freq: 8 / radius, octaves: 5 });
@@ -112,10 +146,12 @@ export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22"
 
 /** Tapered stalk under a floret. */
 export function stalkGeometry(radius: number, height: number, seed: number) {
-  const noise = new Noise3D(seed);
-  const geo = new CapsuleGeometry(radius, height, 6, 16);
-  displace(geo, noise, { amp: radius * 0.13, freq: 9 / radius, octaves: 2 });
-  return geo;
+  return cachedGeo(`stalk:${radius.toFixed(4)}:${height.toFixed(4)}:${seed}`, () => {
+    const noise = new Noise3D(seed);
+    const geo = new CapsuleGeometry(radius, height, 4, 10);
+    displace(geo, noise, { amp: radius * 0.13, freq: 9 / radius, octaves: 2 });
+    return geo;
+  });
 }
 
 /**
@@ -123,9 +159,11 @@ export function stalkGeometry(radius: number, height: number, seed: number) {
  * the bed reads as individual grains rather than a mound of spheres.
  */
 export function riceGrainGeometry() {
-  const geo = new CapsuleGeometry(0.019, 0.036, 3, 8);
-  geo.scale(1, 1, 0.82);
-  return geo;
+  return cachedGeo("riceGrain", () => {
+    const geo = new CapsuleGeometry(0.019, 0.036, 2, 6);
+    geo.scale(1, 1, 0.82);
+    return geo;
+  });
 }
 
 /**
@@ -139,9 +177,15 @@ export function sliceGeometry(
   seed: number,
   baseHex = "#C98F45",
 ) {
+  return cachedGeo(`slice:${width.toFixed(4)}:${length.toFixed(4)}:${thickness}:${seed}:${baseHex}`, () =>
+    buildSlice(width, length, thickness, seed, baseHex),
+  );
+}
+
+function buildSlice(width: number, length: number, thickness: number, seed: number, baseHex: string) {
   const noise = new Noise3D(seed);
   const shape = new Shape();
-  const steps = 48;
+  const steps = 32;
   for (let i = 0; i <= steps; i++) {
     const t = (i / steps) * Math.PI * 2;
     const wobble = 1 + noise.fractal(Math.cos(t) * 1.6, Math.sin(t) * 1.6, seed * 0.01, 2) * 0.16;
@@ -157,8 +201,8 @@ export function sliceGeometry(
     bevelEnabled: true,
     bevelThickness: thickness * 0.42,
     bevelSize: thickness * 0.38,
-    bevelSegments: 5,
-    curveSegments: 24,
+    bevelSegments: 3,
+    curveSegments: 14,
   });
   geo.center();
   geo.rotateX(-Math.PI / 2);
@@ -206,8 +250,12 @@ export function sliceGeometry(
  * scattered on its surface is how a real portion is packed.
  */
 export function moundGeometry(radius: number, height: number, seed: number, baseHex = "#DDBC85") {
+  return cachedGeo(`mound:${radius}:${height}:${seed}:${baseHex}`, () => buildMound(radius, height, seed, baseHex));
+}
+
+function buildMound(radius: number, height: number, seed: number, baseHex: string) {
   const noise = new Noise3D(seed);
-  const geo = new SphereGeometry(radius, 40, 22, 0, Math.PI * 2, 0, Math.PI / 2);
+  const geo = new SphereGeometry(radius, 30, 16, 0, Math.PI * 2, 0, Math.PI / 2);
   geo.scale(1, height / radius, 0.62);
   displace(geo, noise, { amp: height * 0.16, freq: 3.4 / radius, octaves: 3 });
 
@@ -220,6 +268,92 @@ export function moundGeometry(radius: number, height: number, seed: number, base
     if (m < 0.22) out.lerp(toast, 0.7);
   });
   return geo;
+}
+
+/** Top surface of the shingled protein slices, for resting garnish on. */
+export const sliceTopY = (x: number) => 0.13 + (x + 0.46) * 0.09;
+
+/** Profile of the grain mound, shared by the mound, its grains and garnish. */
+export const moundTopY = (x: number, z: number) => {
+  const r = Math.min(1, Math.hypot(x, z / 0.62) / 0.42);
+  return 0.16 * (1 - r * r) * 0.92 + 0.012;
+};
+
+/** Fills a geometry clone with one flat colour so it can join a merged batch. */
+function bakeColor(geo: BufferGeometry, color: Color) {
+  const n = geo.attributes.position.count;
+  const arr = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    arr[i * 3] = color.r;
+    arr[i * 3 + 1] = color.g;
+    arr[i * 3 + 2] = color.b;
+  }
+  geo.setAttribute("color", new BufferAttribute(arr, 3));
+  return geo;
+}
+
+const _obj = new Object3D();
+
+function bakedClone(source: BufferGeometry, color: Color): BufferGeometry {
+  const clone = source.clone();
+  _obj.updateMatrix();
+  clone.applyMatrix4(_obj.matrix);
+  return bakeColor(clone, color);
+}
+
+/**
+ * All the grains of one compartment merged into a single geometry. As separate
+ * meshes they were 220 draw calls and 220 matrix updates a frame, which is a
+ * measurable slice of the frame budget for something that never moves.
+ */
+export function mergedGrainsGeometry(baseHex: string, seed: number, radius: number) {
+  return cachedGeo(`grains:${baseHex}:${seed}:${radius}`, () => {
+    const source = riceGrainGeometry();
+    const rng = mulberry32(seed + 5);
+    const base = new Color(baseHex);
+    const light = base.clone().lerp(new Color("#F4EBD2"), 0.5);
+    const toast = base.clone().lerp(new Color("#8A5A28"), 0.6);
+    const height = 0.16;
+    const parts: BufferGeometry[] = [];
+    for (let i = 0; i < 220; i++) {
+      const a = rng() * Math.PI * 2;
+      const r = Math.sqrt(rng()) * radius * 0.94;
+      const lift = height * (1 - (r / radius) ** 2);
+      _obj.position.set(Math.cos(a) * r, lift * 0.92 + 0.008 + rng() * 0.015, Math.sin(a) * r * 0.62);
+      _obj.rotation.set(rng() * Math.PI, rng() * Math.PI, rng() * Math.PI);
+      _obj.scale.setScalar(1.1 + rng() * 0.55);
+      const roll = rng();
+      const color =
+        roll < 0.07 ? toast : roll < 0.24 ? base.clone().lerp(toast, 0.3) : base.clone().lerp(light, rng() * 0.8);
+      parts.push(bakedClone(source, color));
+    }
+    const merged = mergeGeometries(parts, false);
+    parts.forEach((p) => p.dispose());
+    return merged;
+  });
+}
+
+/** Herb flecks over a compartment, merged for the same reason. */
+export function mergedHerbsGeometry(seed: number, spreadX: number, spreadZ: number, surface: "slices" | "mound") {
+  return cachedGeo(`herbs:${seed}:${spreadX}:${spreadZ}:${surface}`, () => {
+    const source = new BoxGeometry(0.032, 0.004, 0.02);
+    const rng = mulberry32(seed + 777);
+    const deep = new Color("#2E5220");
+    const bright = new Color("#5C8A33");
+    const parts: BufferGeometry[] = [];
+    for (let i = 0; i < 13; i++) {
+      const x = (rng() - 0.5) * spreadX;
+      const z = (rng() - 0.5) * spreadZ;
+      _obj.position.set(x, (surface === "slices" ? sliceTopY(x) : moundTopY(x, z)) + 0.012, z);
+      _obj.rotation.set(rng() * Math.PI, rng() * Math.PI, rng() * Math.PI);
+      _obj.scale.setScalar(0.75 + rng() * 0.7);
+      parts.push(bakedClone(source, deep.clone().lerp(bright, rng())));
+    }
+    source.dispose();
+    const merged = mergeGeometries(parts, false);
+    parts.forEach((p) => p.dispose());
+    return merged;
+  });
 }
 
 /** Rounded rectangle path, used for the tray outline and its compartments. */
@@ -248,6 +382,11 @@ export type Compartment = { x: number; z: number; w: number; d: number };
  * instead of dark boxes buried inside a solid block.
  */
 export function trayShellGeometry(w: number, d: number, depth: number, compartments: Compartment[]) {
+  const key = `shell:${w}:${d}:${depth}:${compartments.map((c) => `${c.x},${c.z},${c.w},${c.d}`).join(";")}`;
+  return cachedGeo(key, () => buildShell(w, d, depth, compartments));
+}
+
+function buildShell(w: number, d: number, depth: number, compartments: Compartment[]) {
   const outline = roundedRect(w, d, 0.11, Shape) as Shape;
   outline.holes = compartments.map((c) => {
     const hole = roundedRect(c.w, c.d, 0.06, Path) as Path;
@@ -280,6 +419,10 @@ export function trayShellGeometry(w: number, d: number, depth: number, compartme
 
 /** The closed base the food sits on. */
 export function trayBaseGeometry(w: number, d: number, h: number) {
+  return cachedGeo(`base:${w}:${d}:${h}`, () => buildBase(w, d, h));
+}
+
+function buildBase(w: number, d: number, h: number) {
   const shape = roundedRect(w, d, 0.11, Shape) as Shape;
   const geo = new ExtrudeGeometry(shape, {
     depth: h,
@@ -295,8 +438,12 @@ export function trayBaseGeometry(w: number, d: number, h: number) {
 
 /** Sealed film, with the slack and wrinkles a heat seal leaves behind. */
 export function filmGeometry(w: number, d: number, seed: number) {
+  return cachedGeo(`film:${w}:${d}:${seed}`, () => buildFilm(w, d, seed));
+}
+
+function buildFilm(w: number, d: number, seed: number) {
   const noise = new Noise3D(seed);
-  const geo = new BoxGeometry(w, 0.012, d, 90, 1, 70);
+  const geo = new BoxGeometry(w, 0.012, d, 56, 1, 44);
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i);
@@ -316,7 +463,11 @@ export function filmGeometry(w: number, d: number, seed: number) {
 /* ------------------------------------------------------------- textures --- */
 
 /** Fine grained roughness variation. Kills the injection moulded plastic look. */
-export function microNormalTexture(size = 512, strength = 0.5) {
+export function microNormalTexture(size = 256, strength = 0.5) {
+  return cachedTex(`micro:${size}:${strength}`, () => buildMicroNormal(size, strength));
+}
+
+function buildMicroNormal(size: number, strength: number) {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
@@ -325,9 +476,9 @@ export function microNormalTexture(size = 512, strength = 0.5) {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const i = (y * size + x) * 4;
-      const n = noise.fractal(x * 0.09, y * 0.09, 0, 4) * strength;
+      const n = noise.fractal(x * 0.09, y * 0.09, 0, 3) * strength;
       img.data[i] = 128 + n * 127;
-      img.data[i + 1] = 128 + noise.fractal(x * 0.09, y * 0.09, 11, 4) * strength * 127;
+      img.data[i + 1] = 128 + noise.fractal(x * 0.09, y * 0.09, 11, 3) * strength * 127;
       img.data[i + 2] = 255;
       img.data[i + 3] = 255;
     }
@@ -344,6 +495,12 @@ export function microNormalTexture(size = 512, strength = 0.5) {
  * on top of the food.
  */
 export function labelTexture(lines: { kcal: number; protein: number; carbs: number; fat: number; name: string }) {
+  return cachedTex(`label:${lines.name}:${lines.kcal}:${lines.protein}:${lines.carbs}:${lines.fat}`, () =>
+    buildLabel(lines),
+  );
+}
+
+function buildLabel(lines: { kcal: number; protein: number; carbs: number; fat: number; name: string }) {
   const w = 2048;
   const h = 288;
   const canvas = document.createElement("canvas");
