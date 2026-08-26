@@ -174,12 +174,17 @@ All visual decisions live in the `@theme` block of `src/app/globals.css` and now
 The page serves fully rendered HTML in well under 100ms; what used to feel slow was client side
 work, and it is bounded now.
 
-**Mobile never downloads three.js.** The renderer plus its post processing stack is a 1.2MB
-chunk, and a phone has no business fetching it for a decorative tray. `ProductShowcase` imports
-it from inside a desktop branch rather than at module scope, so on a small screen the request is
-never made: the section shows a photograph instead. Measured on a 375px viewport, after
-scrolling all the way through the tray section: **0 canvases, 74KB of JavaScript, 87KB total
-page weight.** Desktop still mounts the render, a beat after it comes into view.
+**Mobile gets the render, without the expensive half of it.** There are two scenes over the same
+geometry. `TrayScene` is the desktop one and adds the post processing stack (N8AO ambient
+occlusion, bloom, vignette); `TraySceneLite` omits it and caps the pixel ratio at 1.5. They are
+separate modules behind separate dynamic imports, so the postprocessing chunk (**102KB gzipped**,
+and 2.7MB in `node_modules`) is never requested on a phone. `lite` also thins counts rather than
+features: 10 florets instead of 17, 110 grains instead of 220, coarser floret subdivision, a
+smaller micro normal texture. Same tray, same food, same printed label.
+
+Measured on a 375px viewport: **18KB of JavaScript at first paint**, rising to 281KB only after
+scrolling into the tray section, with the postprocessing chunk confirmed absent. The camera also
+pulls back on mobile so the tray fits a narrow portrait canvas.
 
 The rest:
 

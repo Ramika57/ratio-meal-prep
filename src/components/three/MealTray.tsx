@@ -89,9 +89,22 @@ function ProteinSlices({ color, seed }: { color: string; seed: number }) {
  * geometry. As individual meshes the grains were 220 draw calls; merged they
  * are one, and the whole thing is cached so the second canvas reuses it.
  */
-function GrainBed({ color, seed, radius = 0.4 }: { color: string; seed: number; radius?: number }) {
+function GrainBed({
+  color,
+  seed,
+  radius = 0.4,
+  lite = false,
+}: {
+  color: string;
+  seed: number;
+  radius?: number;
+  lite?: boolean;
+}) {
   const mound = useMemo(() => moundGeometry(radius, 0.16, seed, color), [radius, seed, color]);
-  const grains = useMemo(() => mergedGrainsGeometry(color, seed, radius), [color, seed, radius]);
+  const grains = useMemo(
+    () => mergedGrainsGeometry(color, seed, radius, lite ? 110 : 220),
+    [color, seed, radius, lite],
+  );
 
   return (
     <group>
@@ -105,17 +118,17 @@ function GrainBed({ color, seed, radius = 0.4 }: { color: string; seed: number; 
   );
 }
 
-function Greens({ color, seed }: { color: string; seed: number }) {
+function Greens({ color, seed, lite = false }: { color: string; seed: number; lite?: boolean }) {
   const florets = useMemo(() => {
     const rng = mulberry32(seed);
-    return Array.from({ length: 17 }, (_, i) => {
+    return Array.from({ length: lite ? 10 : 17 }, (_, i) => {
       const a = rng() * Math.PI * 2;
       // Bounded to compartment 2 (1.10 x 0.58): 0.30 + 0.132 in x, and the
       // z radius squashed to 0.42 so tall florets cannot cross the divider.
       const r = Math.sqrt(rng()) * 0.3;
       const size = 0.09 + rng() * 0.042;
       return {
-        head: floretGeometry(size, seed + i * 17, color),
+        head: floretGeometry(size, seed + i * 17, color, lite ? 3 : 4),
         stalk: stalkGeometry(size * 0.3, size * 0.85, seed + i * 23),
         x: Math.cos(a) * r,
         z: Math.sin(a) * r * 0.42,
@@ -124,7 +137,7 @@ function Greens({ color, seed }: { color: string; seed: number }) {
         lean: (rng() - 0.5) * 0.4,
       };
     });
-  }, [seed, color]);
+  }, [seed, color, lite]);
 
   return (
     <group>
@@ -153,14 +166,28 @@ function Herbs({ seed, spread, surface }: { seed: number; spread: [number, numbe
 
 /* ------------------------------------------------------------------ tray -- */
 
-export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () => number }) {
+/**
+ * `lite` thins vertex and object counts for phones. It deliberately does not
+ * remove anything: the same tray, the same food, the same label, just fewer
+ * florets and grains and a coarser floret subdivision. At the size a tray
+ * occupies on a 375px screen the difference is not visible.
+ */
+export function MealTray({
+  contents,
+  lid,
+  lite = false,
+}: {
+  contents: TrayContents;
+  lid?: () => number;
+  lite?: boolean;
+}) {
   const lidRef = useRef<Group>(null);
   const seed = seedFrom(contents.seed);
 
   const shell = useMemo(() => trayShellGeometry(W, D, SHELL_DEPTH, COMPARTMENTS), []);
   const base = useMemo(() => trayBaseGeometry(W - 0.02, D - 0.02, 0.075), []);
-  const film = useMemo(() => filmGeometry(W + 0.05, D + 0.05, seed), [seed]);
-  const micro = useMemo(() => microNormalTexture(512, 0.35), []);
+  const film = useMemo(() => filmGeometry(W + 0.05, D + 0.05, seed, lite ? 28 : 56), [seed, lite]);
+  const micro = useMemo(() => microNormalTexture(lite ? 128 : 256, 0.35), [lite]);
   const label = useMemo(() => labelTexture({ ...contents.macros, name: contents.name }), [contents]);
 
   useLayoutEffect(() => {
@@ -212,11 +239,11 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
         <Herbs seed={seed} spread={[0.9, 1.0]} surface="slices" />
       </group>
       <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]} scale={[1.2, 1, 1]}>
-        <GrainBed color={contents.carb} seed={seed + 17} radius={0.42} />
+        <GrainBed color={contents.carb} seed={seed + 17} radius={0.42} lite={lite} />
         <Herbs seed={seed + 3} spread={[0.66, 0.44]} surface="mound" />
       </group>
       <group position={[COMPARTMENTS[2].x, FLOOR, COMPARTMENTS[2].z]}>
-        <Greens color={contents.veg} seed={seed + 91} />
+        <Greens color={contents.veg} seed={seed + 91} lite={lite} />
       </group>
 
       {/* Heat sealed film with the slack a real seal leaves */}

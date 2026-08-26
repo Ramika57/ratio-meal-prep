@@ -110,13 +110,15 @@ function vertexColors(
  * A broccoli floret head. Broccoli is close to self similar, so three octaves
  * of noise on a subdivided icosphere gets remarkably close.
  */
-export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22") {
-  return cachedGeo(`floret:${radius.toFixed(4)}:${seed}:${baseHex}`, () => buildFloret(radius, seed, baseHex));
+export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22", detail = 4) {
+  return cachedGeo(`floret:${radius.toFixed(4)}:${seed}:${baseHex}:${detail}`, () =>
+    buildFloret(radius, seed, baseHex, detail),
+  );
 }
 
-function buildFloret(radius: number, seed: number, baseHex: string) {
+function buildFloret(radius: number, seed: number, baseHex: string, detail: number) {
   const noise = new Noise3D(seed);
-  const geo = new IcosahedronGeometry(radius, 4);
+  const geo = new IcosahedronGeometry(radius, detail);
   displace(geo, noise, { amp: radius * 0.2, freq: 3.6 / radius, octaves: 3 });
   // Flatten the underside so it sits on the tray instead of floating.
   const pos = geo.attributes.position;
@@ -310,8 +312,8 @@ function bakedClone(source: BufferGeometry, color: Color): BufferGeometry {
  * meshes they were 220 draw calls and 220 matrix updates a frame, which is a
  * measurable slice of the frame budget for something that never moves.
  */
-export function mergedGrainsGeometry(baseHex: string, seed: number, radius: number) {
-  return cachedGeo(`grains:${baseHex}:${seed}:${radius}`, () => {
+export function mergedGrainsGeometry(baseHex: string, seed: number, radius: number, count = 220) {
+  return cachedGeo(`grains:${baseHex}:${seed}:${radius}:${count}`, () => {
     const source = riceGrainGeometry();
     const rng = mulberry32(seed + 5);
     const base = new Color(baseHex);
@@ -319,7 +321,7 @@ export function mergedGrainsGeometry(baseHex: string, seed: number, radius: numb
     const toast = base.clone().lerp(new Color("#8A5A28"), 0.6);
     const height = 0.16;
     const parts: BufferGeometry[] = [];
-    for (let i = 0; i < 220; i++) {
+    for (let i = 0; i < count; i++) {
       const a = rng() * Math.PI * 2;
       const r = Math.sqrt(rng()) * radius * 0.94;
       const lift = height * (1 - (r / radius) ** 2);
@@ -441,13 +443,13 @@ function buildBase(w: number, d: number, h: number) {
 }
 
 /** Sealed film, with the slack and wrinkles a heat seal leaves behind. */
-export function filmGeometry(w: number, d: number, seed: number) {
-  return cachedGeo(`film:${w}:${d}:${seed}`, () => buildFilm(w, d, seed));
+export function filmGeometry(w: number, d: number, seed: number, segments = 56) {
+  return cachedGeo(`film:${w}:${d}:${seed}:${segments}`, () => buildFilm(w, d, seed, segments));
 }
 
-function buildFilm(w: number, d: number, seed: number) {
+function buildFilm(w: number, d: number, seed: number, segments: number) {
   const noise = new Noise3D(seed);
-  const geo = new BoxGeometry(w, 0.012, d, 56, 1, 44);
+  const geo = new BoxGeometry(w, 0.012, d, segments, 1, Math.round(segments * 0.78));
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i);

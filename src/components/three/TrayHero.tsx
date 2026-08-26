@@ -3,22 +3,20 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { useInView } from "@/hooks/useInView";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 import type { TrayContents } from "./MealTray";
 
-// WebGL cannot render on the server, and loading three on the server would add
-// roughly half a megabyte to the initial payload for nothing.
-const TrayScene = dynamic(() => import("./TrayScene"), {
-  ssr: false,
-  loading: () => <TrayFallback />,
-});
-
-function TrayFallback() {
-  return (
-    <div className="flex h-full w-full items-center justify-center" aria-hidden>
-      <div className="h-24 w-40 rounded-2xl border border-bone/10 bg-bone/[0.03] animate-pulse" />
-    </div>
-  );
-}
+/**
+ * Two renderers, chosen by device.
+ *
+ * Both draw the same tray from the same geometry. The desktop scene adds the
+ * post processing stack (ambient occlusion, bloom, vignette), which is most of
+ * the bundle weight; the lite scene omits it and caps the pixel ratio. Because
+ * they are separate modules behind separate dynamic imports, a phone never
+ * downloads the postprocessing chunk at all.
+ */
+const TrayScene = dynamic(() => import("./TrayScene"), { ssr: false });
+const TraySceneLite = dynamic(() => import("./TraySceneLite"), { ssr: false });
 
 const DEFAULT: TrayContents = {
   seed: "chargrilled-chicken-broccolini",
@@ -33,10 +31,12 @@ const DEFAULT: TrayContents = {
 export function TrayHero({ contents = DEFAULT, className = "" }: { contents?: TrayContents; className?: string }) {
   const box = useRef<HTMLDivElement>(null);
   const visible = useInView(box);
+  const isDesktop = useIsDesktop();
+  const Scene = isDesktop ? TrayScene : TraySceneLite;
 
   return (
     <div ref={box} className={className}>
-      <TrayScene contents={contents} mode="hero" active={visible} />
+      <Scene contents={contents} mode="hero" active={visible} />
     </div>
   );
 }
@@ -56,10 +56,12 @@ export function TrayScroll({
 }) {
   const box = useRef<HTMLDivElement>(null);
   const visible = useInView(box);
+  const isDesktop = useIsDesktop();
+  const Scene = isDesktop ? TrayScene : TraySceneLite;
 
   return (
     <div ref={box} className={className}>
-      <TrayScene contents={contents} mode="scroll" progressRef={progressRef} active={visible} />
+      <Scene contents={contents} mode="scroll" progressRef={progressRef} active={visible} />
     </div>
   );
 }
