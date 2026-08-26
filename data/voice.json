@@ -1,0 +1,11 @@
+{
+  "status": "placeholder",
+  "readme": "ECX2320 Stage 1 requires the landing page to state the problem in the customer's own words. The rubric also states that AI generated evidence, simulated customers and invented survey data are academic misconduct. Nothing in this file was written by an AI and nothing should be. Fill quotes[] with statements you actually collected, set status to 'verified', then run: npm run preflight",
+  "collectionMethods": [
+    "Short interviews with people at your own gym, recorded with permission and transcribed",
+    "Public reviews of competing services on ProductReview.com.au or Google Reviews, quoted with a link and an access date",
+    "Public forum or subreddit posts, quoted with a permalink and an access date",
+    "A short intercept survey you ran yourself, with the instrument and raw responses kept for Appendix C"
+  ],
+  "quotes": []
+}

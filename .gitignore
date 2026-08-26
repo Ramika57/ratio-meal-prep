@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Runtime data written by the app. The menu and the research evidence are
+# tracked; the analytics log and reservations are not, so a demo run does not
+# end up in version control.
+/data/events.json
+/data/orders.json

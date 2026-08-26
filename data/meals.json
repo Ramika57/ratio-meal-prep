@@ -1,0 +1,646 @@
+[
+  {
+    "id": "chargrilled-chicken-broccolini",
+    "name": "Chargrilled Chicken, Broccolini & Almond",
+    "blurb": "Free range breast over charred broccolini, toasted almond, lemon oil.",
+    "protein": 48,
+    "carbs": 12,
+    "fat": 18,
+    "category": "chicken",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Chicken breast",
+        "role": "protein",
+        "color": "#DBA96B"
+      },
+      {
+        "name": "Broccolini",
+        "role": "veg",
+        "color": "#4E7C4A"
+      },
+      {
+        "name": "Almond & lemon",
+        "role": "fat",
+        "color": "#E7D8B6"
+      }
+    ],
+    "kcal": 402
+  },
+  {
+    "id": "peri-peri-chicken-cauli-rice",
+    "name": "Peri Peri Chicken Thigh & Cauliflower Rice",
+    "blurb": "Thigh fillet in house peri peri, cauliflower rice, charred capsicum.",
+    "protein": 44,
+    "carbs": 11,
+    "fat": 22,
+    "category": "chicken",
+    "heat": 2,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Chicken thigh",
+        "role": "protein",
+        "color": "#C8834A"
+      },
+      {
+        "name": "Cauliflower rice",
+        "role": "carb",
+        "color": "#EDE7DA"
+      },
+      {
+        "name": "Capsicum",
+        "role": "veg",
+        "color": "#C1462F"
+      }
+    ],
+    "kcal": 418
+  },
+  {
+    "id": "scotch-fillet-chimichurri",
+    "name": "Scotch Fillet, Chimichurri & Green Beans",
+    "blurb": "Grass fed scotch, parsley and oregano chimichurri, blistered beans.",
+    "protein": 46,
+    "carbs": 9,
+    "fat": 24,
+    "category": "beef",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Scotch fillet",
+        "role": "protein",
+        "color": "#8B4A3A"
+      },
+      {
+        "name": "Green beans",
+        "role": "veg",
+        "color": "#5B8A4C"
+      },
+      {
+        "name": "Chimichurri",
+        "role": "fat",
+        "color": "#3F6B33"
+      }
+    ],
+    "kcal": 436
+  },
+  {
+    "id": "slow-beef-ragu-zucchini",
+    "name": "Slow Beef Ragu & Zucchini Ribbons",
+    "blurb": "Six hour chuck ragu, San Marzano, ribboned zucchini instead of pasta.",
+    "protein": 45,
+    "carbs": 14,
+    "fat": 19,
+    "category": "beef",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Beef chuck",
+        "role": "protein",
+        "color": "#8B4A3A"
+      },
+      {
+        "name": "Zucchini",
+        "role": "veg",
+        "color": "#6F9B5A"
+      },
+      {
+        "name": "Napoli",
+        "role": "carb",
+        "color": "#B4402C"
+      }
+    ],
+    "kcal": 407
+  },
+  {
+    "id": "atlantic-salmon-asparagus",
+    "name": "Atlantic Salmon, Asparagus & Dill",
+    "blurb": "Skin on salmon, asparagus spears, dill and creme fraiche.",
+    "protein": 40,
+    "carbs": 7,
+    "fat": 26,
+    "category": "seafood",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Salmon",
+        "role": "protein",
+        "color": "#E8896B"
+      },
+      {
+        "name": "Asparagus",
+        "role": "veg",
+        "color": "#6E9455"
+      },
+      {
+        "name": "Dill cream",
+        "role": "fat",
+        "color": "#EFE9DA"
+      }
+    ],
+    "kcal": 422
+  },
+  {
+    "id": "barramundi-charred-greens",
+    "name": "Barramundi, Charred Greens & Caper",
+    "blurb": "Murray barramundi, charred bok choy, caper and brown butter.",
+    "protein": 44,
+    "carbs": 9,
+    "fat": 16,
+    "category": "seafood",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Barramundi",
+        "role": "protein",
+        "color": "#EFE3D2"
+      },
+      {
+        "name": "Bok choy",
+        "role": "veg",
+        "color": "#4E7C4A"
+      },
+      {
+        "name": "Caper butter",
+        "role": "fat",
+        "color": "#D9C88E"
+      }
+    ],
+    "kcal": 356
+  },
+  {
+    "id": "lemon-herb-chicken-sweet-potato",
+    "name": "Lemon Herb Chicken & Roast Sweet Potato",
+    "blurb": "Breast marinated overnight, roast sweet potato, wilted spinach.",
+    "protein": 46,
+    "carbs": 34,
+    "fat": 12,
+    "category": "chicken",
+    "heat": 0,
+    "goals": [
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Chicken breast",
+        "role": "protein",
+        "color": "#DBA96B"
+      },
+      {
+        "name": "Sweet potato",
+        "role": "carb",
+        "color": "#E08D48"
+      },
+      {
+        "name": "Spinach",
+        "role": "veg",
+        "color": "#3F6B33"
+      }
+    ],
+    "kcal": 428
+  },
+  {
+    "id": "korean-beef-kimchi",
+    "name": "Korean Beef, Kimchi & Cauliflower Rice",
+    "blurb": "Gochujang beef, house kimchi, sesame cauliflower rice.",
+    "protein": 45,
+    "carbs": 15,
+    "fat": 18,
+    "category": "beef",
+    "heat": 2,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Beef",
+        "role": "protein",
+        "color": "#8B4A3A"
+      },
+      {
+        "name": "Kimchi",
+        "role": "veg",
+        "color": "#C1462F"
+      },
+      {
+        "name": "Cauliflower rice",
+        "role": "carb",
+        "color": "#EDE7DA"
+      }
+    ],
+    "kcal": 402
+  },
+  {
+    "id": "turkey-meatballs-napoli",
+    "name": "Turkey Meatballs, Napoli & Zucchini",
+    "blurb": "Hand rolled turkey and herb meatballs, slow Napoli, zucchini noodles.",
+    "protein": 43,
+    "carbs": 13,
+    "fat": 16,
+    "category": "chicken",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Turkey",
+        "role": "protein",
+        "color": "#D8B98C"
+      },
+      {
+        "name": "Napoli",
+        "role": "carb",
+        "color": "#B4402C"
+      },
+      {
+        "name": "Zucchini",
+        "role": "veg",
+        "color": "#6F9B5A"
+      }
+    ],
+    "kcal": 368
+  },
+  {
+    "id": "butter-chicken-cauli-pilaf",
+    "name": "Butter Chicken & Cauliflower Pilaf",
+    "blurb": "Yoghurt marinated thigh, tomato and cashew masala, cauliflower pilaf.",
+    "protein": 42,
+    "carbs": 14,
+    "fat": 23,
+    "category": "chicken",
+    "heat": 1,
+    "goals": [
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Chicken thigh",
+        "role": "protein",
+        "color": "#C8834A"
+      },
+      {
+        "name": "Masala",
+        "role": "fat",
+        "color": "#D2652E"
+      },
+      {
+        "name": "Cauliflower pilaf",
+        "role": "carb",
+        "color": "#EDE7DA"
+      }
+    ],
+    "kcal": 431
+  },
+  {
+    "id": "harissa-lamb-capsicum",
+    "name": "Harissa Lamb, Roast Capsicum & Yoghurt",
+    "blurb": "Lamb shoulder in rose harissa, roast capsicum, garlic yoghurt.",
+    "protein": 41,
+    "carbs": 11,
+    "fat": 26,
+    "category": "lamb",
+    "heat": 2,
+    "goals": [
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Lamb shoulder",
+        "role": "protein",
+        "color": "#7C4032"
+      },
+      {
+        "name": "Capsicum",
+        "role": "veg",
+        "color": "#C1462F"
+      },
+      {
+        "name": "Yoghurt",
+        "role": "fat",
+        "color": "#F1EDE2"
+      }
+    ],
+    "kcal": 442
+  },
+  {
+    "id": "teriyaki-chicken-jasmine",
+    "name": "Teriyaki Chicken, Jasmine Rice & Edamame",
+    "blurb": "Glazed breast, jasmine rice, edamame and toasted sesame.",
+    "protein": 45,
+    "carbs": 42,
+    "fat": 10,
+    "category": "chicken",
+    "heat": 0,
+    "goals": [
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Chicken breast",
+        "role": "protein",
+        "color": "#C9903F"
+      },
+      {
+        "name": "Jasmine rice",
+        "role": "carb",
+        "color": "#F2EDE3"
+      },
+      {
+        "name": "Edamame",
+        "role": "veg",
+        "color": "#7FA34E"
+      }
+    ],
+    "kcal": 438
+  },
+  {
+    "id": "pulled-pork-fennel-slaw",
+    "name": "Smoky Pulled Pork & Fennel Slaw",
+    "blurb": "Twelve hour pork shoulder, apple cider slaw, fennel and dill.",
+    "protein": 44,
+    "carbs": 12,
+    "fat": 20,
+    "category": "pork",
+    "heat": 1,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Pork shoulder",
+        "role": "protein",
+        "color": "#A9603F"
+      },
+      {
+        "name": "Fennel slaw",
+        "role": "veg",
+        "color": "#C7D6A8"
+      },
+      {
+        "name": "Cider glaze",
+        "role": "carb",
+        "color": "#B8763A"
+      }
+    ],
+    "kcal": 404
+  },
+  {
+    "id": "tofu-edamame-sesame-greens",
+    "name": "Tofu, Edamame & Sesame Greens",
+    "blurb": "Pressed and crisped tofu, edamame, gai lan, sesame ginger dressing.",
+    "protein": 34,
+    "carbs": 19,
+    "fat": 20,
+    "category": "plant",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Tofu",
+        "role": "protein",
+        "color": "#EFE0BE"
+      },
+      {
+        "name": "Edamame",
+        "role": "veg",
+        "color": "#7FA34E"
+      },
+      {
+        "name": "Gai lan",
+        "role": "veg",
+        "color": "#41703C"
+      }
+    ],
+    "kcal": 392
+  },
+  {
+    "id": "chipotle-chicken-black-bean",
+    "name": "Chipotle Chicken, Black Bean & Lime",
+    "blurb": "Chipotle rubbed breast, black beans, charred corn, lime crema.",
+    "protein": 44,
+    "carbs": 27,
+    "fat": 14,
+    "category": "chicken",
+    "heat": 2,
+    "goals": [
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Chicken breast",
+        "role": "protein",
+        "color": "#C07A44"
+      },
+      {
+        "name": "Black bean",
+        "role": "carb",
+        "color": "#4A3B32"
+      },
+      {
+        "name": "Lime crema",
+        "role": "fat",
+        "color": "#F1EDE2"
+      }
+    ],
+    "kcal": 410
+  },
+  {
+    "id": "garlic-prawn-chorizo",
+    "name": "Garlic Prawn, Chorizo & Broccoli",
+    "blurb": "Tiger prawns, lean chorizo, broccoli florets, smoked paprika oil.",
+    "protein": 40,
+    "carbs": 8,
+    "fat": 21,
+    "category": "seafood",
+    "heat": 1,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Tiger prawn",
+        "role": "protein",
+        "color": "#E9A08A"
+      },
+      {
+        "name": "Chorizo",
+        "role": "fat",
+        "color": "#A83A2B"
+      },
+      {
+        "name": "Broccoli",
+        "role": "veg",
+        "color": "#4E7C4A"
+      }
+    ],
+    "kcal": 381
+  },
+  {
+    "id": "moroccan-chicken-cauli-cous-cous",
+    "name": "Moroccan Chicken & Cauliflower Cous Cous",
+    "blurb": "Ras el hanout chicken, cauliflower cous cous, preserved lemon, mint.",
+    "protein": 43,
+    "carbs": 13,
+    "fat": 17,
+    "category": "chicken",
+    "heat": 1,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Chicken",
+        "role": "protein",
+        "color": "#CE9550"
+      },
+      {
+        "name": "Cauliflower cous cous",
+        "role": "carb",
+        "color": "#EDE7DA"
+      },
+      {
+        "name": "Mint & lemon",
+        "role": "veg",
+        "color": "#6E9455"
+      }
+    ],
+    "kcal": 377
+  },
+  {
+    "id": "braised-beef-cauli-mash",
+    "name": "Braised Beef, Mushroom & Cauliflower Mash",
+    "blurb": "Red wine braised beef, field mushroom, whipped cauliflower mash.",
+    "protein": 47,
+    "carbs": 13,
+    "fat": 19,
+    "category": "beef",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain",
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Braised beef",
+        "role": "protein",
+        "color": "#7A3F31"
+      },
+      {
+        "name": "Mushroom",
+        "role": "veg",
+        "color": "#7A6252"
+      },
+      {
+        "name": "Cauliflower mash",
+        "role": "carb",
+        "color": "#EFE9DA"
+      }
+    ],
+    "kcal": 411
+  },
+  {
+    "id": "chicken-caesar-no-crouton",
+    "name": "Chicken Caesar, Bacon & Cos",
+    "blurb": "Grilled breast, shortcut bacon, baby cos, anchovy dressing, no crouton.",
+    "protein": 49,
+    "carbs": 6,
+    "fat": 21,
+    "category": "chicken",
+    "heat": 0,
+    "goals": [
+      "cut",
+      "maintain"
+    ],
+    "components": [
+      {
+        "name": "Chicken breast",
+        "role": "protein",
+        "color": "#DBA96B"
+      },
+      {
+        "name": "Baby cos",
+        "role": "veg",
+        "color": "#6F9B5A"
+      },
+      {
+        "name": "Caesar & bacon",
+        "role": "fat",
+        "color": "#E3D6B4"
+      }
+    ],
+    "kcal": 409
+  },
+  {
+    "id": "miso-salmon-brown-rice",
+    "name": "Miso Salmon, Broccoli & Brown Rice",
+    "blurb": "White miso glazed salmon, steamed broccoli, brown rice, pickled ginger.",
+    "protein": 39,
+    "carbs": 36,
+    "fat": 16,
+    "category": "seafood",
+    "heat": 0,
+    "goals": [
+      "build"
+    ],
+    "components": [
+      {
+        "name": "Salmon",
+        "role": "protein",
+        "color": "#E8896B"
+      },
+      {
+        "name": "Brown rice",
+        "role": "carb",
+        "color": "#C8A97E"
+      },
+      {
+        "name": "Broccoli",
+        "role": "veg",
+        "color": "#4E7C4A"
+      }
+    ],
+    "kcal": 444
+  }
+]

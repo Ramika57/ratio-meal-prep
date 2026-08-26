@@ -1,0 +1,127 @@
+{
+  "readme": "Evidence file for ECX2320 Stage 1. Every figure carries a source, a URL and an access date. Entries with verified:false are GAPS, not estimates: nothing has been guessed or filled in to make a table look complete. scripts/calculations.mjs reads this file and refuses to compute any calculation whose inputs are unverified.",
+  "accessedBy": "Read directly from each company's own live website using a browser, not from a coupon or comparison site.",
+
+  "competitors": [
+    {
+      "name": "My Muscle Chef",
+      "url": "https://mymusclechef.com",
+      "accessed": "2026-08-26",
+      "verified": true,
+      "base": "National, delivers chilled Australia wide",
+      "positioning": "Mass market high protein ready meals",
+      "priceRange": { "low": 10.95, "high": 12.95, "unit": "AUD per meal" },
+      "priceNotes": "Homepage states 'Over 70+ ready made meals from $10.95'. Individual tiles observed at $10.95, $11.95 and $12.95. A time limited 'Chef's Special' at $7.95 was also running on the access date.",
+      "scale": "4.3 from 3,233 reviews shown on the homepage. Claims '#1 Healthy Ready Meal Brand', sourced on their page to Nielsen data to 09.09.25.",
+      "range": "80+ meals, 100+ items including snacks and drinks",
+      "mealsSampled": [
+        { "name": "Chipotle Butter Steak", "kcal": 468, "protein": 45, "carbs": 25, "fat": 19, "grams": 350, "price": 12.95 },
+        { "name": "Braised Beef Steak", "kcal": 452, "protein": 43, "carbs": 33, "fat": 15, "grams": 380, "price": 12.95 },
+        { "name": "BBQ Chicken Breast", "kcal": 487, "protein": 52, "carbs": 24, "fat": 19, "grams": 350, "price": 12.95 },
+        { "name": "Garlic & Herb Butter Chicken", "kcal": 472, "protein": 50, "carbs": 24, "fat": 18, "grams": 370, "price": 12.95 },
+        { "name": "Peppercorn Steak", "kcal": 439, "protein": 52, "carbs": 32, "fat": 10, "grams": 390, "price": 12.95 },
+        { "name": "Roast Chicken Dinner", "kcal": 404, "protein": 41, "carbs": 33, "fat": 11, "grams": 370, "price": 10.95 },
+        { "name": "Lemon & Herb Chicken", "kcal": 442, "protein": 41, "carbs": 34, "fat": 15, "grams": 350, "price": 11.95 }
+      ],
+      "sampleNote": "Seven meals visible on the homepage carousel on the access date. This is a convenience sample of what the company chose to feature, not a random sample of the full menu, and it is likely to flatter them."
+    },
+    {
+      "name": "Dineamic",
+      "url": "https://dineamic.com.au",
+      "accessed": "2026-08-26",
+      "verified": true,
+      "base": "Melbourne, Australian owned independent",
+      "positioning": "Premium ready meals, free range and grass fed, carbon neutral",
+      "priceRange": { "low": 11.95, "high": 12.95, "unit": "AUD per meal" },
+      "priceNotes": "Page title reads '$11.95 Pre Made Meals'. Ten meal bundles listed at $115.76 reduced from $120.50, which is $11.58 a meal. States no lock in contracts.",
+      "scale": "Homepage claims 'OVER 3700+ 5 STAR REVIEWS', plus '4.5-star across 1,200+ reviews' and '4.6-star across 220+ reviews' from two named platforms.",
+      "range": "Bundles for High Protein, Calorie Smart, Low FODMAP and Mediterranean Diet",
+      "mealsSampled": [
+        { "name": "Beef Lasagne", "kcal": 525, "protein": 30, "carbs": 42, "fat": 25, "grams": 360, "price": 12.95 },
+        { "name": "Chicken Pad Thai", "kcal": 515, "protein": 34, "carbs": 56, "fat": 17, "grams": 360, "price": 11.95 },
+        { "name": "Slow-Cooked Beef", "kcal": 293, "protein": 36, "carbs": 21, "fat": 5, "grams": 360, "price": 12.95 },
+        { "name": "Smokey Chicken", "kcal": 371, "protein": 31, "carbs": 28, "fat": 15, "grams": 360, "price": 11.95 }
+      ],
+      "sampleNote": "Four best sellers shown on the homepage with full macros on the access date."
+    },
+    {
+      "name": "Muscle Meals Direct",
+      "url": "https://musclemealsdirect.com.au",
+      "accessed": "2026-08-26",
+      "verified": true,
+      "base": "Delivers to Melbourne among other cities",
+      "positioning": "Explicitly gym and physique focused, the closest competitor to this segment",
+      "priceRange": { "low": 15.95, "high": 15.95, "unit": "AUD per meal" },
+      "priceNotes": "Every meal tile on the homepage listed at a regular price of $15.95 on the access date.",
+      "scale": "No review count or customer number published on the homepage.",
+      "range": "Meals, snacks and protein shakes with a menu builder and an optional subscription",
+      "mealsSampled": [],
+      "sampleNote": "No macros published on the homepage, so protein and carbohydrate per meal could not be verified. Named meals are carbohydrate forward: sweet potato, protein pasta, brown rice.",
+      "macrosPublished": false
+    },
+    {
+      "name": "Youfoodz",
+      "url": "https://youfoodz.com",
+      "accessed": "2026-08-26",
+      "verified": true,
+      "base": "National",
+      "positioning": "Subscription ready meals, owned by HelloFresh",
+      "priceRange": null,
+      "priceNotes": "No per meal price is shown before entering the subscription flow. The homepage offer on the access date was 'Get up to 40% off + free add-ons for 12 weeks, new subscribers only, varies by plan'. Per meal price NOT VERIFIED.",
+      "scale": "States over 80 meal options every week.",
+      "range": "80+ meals weekly, including a 'Macro Controlled' line",
+      "mealsSampled": [],
+      "sampleNote": "Menu is carbohydrate forward. Featured meals include naan and brown rice, chips, bacon loaded mac and cheese, penne, spaghetti and lasagne."
+    }
+  ],
+
+  "gaps": [
+    {
+      "id": "segment_population",
+      "needed": "Number of people in Greater Melbourne who train regularly with strength or physique goals",
+      "whyItMatters": "Calculation 1, market sizing. Everything downstream scales off it.",
+      "status": "NOT COLLECTED",
+      "whereToGetIt": "AusPlay participation data by state and activity at clearinghouseforsport.gov.au, filtered to Victoria and to fitness or gym activities. Cross check against ABS Estimated Resident Population for Greater Melbourne.",
+      "doNotDo": "Do not estimate this from memory or from an AI answer. The rubric treats invented figures as academic misconduct."
+    },
+    {
+      "id": "problem_share",
+      "needed": "Share of that population who both track macros and say time is what stops them prepping",
+      "whyItMatters": "Calculation 1, second step.",
+      "status": "NOT COLLECTED",
+      "whereToGetIt": "Your own intercept survey at a gym, with the instrument and raw responses kept for Appendix C. A published industry report is acceptable if you can cite the page.",
+      "doNotDo": "Do not generate survey responses."
+    },
+    {
+      "id": "kitchen_capacity",
+      "needed": "Trays a week your kitchen can actually produce",
+      "whyItMatters": "Calculation 5, capacity share, and Calculation 8, cost to serve.",
+      "status": "NOT COLLECTED",
+      "whereToGetIt": "A quoted commercial kitchen hire rate and hours, or a named co packer's stated minimum and maximum run."
+    },
+    {
+      "id": "cost_to_serve",
+      "needed": "Ingredient, packaging, labour and delivery cost of one tray",
+      "whyItMatters": "Calculation 8, and Calculation 6 innovation rent.",
+      "status": "NOT COLLECTED",
+      "whereToGetIt": "Price a single recipe at wholesale, for example Bidfood or a market supplier, plus tray and film cost, plus a costed labour minute rate, plus a courier quote for a Melbourne metro drop."
+    },
+    {
+      "id": "why_now",
+      "needed": "A dated change that opened this window",
+      "whyItMatters": "Week 2 demand shifters, and the 'why now' section of the analysis.",
+      "status": "NOT COLLECTED",
+      "candidatesToVerify": [
+        "Growth in GLP-1 medication use in Australia and the protein requirement that comes with rapid weight loss. Verifiable from PBS or TGA publications with a date.",
+        "HelloFresh acquisition of Youfoodz and any subsequent range or service change. Verifiable from company announcements with a date.",
+        "Change in Melbourne commercial kitchen availability or food delivery costs. Needs a dated source."
+      ],
+      "doNotDo": "Pick one and verify it with a dated, citable source before it goes in the analysis."
+    }
+  ],
+
+  "ratio": {
+    "note": "Computed from data/meals.json by scripts/calculations.mjs. Included here so the comparison table has both sides in one place.",
+    "source": "This artefact's own menu"
+  }
+}
