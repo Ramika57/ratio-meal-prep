@@ -42,13 +42,13 @@ export default function ProductShowcase() {
   }, [progress]);
 
   return (
-    <section ref={section} className="relative h-[280vh] bg-ink">
+    <section ref={section} className="relative h-[280vh] bg-espresso">
       <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
         <TrayScroll className="absolute inset-0" progressRef={progress} />
 
-        <div className="shell relative z-10 flex h-full flex-col justify-between py-20 md:py-24">
+        <div className="shell relative z-10 flex h-full flex-col justify-between py-24 md:py-32">
           <div className="max-w-[46ch]">
-            <p className="eyebrow text-mute">The tray</p>
+            <p className="eyebrow text-mute">03 · The tray</p>
             <h2 className="mt-4 text-display-s font-semibold md:text-display-m">
               Built for the fridge, not the photograph.
             </h2>
@@ -70,8 +70,8 @@ export default function ProductShowcase() {
                   <span className="eyebrow text-signal tnum">0{i + 1}</span>
                   <span className="h-px flex-1 bg-bone/15" aria-hidden />
                 </div>
-                <h3 className="mt-4 text-[1.375rem] font-semibold tracking-[-0.035em]">{c.label}</h3>
-                <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-bone/60">{c.body}</p>
+                <h3 className="mt-4 text-xl font-semibold tracking-[-0.035em]">{c.label}</h3>
+                <p className="mt-2.5 text-base leading-relaxed text-bone/60">{c.body}</p>
               </div>
             ))}
           </div>

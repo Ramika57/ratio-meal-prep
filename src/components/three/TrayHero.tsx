@@ -21,10 +21,12 @@ function TrayFallback() {
 }
 
 const DEFAULT: TrayContents = {
-  seed: "ratio-hero",
-  protein: "#DBA96B",
-  carb: "#EDE7DA",
-  veg: "#4E7C4A",
+  seed: "chargrilled-chicken-broccolini",
+  name: "Chargrilled Chicken",
+  protein: "#D89A4A",
+  carb: "#C9A46E",
+  veg: "#57A82E",
+  macros: { kcal: 402, protein: 48, carbs: 12, fat: 18 },
 };
 
 /** Auto rotating hero tray. Parks the render loop when scrolled out of view. */

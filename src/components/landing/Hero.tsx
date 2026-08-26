@@ -13,7 +13,8 @@ export default async function Hero() {
         className="pointer-events-none absolute left-1/2 top-[46%] -z-10 h-[70vh] w-[110vw] -translate-x-1/2 -translate-y-1/2"
         style={{
           background:
-            "radial-gradient(ellipse 42% 46% at 50% 50%, rgba(205,245,70,0.09), transparent 70%)",
+            "radial-gradient(ellipse 38% 42% at 48% 44%, rgba(216,250,78,0.10), transparent 70%), " +
+            "radial-gradient(ellipse 46% 40% at 62% 74%, rgba(255,107,53,0.13), transparent 72%)",
         }}
         aria-hidden
       />
@@ -26,7 +27,7 @@ export default async function Hero() {
         </h1>
 
         <p
-          className="reveal mx-auto mt-6 max-w-[54ch] text-[1.0625rem] leading-relaxed text-bone/65 md:text-[1.125rem]"
+          className="reveal mx-auto mt-6 max-w-[54ch] text-lg leading-relaxed text-bone/65 md:text-lg"
           style={{ "--reveal-delay": "170ms" } as React.CSSProperties}
         >
           Set a goal, set the calories you actually want to eat, and choose how many days.
@@ -42,14 +43,14 @@ export default async function Hero() {
           </CtaLink>
           <Link
             href="/#menu"
-            className="inline-flex h-14 w-full items-center justify-center rounded-full border border-bone/20 px-8 text-[1.0625rem] transition-colors hover:border-bone/50 hover:bg-bone/5 sm:w-auto"
+            className="inline-flex h-14 w-full items-center justify-center rounded-full border border-bone/20 px-8 text-lg transition-colors hover:border-bone/50 hover:bg-bone/5 sm:w-auto"
           >
             See the menu
           </Link>
         </div>
 
         <p
-          className="reveal mt-5 text-[0.8125rem] text-mute tnum"
+          className="reveal mt-5 text-sm text-mute tnum"
           style={{ "--reveal-delay": "320ms" } as React.CSSProperties}
         >
           {stats.count} meals · {stats.avgProtein}g protein and {stats.avgCarbs}g carbs on average · from $11.95 a meal

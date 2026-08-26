@@ -6,13 +6,13 @@ export default async function MenuPreview() {
 
   return (
     <section id="menu" className="scroll-mt-20 bg-ink">
-      <div className="shell py-24 md:py-36">
+      <div className="shell py-24 md:py-32">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-[42ch]">
-            <p className="eyebrow reveal text-mute">The menu</p>
+            <p className="eyebrow reveal text-mute">05 · The menu</p>
             <h2 className="reveal mt-5 text-display-m font-semibold">Twenty meals. Every macro published.</h2>
           </div>
-          <p className="reveal max-w-[34ch] text-[0.9375rem] leading-relaxed text-bone/55">
+          <p className="reveal max-w-[34ch] text-base leading-relaxed text-bone/55">
             Figures shown are for a Regular tray. Large adds 35 percent and XL adds 70 percent to every
             number, ingredient for ingredient.
           </p>

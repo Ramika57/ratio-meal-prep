@@ -43,7 +43,7 @@ export function MacroBar({
         ))}
       </div>
       {showLabels ? (
-        <div className="mt-2.5 flex items-center gap-4 text-[0.6875rem] text-mute tnum">
+        <div className="mt-2.5 flex items-center gap-4 text-2xs text-mute tnum">
           {TRACKS.map((t) => (
             <span key={t.key} className="inline-flex items-center gap-1.5">
               <span className="size-1.5 rounded-full" style={{ background: t.color }} aria-hidden />

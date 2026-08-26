@@ -5,12 +5,12 @@ export default function CtaBand() {
     <section className="relative overflow-hidden border-t border-bone/10 bg-ink">
       <div
         className="pointer-events-none absolute left-1/2 top-full -z-10 h-[60vh] w-[120vw] -translate-x-1/2 -translate-y-1/2"
-        style={{ background: "radial-gradient(ellipse 40% 50% at 50% 50%, rgba(205,245,70,0.10), transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 44% 52% at 50% 50%, rgba(255,107,53,0.16), transparent 70%)" }}
         aria-hidden
       />
       <div className="shell py-28 text-center md:py-40">
         <h2 className="reveal mx-auto max-w-[15ch] text-display-l font-semibold">Set the number. We cook to it.</h2>
-        <p className="reveal mx-auto mt-6 max-w-[42ch] text-[1.0625rem] leading-relaxed text-bone/60">
+        <p className="reveal mx-auto mt-6 max-w-[42ch] text-lg leading-relaxed text-bone/60">
           Two minutes in the builder gives you a costed week, the exact macros, and the gap you still need
           to fill yourself.
         </p>
@@ -19,7 +19,7 @@ export default function CtaBand() {
             Build your plan
           </CtaLink>
         </div>
-        <p className="reveal mt-5 text-[0.75rem] text-mute">
+        <p className="reveal mt-5 text-xs text-mute">
           No payment taken. Reserving holds your first week while we open your postcode.
         </p>
       </div>

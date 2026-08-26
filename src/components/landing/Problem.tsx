@@ -38,14 +38,14 @@ export default async function Problem() {
 
   return (
     <section id="problem" className="bg-bone text-ink">
-      <div className="shell py-24 md:py-36">
+      <div className="shell py-24 md:py-32">
         <div className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
           <div>
-            <p className="eyebrow reveal text-ink/45">The problem</p>
+            <p className="eyebrow reveal text-ink/45">01 · The problem</p>
             <h2 className="reveal mt-5 max-w-[14ch] text-display-m font-semibold">
               Nobody quits because the training got hard.
             </h2>
-            <p className="reveal mt-6 max-w-[40ch] text-[1rem] leading-relaxed text-ink/65">
+            <p className="reveal mt-6 max-w-[40ch] text-base leading-relaxed text-ink/65">
               They quit because Sunday costs four hours, the containers do not fit in the fridge, and by
               Wednesday it is a chicken wrap from the food court and a promise to start again Monday.
             </p>
@@ -60,10 +60,10 @@ export default async function Problem() {
                     className="reveal border-l-2 border-ink/15 pl-6"
                     style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
                   >
-                    <blockquote className="text-[1.25rem] leading-snug tracking-[-0.02em] text-ink md:text-[1.5rem]">
+                    <blockquote className="text-xl leading-snug tracking-[-0.02em] text-ink md:text-2xl">
                       &ldquo;{q.text}&rdquo;
                     </blockquote>
-                    <figcaption className="mt-3 text-[0.75rem] text-ink/50">
+                    <figcaption className="mt-3 text-xs text-ink/50">
                       {q.attribution} ·{" "}
                       {q.sourceUrl ? (
                         <a href={q.sourceUrl} className="underline underline-offset-2" rel="nofollow noopener">
@@ -82,12 +82,12 @@ export default async function Problem() {
             {showGap ? (
               <div className="rounded-2xl border-2 border-dashed border-ink/25 bg-ink/[0.03] p-7">
                 <p className="eyebrow text-ink/50">Evidence gap · visible in development only</p>
-                <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/75">
+                <p className="mt-3 text-base leading-relaxed text-ink/75">
                   This section renders nothing until <code className="rounded bg-ink/10 px-1.5 py-0.5">data/voice.json</code>{" "}
                   contains quotes you actually collected and its status is set to{" "}
                   <code className="rounded bg-ink/10 px-1.5 py-0.5">verified</code>.
                 </p>
-                <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/75">
+                <p className="mt-3 text-base leading-relaxed text-ink/75">
                   Stage 1 asks for the problem in the customer&rsquo;s own words, and the same brief calls
                   invented survey data academic misconduct. Three or four real quotes with a source and a
                   date will clear it. Run{" "}

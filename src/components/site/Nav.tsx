@@ -43,13 +43,13 @@ export default function Nav() {
         aria-hidden
       />
       <nav className="shell flex h-14 items-center justify-between md:h-16" aria-label="Primary">
-        <Link href="/" className="text-[1.0625rem] font-semibold tracking-[-0.05em]" onClick={() => setOpen(false)}>
+        <Link href="/" className="text-lg font-semibold tracking-[-0.05em]" onClick={() => setOpen(false)}>
           RATIO
         </Link>
 
         <div className="hidden items-center gap-9 md:flex">
           {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="text-[0.8125rem] text-bone/65 transition-colors hover:text-bone">
+            <Link key={l.href} href={l.href} className="text-sm text-bone/65 transition-colors hover:text-bone">
               {l.label}
             </Link>
           ))}
@@ -59,7 +59,7 @@ export default function Nav() {
           <Link
             href="/build"
             onClick={() => track("cta_click", { location: "nav", label: "build_your_plan" })}
-            className="inline-flex h-11 items-center rounded-full bg-signal px-5 text-[0.875rem] font-medium text-ink transition-colors hover:bg-[#dbff63] md:h-9 md:px-4 md:text-[0.8125rem]"
+            className="inline-flex h-11 items-center rounded-full bg-signal px-5 text-sm font-medium text-ink transition-colors hover:bg-[#dbff63] md:h-9 md:px-4 md:text-sm"
           >
             Build your plan
           </Link>
@@ -98,7 +98,7 @@ export default function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-1 py-2.5 text-[1.0625rem] text-bone/80"
+                className="rounded-lg px-1 py-2.5 text-lg text-bone/80"
               >
                 {l.label}
               </Link>

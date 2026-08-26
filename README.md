@@ -110,6 +110,30 @@ the price, so the instrumentation is ready; the experiment is not run.
 
 ---
 
+## Design system
+
+All visual decisions live in the `@theme` block of `src/app/globals.css` and nowhere else.
+
+- **Palette.** Warm near black (`ink` steps plus `espresso`), warm off white (`bone` steps), and
+  two accents with fixed jobs: `signal` lime for actions and live figures, `ember` for heat and
+  appetite. If lime appears on decoration, something has drifted.
+- **Type.** Eight sizes (`text-2xs` through `text-4xl`) plus four display clamps. No arbitrary
+  `text-[...]` values anywhere in `src/`; the sweep that enforced this replaced fifteen ad hoc
+  sizes, which was the main reason the layout read as uneven.
+- **Radius and rhythm.** Six radius tokens, and section padding is `py-24 md:py-32` everywhere.
+- **The 3D tray** (`src/components/three/`) is procedural: an extruded shell with the
+  compartments cut through it, food displaced by seeded fractal noise (`src/lib/noise.ts`),
+  a canvas drawn label, N8AO ambient occlusion and ACES tone mapping. Pixel ratio is capped at
+  the display's native density and walks down under load; ambient occlusion runs at half
+  resolution because it is low frequency and the difference is invisible.
+
+### Dev server memory
+
+`next dev` plus a WebGL tab accumulates memory across long editing sessions: Turbopack keeps the
+module graph in RAM and every hot reload of a three.js component can strand the previous
+render targets until the tab reloads. If the dev process or the browser balloons after heavy
+editing, restart `npm run dev` and reload the tab; a production build carries none of this.
+
 ## The nutrition model
 
 All of it lives in `src/lib/plan.ts`. Nothing is hardcoded in a component.

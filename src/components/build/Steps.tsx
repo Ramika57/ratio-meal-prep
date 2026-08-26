@@ -58,11 +58,11 @@ export function StepGoal({ state, dispatch }: StepProps) {
               }`}
             >
               <span className="flex items-center justify-between">
-                <span className="text-[1.375rem] font-semibold tracking-[-0.035em]">{g.label}</span>
+                <span className="text-xl font-semibold tracking-[-0.035em]">{g.label}</span>
                 <Tick active={active} />
               </span>
-              <span className="mt-2 text-[0.9375rem] text-bone/70">{g.line}</span>
-              <span className="mt-4 text-[0.8125rem] leading-relaxed text-mute">{g.detail}</span>
+              <span className="mt-2 text-base text-bone/70">{g.line}</span>
+              <span className="mt-4 text-sm leading-relaxed text-mute">{g.detail}</span>
               <span className="mt-5 eyebrow text-mute tnum">
                 Typical {num(g.band[0])} to {num(g.band[1])} kcal
               </span>
@@ -98,7 +98,7 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
             <label htmlFor="kcal" className="eyebrow text-mute">
               Calories a day
             </label>
-            <output htmlFor="kcal" className="text-[3rem] font-semibold leading-none tracking-[-0.055em] tnum">
+            <output htmlFor="kcal" className="text-4xl font-semibold leading-none tracking-[-0.055em] tnum">
               {num(state.dailyKcal)}
             </output>
           </div>
@@ -114,7 +114,7 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
             onChange={(e) => dispatch({ type: "kcal", kcal: Number(e.target.value) })}
             onPointerUp={() => track("calories_set", { location: "builder", kcal: state.dailyKcal, goal: state.goal })}
           />
-          <div className="flex justify-between text-[0.6875rem] text-mute tnum">
+          <div className="flex justify-between text-2xs text-mute tnum">
             <span>{num(KCAL_MIN)}</span>
             <span>{num(KCAL_MAX)}</span>
           </div>
@@ -147,7 +147,7 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
                     dispatch({ type: "days", days: d });
                     track("days_set", { days: d });
                   }}
-                  className={`h-12 min-w-[4.5rem] rounded-full border px-5 text-[0.9375rem] font-medium transition-colors duration-300 tnum ${
+                  className={`h-12 min-w-[4.5rem] rounded-full border px-5 text-base font-medium transition-colors duration-300 tnum ${
                     state.days === d ? "border-bone bg-bone text-ink" : "border-bone/15 text-bone/70 hover:border-bone/40"
                   }`}
                 >
@@ -177,11 +177,11 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
                       active ? "border-signal bg-signal/[0.07]" : "border-bone/12 hover:border-bone/35"
                     }`}
                   >
-                    <span className="flex items-center justify-between text-[1rem] font-semibold">
+                    <span className="flex items-center justify-between text-base font-semibold">
                       {p.label}
                       <Tick active={active} />
                     </span>
-                    <span className="mt-1.5 block text-[0.8125rem] text-mute tnum">
+                    <span className="mt-1.5 block text-sm text-mute tnum">
                       about {kcal} kcal · {money(p.price)}
                     </span>
                     {recommended ? (
@@ -198,7 +198,7 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
             <h3 className="eyebrow text-mute">Your day at {num(state.dailyKcal)} kcal</h3>
-            <dl className="mt-5 space-y-3 text-[0.9375rem] tnum">
+            <dl className="mt-5 space-y-3 text-base tnum">
               <Row label="Protein" value={`${day.protein}g`} />
               <Row label="Carbs" value={`${day.carbs}g`} />
               <Row label="Fat" value={`${day.fat}g`} />
@@ -206,10 +206,10 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
 
             <div className="mt-6 border-t border-bone/12 pt-6">
               <h4 className="eyebrow text-signal">RATIO covers</h4>
-              <p className="mt-3 text-[1.75rem] font-semibold tracking-[-0.045em] tnum">
+              <p className="mt-3 text-2xl font-semibold tracking-[-0.045em] tnum">
                 {num(covered.kcal)} kcal
               </p>
-              <p className="mt-1 text-[0.875rem] text-bone/60 tnum">
+              <p className="mt-1 text-sm text-bone/60 tnum">
                 {covered.protein}g protein across {state.mealsPerDay} trays, so about {perMeal.kcal} kcal and{" "}
                 {perMeal.protein}g a tray.
               </p>
@@ -217,8 +217,8 @@ export function StepTargets({ state, dispatch, meals }: StepProps) {
 
             <div className="mt-6 border-t border-bone/12 pt-6">
               <h4 className="eyebrow text-mute">You fill</h4>
-              <p className="mt-3 text-[1.75rem] font-semibold tracking-[-0.045em] tnum">{num(left.kcal)} kcal</p>
-              <p className="mt-1 text-[0.875rem] text-bone/60 tnum">
+              <p className="mt-3 text-2xl font-semibold tracking-[-0.045em] tnum">{num(left.kcal)} kcal</p>
+              <p className="mt-1 text-sm text-bone/60 tnum">
                 {left.protein}g protein from breakfast, shakes and snacks.
               </p>
             </div>
@@ -266,7 +266,7 @@ export function StepMeals({ state, dispatch, meals }: StepProps) {
             track("autofill_used", { slots, goal: state.goal });
           }}
           disabled={chosen >= need}
-          className="h-11 rounded-full bg-bone px-6 text-[0.9375rem] font-medium text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
+          className="h-11 rounded-full bg-bone px-6 text-base font-medium text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
         >
           Fill the remaining {Math.max(0, need - chosen)}
         </button>
@@ -274,12 +274,12 @@ export function StepMeals({ state, dispatch, meals }: StepProps) {
           <button
             type="button"
             onClick={() => dispatch({ type: "clearSelection" })}
-            className="h-11 rounded-full border border-bone/20 px-5 text-[0.9375rem] text-bone/70 transition-colors hover:border-bone/45 hover:text-bone"
+            className="h-11 rounded-full border border-bone/20 px-5 text-base text-bone/70 transition-colors hover:border-bone/45 hover:text-bone"
           >
             Clear
           </button>
         ) : null}
-        <p className="text-[0.8125rem] text-mute">
+        <p className="text-sm text-mute">
           Auto fill picks whatever moves your average closest to target, and spreads repeats.
         </p>
       </div>
@@ -296,7 +296,7 @@ export function StepMeals({ state, dispatch, meals }: StepProps) {
               selected={n > 0}
               action={
                 <div className="flex items-center justify-between gap-3">
-                  <span className={`text-[0.75rem] ${fits ? "text-signal" : "text-mute"}`}>
+                  <span className={`text-xs ${fits ? "text-signal" : "text-mute"}`}>
                     {fits ? `Suits ${state.goal}` : "Off goal"}
                   </span>
                   <Stepper
@@ -345,11 +345,11 @@ function DriftNote({
   const off = Math.abs(drift) >= 0.08;
   return (
     <div className="mt-10 text-center">
-      <p className="text-[0.875rem] text-mute tnum">
+      <p className="text-sm text-mute tnum">
         Running average: {avg} kcal and {protein}g protein a tray, against a target of {target} and {targetProtein}g.
       </p>
       {off ? (
-        <p className={`mx-auto mt-2 max-w-[54ch] text-[0.8125rem] tnum ${drift < 0 ? "text-macro-carbs" : "text-macro-fat"}`}>
+        <p className={`mx-auto mt-2 max-w-[54ch] text-sm tnum ${drift < 0 ? "text-macro-carbs" : "text-macro-fat"}`}>
           That is {Math.abs(Math.round(drift * 100))} percent {drift < 0 ? "under" : "over"} target. Change the tray
           size on the previous step to close the gap, or leave it and we will show you the real shortfall at review.
         </p>
@@ -363,7 +363,7 @@ function StepHead({ eyebrow, title, note }: { eyebrow: string; title: string; no
     <div className="max-w-[52ch]">
       <p className="eyebrow text-mute">{eyebrow}</p>
       <h1 className="mt-4 text-display-m font-semibold">{title}</h1>
-      <p className="mt-5 text-[1rem] leading-relaxed text-bone/60">{note}</p>
+      <p className="mt-5 text-base leading-relaxed text-bone/60">{note}</p>
     </div>
   );
 }
@@ -421,11 +421,11 @@ function Choice({
               value === o.value ? "border-signal bg-signal/[0.07]" : "border-bone/12 hover:border-bone/35"
             }`}
           >
-            <span className="flex items-center justify-between text-[1rem] font-semibold">
+            <span className="flex items-center justify-between text-base font-semibold">
               {o.label}
               <Tick active={value === o.value} />
             </span>
-            <span className="mt-1.5 block text-[0.8125rem] text-mute">{o.note}</span>
+            <span className="mt-1.5 block text-sm text-mute">{o.note}</span>
           </button>
         ))}
       </div>
@@ -450,7 +450,7 @@ function Stepper({
         type="button"
         onClick={onAdd}
         disabled={!canAdd}
-        className="h-11 rounded-full bg-bone px-5 text-[0.875rem] font-medium text-ink transition-opacity hover:opacity-90 disabled:opacity-25 md:h-9 md:px-4 md:text-[0.8125rem]"
+        className="h-11 rounded-full bg-bone px-5 text-sm font-medium text-ink transition-opacity hover:opacity-90 disabled:opacity-25 md:h-9 md:px-4 md:text-sm"
       >
         Add
       </button>
@@ -466,7 +466,7 @@ function Stepper({
       >
         <span className="block h-px w-3 bg-current" />
       </button>
-      <span className="min-w-5 text-center text-[0.875rem] font-semibold tnum">{value}</span>
+      <span className="min-w-5 text-center text-sm font-semibold tnum">{value}</span>
       <button
         type="button"
         onClick={onAdd}

@@ -21,11 +21,11 @@ export default async function Pricing() {
 
   return (
     <section id="pricing" className="scroll-mt-20 bg-bone text-ink">
-      <div className="shell py-24 md:py-36">
+      <div className="shell py-24 md:py-32">
         <div className="max-w-[46ch]">
-          <p className="eyebrow reveal text-ink/45">Pricing</p>
+          <p className="eyebrow reveal text-ink/45">07 · Pricing</p>
           <h2 className="reveal mt-5 text-display-m font-semibold">Priced by the tray, not by the month.</h2>
-          <p className="reveal mt-6 text-[1rem] leading-relaxed text-ink/65">
+          <p className="reveal mt-6 text-base leading-relaxed text-ink/65">
             No subscription, no lock in, no minimum term. Order three days or fourteen. The only thing that
             moves the price is how much food is in the tray and how many trays you order.
           </p>
@@ -44,27 +44,27 @@ export default async function Pricing() {
                 style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
               >
                 <div className="flex items-baseline justify-between">
-                  <h3 className="text-[1.125rem] font-semibold tracking-[-0.035em]">{p.label}</h3>
+                  <h3 className="text-lg font-semibold tracking-[-0.035em]">{p.label}</h3>
                   {p.key === "large" ? (
                     <span className="eyebrow rounded-full bg-signal px-2.5 py-1 text-ink">Most ordered</span>
                   ) : null}
                 </div>
 
                 <div className="mt-6 flex items-baseline gap-1.5">
-                  <span className="text-[2.5rem] font-semibold leading-none tracking-[-0.055em] tnum">
+                  <span className="text-4xl font-semibold leading-none tracking-[-0.055em] tnum">
                     ${p.price.toFixed(2)}
                   </span>
-                  <span className={`text-[0.875rem] ${p.key === "large" ? "text-bone/55" : "text-ink/50"}`}>
+                  <span className={`text-sm ${p.key === "large" ? "text-bone/55" : "text-ink/50"}`}>
                     per meal
                   </span>
                 </div>
 
-                <p className={`mt-4 text-[0.875rem] leading-relaxed ${p.key === "large" ? "text-bone/60" : "text-ink/60"}`}>
+                <p className={`mt-4 text-sm leading-relaxed ${p.key === "large" ? "text-bone/60" : "text-ink/60"}`}>
                   {PORTION_NOTE[p.key]}
                 </p>
 
                 <dl
-                  className={`mt-6 space-y-2 border-t pt-6 text-[0.875rem] tnum ${
+                  className={`mt-6 space-y-2 border-t pt-6 text-sm tnum ${
                     p.key === "large" ? "border-bone/15" : "border-ink/10"
                   }`}
                 >
@@ -86,7 +86,7 @@ export default async function Pricing() {
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <div className="reveal rounded-2xl border border-ink/15 bg-white p-8">
             <h3 className="eyebrow text-ink/45">Order more, pay less per tray</h3>
-            <table className="mt-5 w-full text-[0.9375rem] tnum">
+            <table className="mt-5 w-full text-base tnum">
               <tbody className="divide-y divide-ink/10">
                 {VOLUME_TIERS.slice()
                   .reverse()
@@ -102,17 +102,17 @@ export default async function Pricing() {
                   ))}
               </tbody>
             </table>
-            <p className="mt-5 text-[0.8125rem] leading-relaxed text-ink/55">
+            <p className="mt-5 text-sm leading-relaxed text-ink/55">
               Delivery is {money(DELIVERY_FEE)} across Melbourne metro, free over {money(FREE_DELIVERY_OVER)}.
             </p>
           </div>
 
           <div className="reveal rounded-2xl border border-ink/15 bg-white p-8" style={{ "--reveal-delay": "90ms" } as React.CSSProperties}>
             <h3 className="eyebrow text-ink/45">A typical week, priced</h3>
-            <p className="mt-5 text-[0.9375rem] text-ink/65">
+            <p className="mt-5 text-base text-ink/65">
               Five days, three meals a day, XL trays. Fifteen meals.
             </p>
-            <dl className="mt-5 space-y-2.5 text-[0.9375rem] tnum">
+            <dl className="mt-5 space-y-2.5 text-base tnum">
               <div className="flex justify-between">
                 <dt className="text-ink/60">15 &times; {money(example.unit)}</dt>
                 <dd>{money(example.subtotal)}</dd>
@@ -125,12 +125,12 @@ export default async function Pricing() {
                 <dt>Delivery</dt>
                 <dd>{example.delivery === 0 ? "Free" : money(example.delivery)}</dd>
               </div>
-              <div className="flex justify-between border-t border-ink/15 pt-3 text-[1.25rem] font-semibold">
+              <div className="flex justify-between border-t border-ink/15 pt-3 text-xl font-semibold">
                 <dt>Total</dt>
                 <dd>{money(example.total)}</dd>
               </div>
             </dl>
-            <p className="mt-3 text-[0.8125rem] text-ink/50 tnum">
+            <p className="mt-3 text-sm text-ink/50 tnum">
               {money(example.perMeal)} a meal, delivered.
             </p>
           </div>

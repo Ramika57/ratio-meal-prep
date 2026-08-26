@@ -71,7 +71,7 @@ export default function Builder({ meals }: { meals: Meal[] }) {
     <div className="flex min-h-[100svh] flex-col">
       <header className="sticky top-0 z-40 border-b border-bone/10 bg-ink/85 backdrop-blur-xl">
         <div className="shell flex h-16 items-center justify-between gap-6">
-          <Link href="/" className="text-[1.0625rem] font-semibold tracking-[-0.05em]">
+          <Link href="/" className="text-lg font-semibold tracking-[-0.05em]">
             RATIO
           </Link>
 
@@ -86,7 +86,7 @@ export default function Builder({ meals }: { meals: Meal[] }) {
                     onClick={() => (i <= state.step ? go(i) : undefined)}
                     disabled={i > state.step}
                     aria-current={active ? "step" : undefined}
-                    className={`h-8 rounded-full px-3.5 text-[0.8125rem] transition-colors duration-300 ${
+                    className={`h-8 rounded-full px-3.5 text-sm transition-colors duration-300 ${
                       active ? "bg-bone text-ink" : done ? "text-bone/70 hover:text-bone" : "text-mute"
                     }`}
                   >
@@ -98,7 +98,7 @@ export default function Builder({ meals }: { meals: Meal[] }) {
             })}
           </ol>
 
-          <Link href="/" className="text-[0.8125rem] text-bone/55 transition-colors hover:text-bone">
+          <Link href="/" className="text-sm text-bone/55 transition-colors hover:text-bone">
             Exit
           </Link>
         </div>
@@ -126,19 +126,19 @@ export default function Builder({ meals }: { meals: Meal[] }) {
             <div className="min-w-0">
               {state.step === 2 ? (
                 <>
-                  <p className="text-[1.0625rem] font-semibold tnum">
+                  <p className="text-lg font-semibold tnum">
                     {chosen} of {need} chosen
                   </p>
-                  <p className="truncate text-[0.75rem] text-mute tnum">
+                  <p className="truncate text-xs text-mute tnum">
                     {chosen > 0 ? `${money(price.total)} total, ${money(price.perMeal)} a meal` : "Pick your trays"}
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-[1.0625rem] font-semibold tnum">
+                  <p className="text-lg font-semibold tnum">
                     {num(state.dailyKcal)} kcal · {state.days} days
                   </p>
-                  <p className="truncate text-[0.75rem] text-mute tnum">
+                  <p className="truncate text-xs text-mute tnum">
                     {need} trays, about {money(estimate.total)}
                   </p>
                 </>
@@ -150,7 +150,7 @@ export default function Builder({ meals }: { meals: Meal[] }) {
                 <button
                   type="button"
                   onClick={() => go(state.step - 1)}
-                  className="h-12 rounded-full border border-bone/20 px-5 text-[0.9375rem] transition-colors hover:border-bone/45"
+                  className="h-12 rounded-full border border-bone/20 px-5 text-base transition-colors hover:border-bone/45"
                 >
                   Back
                 </button>
@@ -159,7 +159,7 @@ export default function Builder({ meals }: { meals: Meal[] }) {
                 type="button"
                 onClick={() => go(state.step + 1)}
                 disabled={!canContinue}
-                className="h-12 rounded-full bg-signal px-7 text-[0.9375rem] font-medium text-ink transition-[background-color,opacity] duration-300 hover:bg-[#dbff63] disabled:opacity-30"
+                className="h-12 rounded-full bg-signal px-7 text-base font-medium text-ink transition-[background-color,opacity] duration-300 hover:bg-[#dbff63] disabled:opacity-30"
               >
                 {state.step === 2 ? "Review" : "Continue"}
               </button>

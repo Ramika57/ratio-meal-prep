@@ -11,14 +11,14 @@ export default async function Compare() {
   if (!us || rows.length < 2) return null;
 
   return (
-    <section id="compare" className="scroll-mt-20 border-y border-bone/10 bg-ink">
-      <div className="shell py-24 md:py-36">
+    <section id="compare" className="scroll-mt-20 border-y border-bone/10 bg-espresso">
+      <div className="shell py-24 md:py-32">
         <div className="max-w-[54ch]">
-          <p className="eyebrow reveal text-mute">How we compare</p>
+          <p className="eyebrow reveal text-mute">06 · How we compare</p>
           <h2 className="reveal mt-5 text-display-m font-semibold">
             The number we beat them on, and the one we do not.
           </h2>
-          <p className="reveal mt-6 text-[1rem] leading-relaxed text-bone/60">
+          <p className="reveal mt-6 text-base leading-relaxed text-bone/60">
             Every figure below was read off each company&rsquo;s own live menu on the date shown. Where a company
             does not publish macros, it is not in the table.
           </p>
@@ -41,10 +41,10 @@ export default async function Compare() {
               {rows.map((r) => (
                 <tr key={r.name} className={r.us ? "bg-signal/[0.06]" : ""}>
                   <td className="py-4 pr-6">
-                    <span className={`text-[0.9375rem] ${r.us ? "font-semibold" : ""}`}>{r.name}</span>
-                    <span className="ml-2 text-[0.6875rem] text-mute tnum">n={r.sample}</span>
+                    <span className={`text-base ${r.us ? "font-semibold" : ""}`}>{r.name}</span>
+                    <span className="ml-2 text-2xs text-mute tnum">n={r.sample}</span>
                   </td>
-                  <td className={`py-4 pr-6 tnum ${r.us ? "text-[1.25rem] font-semibold text-signal" : "text-bone/80"}`}>
+                  <td className={`py-4 pr-6 tnum ${r.us ? "text-xl font-semibold text-signal" : "text-bone/80"}`}>
                     {r.carbs}g
                   </td>
                   <td className="py-4 pr-6 text-bone/80 tnum">{r.protein}g</td>
@@ -52,7 +52,7 @@ export default async function Compare() {
                   <td className="py-4 pr-6 text-bone/80 tnum">
                     {r.price ? (r.price.low === r.price.high ? `$${r.price.low.toFixed(2)}` : `$${r.price.low.toFixed(2)} to $${r.price.high.toFixed(2)}`) : "not published"}
                   </td>
-                  <td className="py-4 pr-6 text-[0.75rem] text-mute tnum">{r.accessed}</td>
+                  <td className="py-4 pr-6 text-xs text-mute tnum">{r.accessed}</td>
                 </tr>
               ))}
             </tbody>
@@ -62,14 +62,14 @@ export default async function Compare() {
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           <div className="reveal rounded-2xl border border-signal/30 bg-signal/[0.05] p-7">
             <p className="eyebrow text-signal">Where we win</p>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-bone/85 tnum">
+            <p className="mt-4 text-lg leading-relaxed text-bone/85 tnum">
               {carbReduction} percent less carbohydrate a meal than the lowest carbohydrate provider in the table,
               at the same protein. If you are holding carbs down, that is the whole difference.
             </p>
           </div>
           <div className="reveal rounded-2xl border border-bone/12 bg-ink-2/60 p-7" style={{ "--reveal-delay": "90ms" } as React.CSSProperties}>
             <p className="eyebrow text-mute">Where we do not</p>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-bone/85 tnum">
+            <p className="mt-4 text-lg leading-relaxed text-bone/85 tnum">
               Protein density is a tie. We run {us.density}g of protein per 100 kcal against {highestOtherDensity}g
               for the best of them, a difference of {Math.abs(densityGap)}g. Anyone telling you their meals are
               dramatically higher in protein is rounding in their own favour, and so would we be.
@@ -77,7 +77,7 @@ export default async function Compare() {
           </div>
         </div>
 
-        <p className="reveal mt-8 max-w-[76ch] text-[0.75rem] leading-relaxed text-mute">
+        <p className="reveal mt-8 max-w-[76ch] text-xs leading-relaxed text-mute">
           Competitor figures are averages of the meals each company featured on its own homepage on the date shown,
           which is a convenience sample and is likely to flatter them. RATIO figures are the average of the full
           published menu. Prices exclude delivery and any introductory discount.

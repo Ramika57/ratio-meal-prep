@@ -9,21 +9,28 @@
    --------------------------------------------------------------------------- */
 
 @theme {
-  --color-ink: #0e0e10;
-  --color-ink-2: #17171a;
-  --color-ink-3: #232328;
-  --color-ink-4: #3a3a42;
-  --color-bone: #f3f1ec;
-  --color-bone-2: #e8e5dd;
-  --color-bone-3: #d6d2c7;
-  --color-mute: #86868b;
-  --color-signal: #cdf546;
-  --color-signal-deep: #8fae1f;
+  /* ---------------------------------------------------------------------
+     Palette. Warm near black rather than neutral, because a food page lit
+     with neutral greys reads clinical. Two accents: signal lime for actions
+     and live figures, ember for heat and appetite.
+     --------------------------------------------------------------------- */
+  --color-ink: #121010;
+  --color-ink-2: #1B1817;
+  --color-ink-3: #262120;
+  --color-ink-4: #38312E;
+  --color-espresso: #241B16;
+  --color-bone: #F6F2E9;
+  --color-bone-2: #EAE4D6;
+  --color-bone-3: #D5CCB8;
+  --color-mute: #948C84;
+  --color-signal: #D8FA4E;
+  --color-signal-deep: #93B024;
+  --color-ember: #FF6B35;
 
-  /* Macro colours. Used in bars, rings and the tray render. */
-  --color-macro-protein: #cdf546;
-  --color-macro-carbs: #e9a03b;
-  --color-macro-fat: #e8735a;
+  /* Macro colours, warmed so they sit with the food rather than against it. */
+  --color-macro-protein: #D8FA4E;
+  --color-macro-carbs: #F0A93C;
+  --color-macro-fat: #F2704E;
 
   --font-sans:
     -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
@@ -31,12 +38,33 @@
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", "JetBrains Mono", Menlo, monospace;
 
-  /* Capped against viewport height as well as width, so a big headline still
-     leaves room for the product below it on a laptop screen. */
+  /* ---------------------------------------------------------------------
+     Type scale. Eight steps and nothing between them. The page previously
+     used fifteen distinct sizes including 13, 15, 17 and 20 pixels, which is
+     what made the layout read as uneven.
+     --------------------------------------------------------------------- */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+
   --text-display-xl: clamp(2.5rem, min(8.4vw, 11.5vh), 7.5rem);
   --text-display-l: clamp(2.25rem, 6vw, 4.75rem);
   --text-display-m: clamp(1.875rem, 4.2vw, 3.25rem);
   --text-display-s: clamp(1.5rem, 3vw, 2.25rem);
+
+  /* Radius scale. Was eight arbitrary values between 3px and 22px. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
@@ -235,4 +263,24 @@
 }
 .ratio-range:active::-webkit-slider-thumb {
   transform: scale(1.12);
+}
+
+/* Film grain. A flat dark page shows every banding artefact in a gradient and
+   reads as empty; a little noise gives the surface something to hold. Fixed and
+   pointer transparent so it never interferes with layout or input. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

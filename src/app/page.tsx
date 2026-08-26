@@ -8,6 +8,7 @@ import ProductShowcase from "@/components/landing/ProductShowcase";
 import MacroMath from "@/components/landing/MacroMath";
 import MenuPreview from "@/components/landing/MenuPreview";
 import Compare from "@/components/landing/Compare";
+import Ticker from "@/components/landing/Ticker";
 import Pricing from "@/components/landing/Pricing";
 import Faq from "@/components/landing/Faq";
 import CtaBand from "@/components/landing/CtaBand";
@@ -22,12 +23,14 @@ export default function Home() {
       <main id="main">
         <Hero />
         <ProofStrip />
+        <Ticker />
         <Problem />
         <HowItWorks />
         <ProductShowcase />
         <MacroMath />
         <MenuPreview />
         <Compare />
+        <Ticker />
         <Pricing />
         <Faq />
         <CtaBand />

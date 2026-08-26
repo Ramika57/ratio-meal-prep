@@ -22,7 +22,7 @@ export function TrayIso({
     if (!component) return null;
     return (
       <div
-        className="absolute rounded-[7px]"
+        className="absolute rounded-sm"
         style={{
           ...style,
           background: `
@@ -50,21 +50,21 @@ export function TrayIso({
       >
         {/* Cast shadow on the bench */}
         <div
-          className="absolute inset-[-6%] rounded-[22px] blur-xl"
+          className="absolute inset-[-6%] rounded-xl blur-xl"
           style={{ background: "rgba(0,0,0,0.55)", transform: "translateZ(-40px)" }}
           aria-hidden
         />
 
         {/* Tray underside, gives the walls visible thickness */}
         <div
-          className="absolute inset-0 rounded-[14px]"
+          className="absolute inset-0 rounded-lg"
           style={{ background: "#08080a", transform: "translateZ(-16px)" }}
           aria-hidden
         />
 
         {/* Tray body */}
         <div
-          className="absolute inset-0 rounded-[14px]"
+          className="absolute inset-0 rounded-lg"
           style={{
             background: "linear-gradient(148deg, #2a2a30 0%, #17171b 46%, #101013 100%)",
             boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.09)",
@@ -79,7 +79,7 @@ export function TrayIso({
 
         {/* Sealed film lid */}
         <div
-          className={`absolute inset-[-1.5%] rounded-[15px] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`absolute inset-[-1.5%] rounded-lg transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             lift ? "group-hover/tray:[transform:translateZ(62px)_rotate(-3deg)]" : ""
           }`}
           style={{
@@ -93,11 +93,11 @@ export function TrayIso({
         >
           {/* Printed macro label */}
           <div
-            className="absolute rounded-[3px]"
+            className="absolute rounded-[4px]"
             style={{ left: "7%", bottom: "8%", width: "34%", height: "13%", background: "#cdf546", opacity: 0.92 }}
           />
           <div
-            className="absolute rounded-[3px]"
+            className="absolute rounded-[4px]"
             style={{ left: "46%", bottom: "9%", width: "22%", height: "7%", background: "rgba(243,241,236,0.6)" }}
           />
         </div>

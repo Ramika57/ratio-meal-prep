@@ -121,7 +121,7 @@ export function StepReview({
       <div className="max-w-[52ch]">
         <p className="eyebrow text-mute">Step four</p>
         <h1 className="mt-4 text-display-m font-semibold">Check the numbers.</h1>
-        <p className="mt-5 text-[1rem] leading-relaxed text-bone/60">
+        <p className="mt-5 text-base leading-relaxed text-bone/60">
           No payment is taken. Reserving holds a place in the first cook for your postcode and sends you the
           full macro breakdown by email.
         </p>
@@ -131,7 +131,7 @@ export function StepReview({
         <div>
           <section className="rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
             <h2 className="eyebrow text-mute">The plan</h2>
-            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-[0.9375rem] tnum">
+            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-base tnum">
               <Item label="Goal" value={goalInfo(state.goal).label} />
               <Item label="Daily target" value={`${num(state.dailyKcal)} kcal`} />
               <Item label="Plan length" value={`${state.days} days`} />
@@ -143,11 +143,11 @@ export function StepReview({
             <div className="mt-7 border-t border-bone/12 pt-6">
               <div className="flex items-baseline justify-between">
                 <h3 className="eyebrow text-mute">Average tray</h3>
-                <p className="text-[0.75rem] text-mute tnum">
+                <p className="text-xs text-mute tnum">
                   target {target.kcal} kcal · {target.protein}g protein
                 </p>
               </div>
-              <p className="mt-3 text-[1.75rem] font-semibold tracking-[-0.045em] tnum">
+              <p className="mt-3 text-2xl font-semibold tracking-[-0.045em] tnum">
                 {avg.kcal} kcal · {avg.protein}g protein
               </p>
               <MacroBar macros={avg} className="mt-4" />
@@ -157,17 +157,17 @@ export function StepReview({
                 coverage share, so the shortfall shown here is the real one. */}
             <div className="mt-7 border-t border-bone/12 pt-6">
               <h3 className="eyebrow text-signal">Across a day, these trays give you</h3>
-              <p className="mt-3 text-[1.5rem] font-semibold tracking-[-0.04em] tnum">
+              <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] tnum">
                 {num(actual.covered.kcal)} kcal · {actual.covered.protein}g protein
               </p>
-              <p className="mt-3 text-[0.875rem] leading-relaxed text-bone/60 tnum">
+              <p className="mt-3 text-sm leading-relaxed text-bone/60 tnum">
                 Against your {num(state.dailyKcal)} kcal target that leaves{" "}
                 <strong className="font-semibold text-bone">{num(actual.remaining.kcal)} kcal</strong> and{" "}
                 <strong className="font-semibold text-bone">{actual.remaining.protein}g of protein</strong> for
                 breakfast, shakes and snacks.
               </p>
               {Math.abs(actual.trayDrift) >= 0.08 ? (
-                <p className="mt-3 text-[0.8125rem] leading-relaxed text-macro-carbs tnum">
+                <p className="mt-3 text-sm leading-relaxed text-macro-carbs tnum">
                   Your trays run {Math.abs(Math.round(actual.trayDrift * 100))} percent{" "}
                   {actual.trayDrift < 0 ? "under" : "over"} the per tray target. That is a real gap, not a rounding
                   error, and it is why the figure above is larger than the usual estimate.
@@ -182,7 +182,7 @@ export function StepReview({
               <button
                 type="button"
                 onClick={() => dispatch({ type: "step", step: 2 })}
-                className="text-[0.8125rem] text-bone/60 underline underline-offset-4 transition-colors hover:text-bone"
+                className="text-sm text-bone/60 underline underline-offset-4 transition-colors hover:text-bone"
               >
                 Change
               </button>
@@ -192,11 +192,11 @@ export function StepReview({
                 const m = scaleMeal(meal, state.portion);
                 return (
                   <li key={meal.id} className="flex items-baseline justify-between gap-4 py-3">
-                    <span className="flex-1 text-[0.9375rem]">
+                    <span className="flex-1 text-base">
                       <span className="text-mute tnum">{line.qty} &times; </span>
                       {meal.name}
                     </span>
-                    <span className="text-[0.8125rem] text-mute tnum">
+                    <span className="text-sm text-mute tnum">
                       {m.kcal} kcal · {m.protein}g
                     </span>
                   </li>
@@ -209,7 +209,7 @@ export function StepReview({
         <div className="lg:sticky lg:top-24 lg:self-start">
           <section className="rounded-2xl border border-bone/12 bg-ink-2/60 p-7">
             <h2 className="eyebrow text-mute">Price</h2>
-            <dl className="mt-5 space-y-2.5 text-[0.9375rem] tnum">
+            <dl className="mt-5 space-y-2.5 text-base tnum">
               <Line label={`${count} × ${money(price.unit)}`} value={money(price.subtotal)} />
               {price.rate > 0 ? (
                 <Line label={`Volume discount, ${Math.round(price.rate * 100)}%`} value={`−${money(price.discount)}`} muted />
@@ -219,14 +219,14 @@ export function StepReview({
                 value={price.delivery === 0 ? "Free" : money(price.delivery)}
                 muted
               />
-              <div className="flex justify-between border-t border-bone/15 pt-3 text-[1.5rem] font-semibold tracking-[-0.04em]">
+              <div className="flex justify-between border-t border-bone/15 pt-3 text-2xl font-semibold tracking-[-0.04em]">
                 <dt>Total</dt>
                 <dd>{money(price.total)}</dd>
               </div>
             </dl>
-            <p className="mt-2 text-[0.8125rem] text-mute tnum">{money(price.perMeal)} a meal, delivered.</p>
+            <p className="mt-2 text-sm text-mute tnum">{money(price.perMeal)} a meal, delivered.</p>
             {price.delivery > 0 ? (
-              <p className="mt-3 text-[0.75rem] text-mute tnum">
+              <p className="mt-3 text-xs text-mute tnum">
                 Delivery is {money(DELIVERY_FEE)} under {money(FREE_DELIVERY_OVER)}. You are{" "}
                 {money(FREE_DELIVERY_OVER - (price.subtotal - price.discount))} away from free delivery.
               </p>
@@ -271,7 +271,7 @@ export function StepReview({
             />
 
             {error ? (
-              <p role="alert" className="mt-4 rounded-lg border border-macro-fat/40 bg-macro-fat/10 px-4 py-3 text-[0.875rem]">
+              <p role="alert" className="mt-4 rounded-lg border border-macro-fat/40 bg-macro-fat/10 px-4 py-3 text-sm">
                 {error}
               </p>
             ) : null}
@@ -279,11 +279,11 @@ export function StepReview({
             <button
               type="submit"
               disabled={busy || count === 0}
-              className="mt-6 h-14 w-full rounded-full bg-signal text-[1.0625rem] font-medium text-ink transition-[background-color,opacity] duration-300 hover:bg-[#dbff63] disabled:opacity-35"
+              className="mt-6 h-14 w-full rounded-full bg-signal text-lg font-medium text-ink transition-[background-color,opacity] duration-300 hover:bg-[#dbff63] disabled:opacity-35"
             >
               {busy ? "Reserving..." : `Reserve ${count} meals`}
             </button>
-            <p className="mt-3 text-center text-[0.75rem] text-mute">
+            <p className="mt-3 text-center text-xs text-mute">
               No card required. Nothing is charged today.
             </p>
           </form>
@@ -296,7 +296,7 @@ export function StepReview({
 function Item({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[0.75rem] text-mute">{label}</dt>
+      <dt className="text-xs text-mute">{label}</dt>
       <dd className="mt-0.5 font-medium">{value}</dd>
     </div>
   );
@@ -333,9 +333,9 @@ function Field({
 } & Omit<React.ComponentProps<"input">, "id" | "value" | "onChange" | "type" | "required">) {
   return (
     <div className="mt-5">
-      <label htmlFor={id} className="flex items-baseline justify-between text-[0.8125rem] text-bone/70">
+      <label htmlFor={id} className="flex items-baseline justify-between text-sm text-bone/70">
         {label}
-        {optional ? <span className="text-[0.6875rem] text-mute">Optional</span> : null}
+        {optional ? <span className="text-2xs text-mute">Optional</span> : null}
       </label>
       <input
         id={id}
@@ -343,10 +343,10 @@ function Field({
         value={value}
         required={required}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-2 h-12 w-full rounded-xl border border-bone/15 bg-ink px-4 text-[0.9375rem] text-bone transition-colors placeholder:text-mute focus:border-bone/45"
+        className="mt-2 h-12 w-full rounded-xl border border-bone/15 bg-ink px-4 text-base text-bone transition-colors placeholder:text-mute focus:border-bone/45"
         {...rest}
       />
-      {hint ? <p className="mt-1.5 text-[0.75rem] leading-relaxed text-mute">{hint}</p> : null}
+      {hint ? <p className="mt-1.5 text-xs leading-relaxed text-mute">{hint}</p> : null}
     </div>
   );
 }

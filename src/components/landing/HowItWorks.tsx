@@ -22,9 +22,9 @@ const STEPS = [
 export default function HowItWorks() {
   return (
     <section id="how" className="scroll-mt-20 bg-ink">
-      <div className="shell py-24 md:py-36">
+      <div className="shell py-24 md:py-32">
         <div className="max-w-[52ch]">
-          <p className="eyebrow reveal text-mute">How it works</p>
+          <p className="eyebrow reveal text-mute">02 · How it works</p>
           <h2 className="reveal mt-5 text-display-m font-semibold">Three steps, and none of them involve a pan.</h2>
         </div>
 
@@ -36,8 +36,8 @@ export default function HowItWorks() {
               style={{ "--reveal-delay": `${i * 110}ms` } as React.CSSProperties}
             >
               <span className="eyebrow text-signal tnum">{s.n}</span>
-              <h3 className="mt-6 text-[1.5rem] font-semibold tracking-[-0.035em]">{s.title}</h3>
-              <p className="mt-4 text-[0.9375rem] leading-relaxed text-bone/60">{s.body}</p>
+              <h3 className="mt-6 text-2xl font-semibold tracking-[-0.035em]">{s.title}</h3>
+              <p className="mt-4 text-base leading-relaxed text-bone/60">{s.body}</p>
             </li>
           ))}
         </ol>

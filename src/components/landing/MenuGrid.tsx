@@ -31,7 +31,7 @@ export default function MenuGrid({ meals, limit = 8 }: { meals: Meal[]; limit?: 
               setFilter(f.key);
               track("menu_filter", { filter: f.key });
             }}
-            className={`h-11 rounded-full border px-5 text-[0.875rem] transition-colors duration-300 md:h-9 md:px-4 md:text-[0.8125rem] ${
+            className={`h-11 rounded-full border px-5 text-sm transition-colors duration-300 md:h-9 md:px-4 md:text-sm ${
               filter === f.key
                 ? "border-bone bg-bone text-ink"
                 : "border-bone/15 text-bone/65 hover:border-bone/40 hover:text-bone"
@@ -40,7 +40,7 @@ export default function MenuGrid({ meals, limit = 8 }: { meals: Meal[]; limit?: 
             {f.label}
           </button>
         ))}
-        <span className="ml-auto self-center text-[0.75rem] text-mute tnum">
+        <span className="ml-auto self-center text-xs text-mute tnum">
           {filtered.length} {filtered.length === 1 ? "meal" : "meals"}
         </span>
       </div>
@@ -58,7 +58,7 @@ export default function MenuGrid({ meals, limit = 8 }: { meals: Meal[]; limit?: 
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="inline-flex h-11 items-center rounded-full border border-bone/20 px-6 text-[0.9375rem] transition-colors hover:border-bone/50 hover:bg-bone/5"
+            className="inline-flex h-11 items-center rounded-full border border-bone/20 px-6 text-base transition-colors hover:border-bone/50 hover:bg-bone/5"
           >
             {expanded ? "Show fewer" : `Show all ${filtered.length}`}
           </button>

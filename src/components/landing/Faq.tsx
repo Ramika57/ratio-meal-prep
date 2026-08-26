@@ -28,24 +28,24 @@ const QA = [
 export default function Faq() {
   return (
     <section id="faq" className="scroll-mt-20 bg-ink">
-      <div className="shell py-24 md:py-36">
+      <div className="shell py-24 md:py-32">
         <div className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
           <div>
-            <p className="eyebrow reveal text-mute">Questions</p>
+            <p className="eyebrow reveal text-mute">08 · Questions</p>
             <h2 className="reveal mt-5 text-display-m font-semibold">The ones worth asking.</h2>
           </div>
 
           <div className="reveal divide-y divide-bone/10 border-y border-bone/10">
             {QA.map((item) => (
               <details key={item.q} className="group">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-[1.0625rem] font-medium tracking-[-0.025em] [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-lg font-medium tracking-[-0.025em] [&::-webkit-details-marker]:hidden">
                   {item.q}
                   <span className="relative mt-2 block size-3 shrink-0" aria-hidden>
                     <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-bone/60" />
                     <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-bone/60 transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-90 group-open:opacity-0" />
                   </span>
                 </summary>
-                <p className="-mt-1 max-w-[62ch] pb-5 pr-9 text-[0.9375rem] leading-relaxed text-bone/60">{item.a}</p>
+                <p className="-mt-1 max-w-[62ch] pb-5 pr-9 text-base leading-relaxed text-bone/60">{item.a}</p>
               </details>
             ))}
           </div>
