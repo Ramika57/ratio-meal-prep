@@ -1,0 +1,32 @@
+{
+  "readme": "Photography used in the artefact. Sourced from Unsplash under the Unsplash License, which permits commercial and non commercial use without permission. Attribution is not required by the licence but is recorded here because Stage 1 requires every asset to be traceable to a source and a date. Usernames are as shown on Unsplash; confirm display names before any public launch.",
+  "license": "Unsplash License, https://unsplash.com/license",
+  "accessed": "2026-08-26",
+  "photos": [
+    {
+      "file": "public/photos/tray-overhead.jpg",
+      "unsplashId": "photo-1666819691666-4be36926335e",
+      "url": "https://unsplash.com/photos/1666819691666-4be36926335e",
+      "photographer": "myerslk88",
+      "description": "Three black meal prep trays photographed overhead, compartmented",
+      "usedFor": "Landing page hero"
+    },
+    {
+      "file": "public/photos/tray-angle.jpg",
+      "unsplashId": "photo-1666819691716-827f78d892f3",
+      "url": "https://unsplash.com/photos/1666819691716-827f78d892f3",
+      "photographer": "myerslk88",
+      "description": "Black meal prep tray at three quarter angle, shallow depth of field",
+      "usedFor": "How it works"
+    },
+    {
+      "file": "public/photos/tray-salad.jpg",
+      "unsplashId": "photo-1667499745120-f9bcef8f584e",
+      "url": "https://unsplash.com/photos/1667499745120-f9bcef8f584e",
+      "photographer": "myerslk88",
+      "description": "Two black meal prep trays with egg, avocado, kale and bacon",
+      "usedFor": "Menu section"
+    }
+  ],
+  "note": "These are stock photographs standing in for RATIO's own food. Before any real launch they must be replaced with photographs of the actual product, because showing someone else's meal as your own is a misrepresentation regardless of the image licence."
+}

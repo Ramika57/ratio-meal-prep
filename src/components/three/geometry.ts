@@ -117,7 +117,7 @@ export function floretGeometry(radius: number, seed: number, baseHex = "#3E7A22"
 function buildFloret(radius: number, seed: number, baseHex: string) {
   const noise = new Noise3D(seed);
   const geo = new IcosahedronGeometry(radius, 4);
-  displace(geo, noise, { amp: radius * 0.36, freq: 8 / radius, octaves: 5 });
+  displace(geo, noise, { amp: radius * 0.2, freq: 3.6 / radius, octaves: 3 });
   // Flatten the underside so it sits on the tray instead of floating.
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
@@ -130,14 +130,14 @@ function buildFloret(radius: number, seed: number, baseHex: string) {
   // Broccoli runs from deep bottle green in the crown to olive where a bud
   // catches light, and slightly yellow underneath. One flat green is exactly
   // what made it read as foam.
-  const deep = new Color("#1F4A14");
+  const deep = new Color("#17380F");
   const base = new Color(baseHex);
-  const olive = new Color("#7FA23B");
-  const under = new Color("#8FA35C");
+  const olive = new Color("#5F8028");
+  const under = new Color("#6E7F42");
   vertexColors(geo, (x, y, z, nx, ny, nz, out) => {
     const m = noise.fractal((x * 11) / radius, (y * 11) / radius, (z * 11) / radius, 3) * 0.5 + 0.5;
     out.copy(deep).lerp(base, smoothstep(0.15, 0.85, m));
-    out.lerp(olive, smoothstep(0.58, 1, m) * 0.62);
+    out.lerp(olive, smoothstep(0.62, 1, m) * 0.45);
     if (ny < -0.25) out.lerp(under, Math.min(1, -ny) * 0.6);
     out.multiplyScalar(0.9 + m * 0.2);
   });
@@ -232,6 +232,10 @@ function buildSlice(width: number, length: number, thickness: number, seed: numb
       const stripe = noise.fractal(x * 12 + 9, y * 4, z * 4, 2);
       if (stripe > 0.14) out.lerp(char, Math.min(1, (stripe - 0.14) * 2.2) * edge);
     }
+    // Broad browning across the cut face. Without this the top of every slice
+    // is one flat tan and the fan reads as a loaf of bread.
+    const bake = noise.fractal(x * 3.2, y * 3.2, z * 3.2, 3) * 0.5 + 0.5;
+    out.lerp(golden, facing * smoothstep(0.45, 1, bake) * 0.55);
     // Fibres: fine streaks running across the cut face.
     const fibre = noise.at(x * 2.4, y * 3, z * 26) * 0.5 + 0.5;
     out.multiplyScalar(0.95 + facing * fibre * 0.09);

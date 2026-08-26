@@ -110,6 +110,21 @@ the price, so the instrumentation is ready; the experiment is not run.
 
 ---
 
+## Photography, and where the render still lives
+
+The hero is a photograph. The procedural three.js tray was there first and never stopped
+reading as plastic, because hand written geometry cannot beat a camera at the one job that
+section has. Every competitor in `data/research.json` uses photography for the same reason.
+
+The render survives in section 03, where the job is explaining how the tray is built and a
+schematic is the honest answer. It is lazy mounted, so it costs nothing until approached.
+
+Images are Unsplash, under a licence permitting commercial use. `data/photos.json` records the
+photo id, photographer, URL, licence and access date for every one, because Stage 1 requires
+assets to be traceable. **They are stand ins.** Before a real launch they have to be replaced
+with photographs of the actual product: showing someone else's meal as your own is a
+misrepresentation regardless of the image licence, and that note is in the data file too.
+
 ## Design system
 
 All visual decisions live in the `@theme` block of `src/app/globals.css` and nowhere else.

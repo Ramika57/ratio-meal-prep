@@ -46,16 +46,20 @@ const COMPARTMENTS: Compartment[] = [
 function ProteinSlices({ color, seed }: { color: string; seed: number }) {
   const slices = useMemo(() => {
     const rng = mulberry32(seed);
-    return Array.from({ length: 8 }, (_, i) => ({
+    // Geometry laid out to fit compartment 0 (1.16 x 1.30) with a 0.06 margin
+    // on every side. Six slices at a 0.138 step against a 0.29 width gives a
+    // fan 1.04 across with roughly half of each slice exposed, so the edges
+    // read individually instead of fusing into one loaf.
+    return Array.from({ length: 6 }, (_, i) => ({
       // Colour is baked into the geometry: pale cut face, seared rim, char,
       // and a seared band along the local -z edge. Keeping rotY small keeps
       // those bands aligned, so the fan carries one browned ridge.
-      geo: sliceGeometry(0.36 + rng() * 0.09, 0.9 + rng() * 0.2, 0.12, seed + i * 31, color),
-      x: -0.46 + i * 0.118 + (rng() - 0.5) * 0.015,
-      z: (rng() - 0.5) * 0.09,
-      y: 0.06 + i * 0.011,
-      rotY: (rng() - 0.5) * 0.16,
-      rotZ: 0.2 + rng() * 0.07,
+      geo: sliceGeometry(0.27 + rng() * 0.036, 0.86 + rng() * 0.16, 0.11, seed + i * 31, color),
+      x: -0.345 + i * 0.138 + (rng() - 0.5) * 0.012,
+      z: (rng() - 0.5) * 0.07,
+      y: 0.055 + i * 0.019,
+      rotY: (rng() - 0.5) * 0.14,
+      rotZ: 0.34 + rng() * 0.08,
       warmth: 0.94 + rng() * 0.1,
     }));
   }, [seed, color]);
@@ -104,15 +108,17 @@ function GrainBed({ color, seed, radius = 0.4 }: { color: string; seed: number; 
 function Greens({ color, seed }: { color: string; seed: number }) {
   const florets = useMemo(() => {
     const rng = mulberry32(seed);
-    return Array.from({ length: 14 }, (_, i) => {
+    return Array.from({ length: 17 }, (_, i) => {
       const a = rng() * Math.PI * 2;
-      const r = Math.sqrt(rng()) * 0.34;
-      const size = 0.115 + rng() * 0.06;
+      // Bounded to compartment 2 (1.10 x 0.58): 0.30 + 0.132 in x, and the
+      // z radius squashed to 0.42 so tall florets cannot cross the divider.
+      const r = Math.sqrt(rng()) * 0.3;
+      const size = 0.09 + rng() * 0.042;
       return {
         head: floretGeometry(size, seed + i * 17, color),
         stalk: stalkGeometry(size * 0.3, size * 0.85, seed + i * 23),
         x: Math.cos(a) * r,
-        z: Math.sin(a) * r * 0.6,
+        z: Math.sin(a) * r * 0.42,
         size,
         rot: rng() * Math.PI,
         lean: (rng() - 0.5) * 0.4,
@@ -165,9 +171,9 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
     const g = lidRef.current;
     if (!g) return;
     const v = lid ? lid() : 0;
-    g.position.y = RIM + 0.02 + v * 1.05;
-    g.rotation.z = -v * 0.3;
-    g.rotation.x = v * 0.09;
+    g.position.y = RIM + 0.02 + v * 0.52;
+    g.rotation.z = -v * 0.17;
+    g.rotation.x = v * 0.05;
   });
 
   return (
@@ -205,7 +211,7 @@ export function MealTray({ contents, lid }: { contents: TrayContents; lid?: () =
         <ProteinSlices color={contents.protein} seed={seed} />
         <Herbs seed={seed} spread={[0.9, 1.0]} surface="slices" />
       </group>
-      <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]} scale={[1.26, 1, 1.04]}>
+      <group position={[COMPARTMENTS[1].x, FLOOR, COMPARTMENTS[1].z]} scale={[1.2, 1, 1]}>
         <GrainBed color={contents.carb} seed={seed + 17} radius={0.42} />
         <Herbs seed={seed + 3} spread={[0.66, 0.44]} surface="mound" />
       </group>
