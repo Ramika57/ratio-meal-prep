@@ -31,7 +31,7 @@ export default async function Hero() {
         aria-hidden
       />
 
-      <div className="shell relative z-10 pt-24 text-center">
+      <div className="shell relative z-10 pt-20 text-center md:pt-24">
         <p className="eyebrow reveal text-signal/90">Melbourne · High protein · Low carb</p>
 
         <h1
@@ -42,7 +42,7 @@ export default async function Hero() {
         </h1>
 
         <p
-          className="reveal mx-auto mt-6 max-w-[54ch] text-lg leading-relaxed text-bone/65"
+          className="reveal mx-auto mt-5 max-w-[54ch] text-base leading-relaxed text-bone/65 md:mt-6 md:text-lg"
           style={{ "--reveal-delay": "170ms" } as React.CSSProperties}
         >
           Set a goal, set the calories you actually want to eat, and choose how many days.
@@ -50,7 +50,7 @@ export default async function Hero() {
         </p>
 
         <div
-          className="reveal mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          className="reveal mt-6 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3"
           style={{ "--reveal-delay": "250ms" } as React.CSSProperties}
         >
           <CtaLink href="/build" location="hero" label="build_your_plan" className="w-full sm:w-auto">
@@ -65,7 +65,7 @@ export default async function Hero() {
         </div>
 
         <p
-          className="reveal mt-5 text-sm text-mute tnum"
+          className="reveal mt-4 text-xs text-mute tnum md:mt-5 md:text-sm"
           style={{ "--reveal-delay": "320ms" } as React.CSSProperties}
         >
           {stats.count} meals · {stats.avgProtein}g protein and {stats.avgCarbs}g carbs on average · from $11.95 a meal
@@ -77,7 +77,7 @@ export default async function Hero() {
       {/* Positioned absolutely rather than chained through h-full: the parent
           is a flex item with no definite height, so a percentage height on a
           descendant resolves to zero and the photograph collapses. */}
-      <div className="relative mt-10 min-h-[30vh] flex-1">
+      <div className="relative mt-7 min-h-[26vh] flex-1 md:mt-10 md:min-h-[30vh]">
         <div
           className="reveal absolute inset-0 mx-auto w-full max-w-[84rem] px-5 md:px-10"
           style={{ "--reveal-delay": "380ms" } as React.CSSProperties}

@@ -172,7 +172,16 @@ All visual decisions live in the `@theme` block of `src/app/globals.css` and now
 ### Load performance
 
 The page serves fully rendered HTML in well under 100ms; what used to feel slow was client side
-work, and it is bounded now:
+work, and it is bounded now.
+
+**Mobile never downloads three.js.** The renderer plus its post processing stack is a 1.2MB
+chunk, and a phone has no business fetching it for a decorative tray. `ProductShowcase` imports
+it from inside a desktop branch rather than at module scope, so on a small screen the request is
+never made: the section shows a photograph instead. Measured on a 375px viewport, after
+scrolling all the way through the tray section: **0 canvases, 74KB of JavaScript, 87KB total
+page weight.** Desktop still mounts the render, a beat after it comes into view.
+
+The rest:
 
 - Only the hero canvas exists at page load. The scroll section's canvas mounts when the reader
   is a viewport away, and reuses every buffer through a module level cache, since both render
