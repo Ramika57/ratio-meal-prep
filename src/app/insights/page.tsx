@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { buildInsights } from "@/lib/insights";
+import { isAuthorised } from "@/lib/auth";
 import { money, num } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +12,25 @@ export const metadata: Metadata = {
 
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
-export default async function InsightsPage() {
+export default async function InsightsPage({ searchParams }: PageProps<"/insights">) {
+  const params = await searchParams;
+  const key = typeof params.key === "string" ? params.key : null;
+
+  // The reservations table lists postcodes and order values against names held
+  // in the same store, so this page is not public once the site is.
+  if (!isAuthorised(key)) {
+    return (
+      <main id="main" className="shell flex min-h-[70svh] flex-col justify-center py-24">
+        <p className="eyebrow text-mute">Internal</p>
+        <h1 className="mt-3 text-display-s font-semibold">Demand insights are private.</h1>
+        <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-bone/60">
+          This dashboard reads the reservation store, which holds the name, email and postcode of
+          everyone who has filled in the form. Append your access key to the URL to view it.
+        </p>
+      </main>
+    );
+  }
+
   const data = await buildInsights();
   const empty = data.counts.events === 0;
 

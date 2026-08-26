@@ -39,6 +39,33 @@ npm run preflight     # check the artefact against the Stage 1 pass criteria
 
 ---
 
+## Putting it on a public URL
+
+```bash
+npm run build && npm start -- -p 8110
+ngrok http 8110
+```
+
+**Set `RATIO_ADMIN_TOKEN` in `.env.local` before you do.** Three routes read back what customers
+submit, and the reservation store holds a name, an email and a postcode for every person who
+fills in the form:
+
+| Route | Public | Why |
+|---|---|---|
+| `GET /api/orders` | token required | returns every reservation, including names and emails |
+| `GET /api/events` | token required | behaviour data tied to identifiable sessions |
+| `/insights` | token required, `?key=...` | reservations table |
+| `GET /api/meals` | open | the menu, no personal data in it |
+| `POST /api/events`, `POST /api/orders` | open | the funnel and the form; they only write |
+
+The guard fails closed: with no token set in production those routes deny rather than allow, so
+a misconfigured deploy locks you out instead of exposing other people's details. In development
+with no token set they stay open for convenience.
+
+The free ngrok URL changes every restart, which matters for Stage 2: analytics accumulate
+against whatever URL people actually visited, so note the URL alongside the traffic you drive to
+it, or use a reserved domain so the link is stable.
+
 ## The file database
 
 There is no database server. Everything persists as JSON under `data/`.

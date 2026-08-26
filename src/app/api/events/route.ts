@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cleanProps, getEvents, isEventName, recordEvent, type Device } from "@/lib/analytics";
+import { deny, isAuthorised, tokenFromRequest } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,6 +27,10 @@ export async function POST(request: Request) {
   return new NextResponse(null, { status: 204 });
 }
 
-export async function GET() {
+// The event log is behaviour data about identifiable sessions, so reading it
+// back is guarded. Writing (POST above) stays open, or the funnel records
+// nothing.
+export async function GET(request: Request) {
+  if (!isAuthorised(tokenFromRequest(request))) return deny();
   return NextResponse.json(await getEvents());
 }
