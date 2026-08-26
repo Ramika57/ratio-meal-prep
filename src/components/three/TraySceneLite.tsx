@@ -4,6 +4,7 @@ import { useCallback, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
 import { ACESFilmicToneMapping, type Group } from "three";
+import { FitCamera } from "./FitCamera";
 import { MealTray, type TrayContents } from "./MealTray";
 
 /**
@@ -121,10 +122,12 @@ export default function TraySceneLite({
         toneMapping: ACESFilmicToneMapping,
         toneMappingExposure: 1.06,
       }}
-      /* Pulled back from the desktop framing so the tray sits inside a narrow
-         portrait canvas instead of running off both edges. */
-      camera={{ position: [0, 3.05, 5.0], fov: 30 }}
+      /* A starting point only: FitCamera solves the real distance from the
+         canvas aspect ratio, which is what actually keeps a wide tray inside a
+         narrow portrait screen. */
+      camera={{ position: [0, 3, 5], fov: 32 }}
     >
+      <FitCamera />
       <ambientLight intensity={0.3} />
       <directionalLight position={[1.5, 7, 2.4]} intensity={1.1} color="#fff4e2" />
       <StudioLite />

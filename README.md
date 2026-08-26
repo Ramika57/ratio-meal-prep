@@ -169,6 +169,19 @@ All visual decisions live in the `@theme` block of `src/app/globals.css` and now
   the display's native density and walks down under load; ambient occlusion runs at half
   resolution because it is low frequency and the difference is invisible.
 
+### Framing the render
+
+`FitCamera` solves the camera distance from the canvas aspect ratio instead of hardcoding a
+position. This matters more than it sounds: three.js `fov` is the **vertical** field of view, so
+on a tall narrow phone the horizontal field collapses with the aspect ratio. At 375x812 with
+fov 32 the horizontal angle is about 14 degrees, and the 2.55 unit wide tray needs to sit 13.5
+units away to fit inside it. A fixed camera at 5.9 units put roughly half the tray off both
+edges of the screen; desktop was cropping too, by 24 percent.
+
+Solved rather than tuned per breakpoint: take the subject's bounding radius, compute the
+distance at which it fits both the vertical and horizontal fields, use the larger. Correct at
+every aspect ratio, including mid rotation on an orientation change.
+
 ### Load performance
 
 The page serves fully rendered HTML in well under 100ms; what used to feel slow was client side

@@ -6,6 +6,7 @@ import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from "@r
 import { Bloom, EffectComposer, N8AO, ToneMapping, Vignette } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 import { ACESFilmicToneMapping, type Group } from "three";
+import { FitCamera } from "./FitCamera";
 import { MealTray, type TrayContents } from "./MealTray";
 
 /**
@@ -149,13 +150,14 @@ export default function TrayScene({
         toneMapping: ACESFilmicToneMapping,
         toneMappingExposure: 1.0,
       }}
-      camera={{ position: [0, 2.75, 3.85], fov: 30 }}
+      camera={{ position: [0, 3, 5], fov: 32 }}
     >
       <PerformanceMonitor
         onDecline={() => setDpr((d) => Math.max(1.25, d - 0.5))}
         onIncline={() => setDpr((d) => Math.min(2, d + 0.25))}
       />
 
+      <FitCamera />
       <ambientLight intensity={0.2} />
       <directionalLight position={[1.5, 7, 2.4]} intensity={0.85} color="#fff4e2" />
       <Studio />
