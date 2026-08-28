@@ -72,9 +72,25 @@ Live on Cloudflare Workers via the OpenNext adapter, which runs the real Next.js
 build: server rendering, API routes and all.
 
 ```bash
-npx opennextjs-cloudflare build
+npm run build:cf     # never `opennextjs-cloudflare build` directly
 npx wrangler deploy
 ```
+
+**Always build with `npm run build:cf`.** The adapter writes `.env.local` into
+`.open-next/cloudflare/next-env.mjs` so the Worker can read it at runtime, and that file ships
+with the deployment, publicly readable. Any secret present at build time is therefore published.
+This happened once: the admin token was served at a guessable URL and was live until caught.
+
+`scripts/build-cloudflare.mjs` withholds the secrets for the duration of the build, restores
+`.env.local` afterwards, then greps the output to prove none of them are in it, and exits
+non-zero if any are. Secrets are supplied at runtime instead:
+
+```bash
+echo "$TOKEN" | npx wrangler secret put RATIO_ADMIN_TOKEN                      # Worker
+echo "$TOKEN" | npx wrangler pages secret put RATIO_ADMIN_TOKEN --project-name=ratio-meals
+```
+
+`.open-next/`, `.wrangler/` and `out/` are gitignored. They must never be committed.
 
 Reservations and analytics live in **Cloudflare D1**, not the JSON files. A Worker has no
 writable filesystem, so `fs.writeFile` would not fail gracefully there, it would 500. The

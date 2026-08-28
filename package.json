@@ -10,7 +10,8 @@
     "preflight": "node scripts/preflight.mjs",
     "calculations": "node scripts/calculations.mjs --write",
     "seed": "node scripts/seed-meals.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:cf": "node scripts/build-cloudflare.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
