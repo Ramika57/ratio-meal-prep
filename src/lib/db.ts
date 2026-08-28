@@ -1,7 +1,7 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import mealsData from "../../data/meals.json";
 import type { Meal, Order, OrderInput } from "./types";
 import { perMealTarget, priceBreakdown, selectionAverage, selectionCount } from "./plan";
+import { getStore } from "./store";
 
 /**
  * The file database.
@@ -15,36 +15,11 @@ import { perMealTarget, priceBreakdown, selectionAverage, selectionCount } from 
  *   data/orders.json  append only, written by the checkout route
  */
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const MEALS_FILE = path.join(DATA_DIR, "meals.json");
-const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
-
-/** Serialises writes so two checkouts in the same second cannot clobber each other. */
-let writeQueue: Promise<unknown> = Promise.resolve();
-function serialise<T>(job: () => Promise<T>): Promise<T> {
-  const run = writeQueue.then(job, job);
-  writeQueue = run.catch(() => undefined);
-  return run;
-}
-
-async function readJson<T>(file: string, fallback: T): Promise<T> {
-  try {
-    const raw = await fs.readFile(file, "utf8");
-    return JSON.parse(raw) as T;
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return fallback;
-    throw err;
-  }
-}
-
-async function writeJson(file: string, value: unknown) {
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  // Write to a temp file then rename, so a crash mid write cannot leave a
-  // half written orders.json behind.
-  const tmp = `${file}.${process.pid}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(value, null, 2) + "\n", "utf8");
-  await fs.rename(tmp, file);
-}
+/**
+ * The menu is bundled at build time rather than read from disk: it only changes
+ * when the repository does, and a Worker has no filesystem to read it from.
+ */
+const MEALS = mealsData as Meal[];
 
 /** No I, O, 0 or 1, so a code read off a screen cannot be mistyped. */
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -62,7 +37,7 @@ function makeCode() {
 // ---------------------------------------------------------------------------
 
 export async function getMeals(): Promise<Meal[]> {
-  return readJson<Meal[]>(MEALS_FILE, []);
+  return MEALS;
 }
 
 export async function getMeal(id: string): Promise<Meal | undefined> {
@@ -71,13 +46,11 @@ export async function getMeal(id: string): Promise<Meal | undefined> {
 }
 
 export async function listOrders(): Promise<Order[]> {
-  const orders = await readJson<Order[]>(ORDERS_FILE, []);
-  return orders.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return (await getStore()).listOrders();
 }
 
 export async function getOrder(code: string): Promise<Order | undefined> {
-  const orders = await readJson<Order[]>(ORDERS_FILE, []);
-  return orders.find((o) => o.code.toLowerCase() === code.toLowerCase());
+  return (await getStore()).getOrder(code);
 }
 
 export async function createOrder(input: OrderInput): Promise<Order> {
@@ -85,31 +58,28 @@ export async function createOrder(input: OrderInput): Promise<Order> {
   const count = selectionCount(input.selection);
   const price = priceBreakdown(input.plan, count);
   const avg = selectionAverage(input.selection, meals, input.plan.portion);
+  const store = await getStore();
 
-  return serialise(async () => {
-    const orders = await readJson<Order[]>(ORDERS_FILE, []);
-    let code = makeCode();
-    while (orders.some((o) => o.code === code)) code = makeCode();
+  let code = makeCode();
+  while (await store.orderCodeExists(code)) code = makeCode();
 
-    const order: Order = {
-      ...input,
-      code,
-      createdAt: new Date().toISOString(),
-      totals: {
-        meals: count,
-        subtotal: price.subtotal,
-        discount: price.discount,
-        delivery: price.delivery,
-        total: price.total,
-        perMealKcal: avg.kcal,
-        perMealProtein: avg.protein,
-      },
-    };
+  const order: Order = {
+    ...input,
+    code,
+    createdAt: new Date().toISOString(),
+    totals: {
+      meals: count,
+      subtotal: price.subtotal,
+      discount: price.discount,
+      delivery: price.delivery,
+      total: price.total,
+      perMealKcal: avg.kcal,
+      perMealProtein: avg.protein,
+    },
+  };
 
-    orders.push(order);
-    await writeJson(ORDERS_FILE, orders);
-    return order;
-  });
+  await store.insertOrder(order);
+  return order;
 }
 
 /** Used by the checkout route to sanity check what the browser sent. */

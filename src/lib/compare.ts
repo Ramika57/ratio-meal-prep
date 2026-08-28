@@ -1,5 +1,4 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import researchData from "../../data/research.json";
 import { menuStats } from "./db";
 
 type SampledMeal = { kcal: number; protein: number; carbs: number };
@@ -22,10 +21,7 @@ type Competitor = {
  * workings cannot drift apart.
  */
 export async function comparisonRows() {
-  const raw = await fs
-    .readFile(path.join(process.cwd(), "data", "research.json"), "utf8")
-    .then((t) => JSON.parse(t) as { competitors: Competitor[] })
-    .catch(() => ({ competitors: [] as Competitor[] }));
+  const raw = researchData as unknown as { competitors: Competitor[] };
 
   const stats = await menuStats();
 

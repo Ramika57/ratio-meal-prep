@@ -1,5 +1,4 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import voiceData from "../../../data/voice.json";
 
 type Quote = {
   text: string;
@@ -14,13 +13,10 @@ type VoiceFile = {
   quotes: Quote[];
 };
 
+// Bundled rather than read at runtime: it only changes when the repo does, and
+// a Worker has no filesystem. The evidence gate below is unaffected.
 async function readVoice(): Promise<VoiceFile> {
-  try {
-    const raw = await fs.readFile(path.join(process.cwd(), "data", "voice.json"), "utf8");
-    return JSON.parse(raw) as VoiceFile;
-  } catch {
-    return { status: "placeholder", quotes: [] };
-  }
+  return voiceData as VoiceFile;
 }
 
 /**

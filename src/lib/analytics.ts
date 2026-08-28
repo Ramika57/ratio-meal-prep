@@ -1,5 +1,4 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { getStore } from "./store";
 
 /**
  * First party analytics.
@@ -12,12 +11,6 @@ import path from "node:path";
  * random string held in sessionStorage and forgotten when the tab closes, and
  * the only device signal stored is a coarse class derived from viewport width.
  */
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const EVENTS_FILE = path.join(DATA_DIR, "events.json");
-
-/** Ring buffer ceiling. Old events fall off the front rather than filling a disk. */
-const MAX_EVENTS = 50_000;
 
 export type Device = "mobile" | "tablet" | "desktop";
 
@@ -60,24 +53,8 @@ export const EVENT_NAMES = [
 
 export type EventName = (typeof EVENT_NAMES)[number];
 
-let queue: Promise<unknown> = Promise.resolve();
-function serialise<T>(job: () => Promise<T>): Promise<T> {
-  const run = queue.then(job, job);
-  queue = run.catch(() => undefined);
-  return run;
-}
-
-async function readEvents(): Promise<TrackedEvent[]> {
-  try {
-    return JSON.parse(await fs.readFile(EVENTS_FILE, "utf8")) as TrackedEvent[];
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    throw err;
-  }
-}
-
 export async function getEvents(): Promise<TrackedEvent[]> {
-  return readEvents();
+  return (await getStore()).listEvents();
 }
 
 export async function recordEvent(input: EventInput): Promise<TrackedEvent> {
@@ -86,17 +63,8 @@ export async function recordEvent(input: EventInput): Promise<TrackedEvent> {
     id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
     ts: new Date().toISOString(),
   };
-
-  return serialise(async () => {
-    const events = await readEvents();
-    events.push(event);
-    const trimmed = events.length > MAX_EVENTS ? events.slice(events.length - MAX_EVENTS) : events;
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    const tmp = `${EVENTS_FILE}.${process.pid}.tmp`;
-    await fs.writeFile(tmp, JSON.stringify(trimmed, null, 2) + "\n", "utf8");
-    await fs.rename(tmp, EVENTS_FILE);
-    return event;
-  });
+  await (await getStore()).insertEvent(event);
+  return event;
 }
 
 export function isEventName(value: unknown): value is EventName {

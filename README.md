@@ -66,6 +66,30 @@ The free ngrok URL changes every restart, which matters for Stage 2: analytics a
 against whatever URL people actually visited, so note the URL alongside the traffic you drive to
 it, or use a reserved domain so the link is stable.
 
+## Deployment
+
+Live on Cloudflare Workers via the OpenNext adapter, which runs the real Next.js
+build: server rendering, API routes and all.
+
+```bash
+npx opennextjs-cloudflare build
+npx wrangler deploy
+```
+
+Reservations and analytics live in **Cloudflare D1**, not the JSON files. A Worker has no
+writable filesystem, so `fs.writeFile` would not fail gracefully there, it would 500. The
+storage interface in `src/lib/store.ts` picks its backend at request time: D1 when the binding
+is present, `data/*.json` when it is not, so `npm run dev` still works with no Cloudflare
+account involved.
+
+Static data (the menu, the research evidence, the quotes file) is bundled at build time rather
+than read from disk. It only changes when the repository changes, so there is nothing to gain
+from a runtime read and nowhere to read it from on Workers.
+
+A static export also exists for GitHub Pages (`scripts/prepare-static.mjs` plus
+`STATIC_EXPORT=1`), but it cannot run the API routes, so the reservation form disables itself
+there rather than posting into a 404.
+
 ## The file database
 
 There is no database server. Everything persists as JSON under `data/`.

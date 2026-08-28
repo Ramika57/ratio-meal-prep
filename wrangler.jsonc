@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ratio-meals",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  // nodejs_compat is required by the OpenNext adapter for Next's server runtime.
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      // Replaces data/orders.json and data/events.json: a Worker has no
+      // writable filesystem, so reservations and analytics live here.
+      "binding": "DB",
+      "database_name": "ratio-meals-db",
+      "database_id": "20b884ca-198c-4537-85f7-de185e28917e"
+    }
+  ]
+}
