@@ -45,3 +45,10 @@ next-env.d.ts
 # end up in version control.
 /data/events.json
 /data/orders.json
+
+# Build output for the Cloudflare adapter. Never commit: the adapter bakes
+# environment variables into cloudflare/next-env.mjs, so committing it publishes
+# whatever was in .env.local at build time.
+/.open-next/
+/.wrangler/
+/out/
