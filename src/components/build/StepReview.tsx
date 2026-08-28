@@ -46,6 +46,12 @@ export function StepReview({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Empty on a full deployment, which keeps the same origin request. On a
+  // static host it points at wherever the API actually lives; if nothing is
+  // configured the form says so rather than failing silently.
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
+  const canReserve = apiBase !== "" || process.env.NEXT_PUBLIC_STATIC_BUILD !== "1";
+
   // The price the customer actually saw, recorded once. This is the figure a
   // willingness to pay reading has to be anchored on.
   useEffect(() => {
@@ -78,7 +84,7 @@ export function StepReview({
     setError(null);
 
     try {
-      const response = await fetch("/api/orders", {
+      const response = await fetch(`${apiBase}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -278,14 +284,21 @@ export function StepReview({
 
             <button
               type="submit"
-              disabled={busy || count === 0}
+              disabled={busy || count === 0 || !canReserve}
               className="mt-6 h-14 w-full rounded-full bg-signal text-lg font-medium text-ink transition-[background-color,opacity] duration-300 hover:bg-[#dbff63] disabled:opacity-35"
             >
-              {busy ? "Reserving..." : `Reserve ${count} meals`}
+              {busy ? "Reserving..." : canReserve ? `Reserve ${count} meals` : "Reservations open soon"}
             </button>
-            <p className="mt-3 text-center text-xs text-mute">
-              No card required. Nothing is charged today.
-            </p>
+            {canReserve ? (
+              <p className="mt-3 text-center text-xs text-mute">
+                No card required. Nothing is charged today.
+              </p>
+            ) : (
+              <p className="mt-3 text-center text-xs leading-relaxed text-mute">
+                This build is hosted without a backend, so nothing can be recorded yet. Your plan
+                above is still fully costed and correct.
+              </p>
+            )}
           </form>
         </div>
       </div>

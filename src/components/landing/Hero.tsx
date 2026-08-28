@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { menuStats } from "@/lib/db";
 import { CtaLink } from "@/components/ui/CtaLink";
@@ -84,7 +85,7 @@ export default async function Hero() {
         >
           <div className="relative h-full overflow-hidden rounded-t-3xl ring-1 ring-bone/12">
             <Image
-              src="/photos/tray-overhead.jpg"
+              src={asset("/photos/tray-overhead.jpg")}
               alt="Three black meal prep trays photographed from above, each divided into compartments of protein, grains and greens"
               fill
               priority
