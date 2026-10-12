@@ -1,0 +1,11 @@
+{
+  "source": "ECX2320 Stage 2 competitor census, copied from the venture-wireframe repo's src/venture/census.json (brands array). Each band was read from the company's own site.",
+  "accessed": "2026-09-09",
+  "note": "Single-meal prices in AUD. Muscle Meals Direct's low is its weekly subscription price (its single price is 15.95). Youfoodz shows prices only after a postcode is entered, was priced at 3000, and charges 9.99 shipping per box on top. The overall range therefore runs from Youfoodz's low to Dineamic's high.",
+  "brands": [
+    { "name": "My Muscle Chef", "low": 10.95, "high": 13.95 },
+    { "name": "Dineamic", "low": 11.95, "high": 16.95 },
+    { "name": "Muscle Meals Direct", "low": 14.36, "high": 15.95 },
+    { "name": "Youfoodz", "low": 10.79, "high": 11.99 }
+  ]
+}

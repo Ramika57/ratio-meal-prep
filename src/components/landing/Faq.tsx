@@ -1,15 +1,17 @@
+import { goalInfo, num } from "@/lib/plan";
+
 const QA = [
   {
-    q: "How are the macros actually calculated?",
+    q: "I am new to this. Where do I start?",
+    a: `Start in the builder and pick Maintain. It begins at ${num(goalInfo("maintain").suggested)} calories a day, which you can move up or down, and it suggests a tray size to match. You see the cost and what you still need to eat yourself before you reserve anything, and no payment is taken.`,
+  },
+  {
+    q: "How do you work out the numbers on the lid?",
     a: "Each meal is built to a recipe with weighed ingredients, and the macro figures come from those weights. Calories are then derived as protein times four, plus carbohydrate times four, plus fat times nine. We publish the derived figure rather than a rounder marketing number, which is why the totals look specific.",
   },
   {
     q: "Why does the plan only cover part of my day?",
     a: "Because a tray that carried a third of a 3,000 calorie day would not fit in a fridge. Two meals a day covers roughly 55 percent of your intake and three covers roughly 75 percent. The builder shows you the exact gap left over so you can fill it with breakfast, a shake or whatever you already eat.",
-  },
-  {
-    q: "Is low carb the right call if I train hard?",
-    a: "Not always. Low carb suits a cut and most maintenance weeks. If you are training twice a day or building, choose Build: that setting moves carbohydrate up to 35 percent of your energy and pulls fat back, and the builder will steer you toward the higher carbohydrate meals on the menu.",
   },
   {
     q: "How long do the meals keep?",
@@ -22,6 +24,10 @@ const QA = [
   {
     q: "Is this a subscription?",
     a: "No. You order a block of days and that is the whole commitment. There is no card kept on file, no rolling charge and no cancellation to remember.",
+  },
+  {
+    q: "I train a lot. Is low carb still right for me?",
+    a: "Not always. Low carb suits a cut and most maintenance weeks. If you are training twice a day or building, choose Build: that setting moves carbohydrate up to 35 percent of your energy and pulls fat back, and the builder will steer you toward the higher carbohydrate meals on the menu.",
   },
 ];
 

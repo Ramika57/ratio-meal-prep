@@ -1,19 +1,25 @@
 import { menuStats } from "@/lib/db";
-import { comparisonRows } from "@/lib/compare";
+import { PORTIONS } from "@/lib/plan";
 import { CountUp } from "@/components/ui/CountUp";
 
 /**
  * Four figures, every one of them derived. The menu numbers come from
- * data/meals.json and the comparison comes from data/research.json, so no claim
- * on this strip can outlive the evidence behind it.
+ * data/meals.json and the prices from src/lib/plan.ts, so no claim on this
+ * strip can outlive the data behind it.
  */
 export default async function ProofStrip() {
-  const [s, compare] = await Promise.all([menuStats(), comparisonRows()]);
+  const s = await menuStats();
+
+  // Cents a gram of protein, from the rounded protein each size shows on the pricing cards.
+  const first = PORTIONS[0];
+  const last = PORTIONS[PORTIONS.length - 1];
+  const centsFirst = Math.round((first.price / Math.round(s.avgProtein * first.multiplier)) * 100);
+  const centsLast = Math.round((last.price / Math.round(s.avgProtein * last.multiplier)) * 100);
 
   const figures = [
     { value: s.avgProtein, unit: "g", label: "Protein a meal", note: `averaged across all ${s.count} meals`, accent: true },
     { value: s.avgCarbs, unit: "g", label: "Carbs a meal", note: `${s.lowCarbCount} of ${s.count} sit under 20g`, accent: false },
-    { value: compare.carbReduction, unit: "%", label: "Less carbohydrate", note: "than the lowest carb rival we could price", accent: false },
+    { value: centsLast, unit: "c", label: `A gram of protein in ${last.label}`, note: `${centsFirst}c in ${first.label}: the bigger the tray, the better the value`, accent: false },
     { value: 4, unit: "min", label: "Microwave to plate", note: "cooked, chilled, never frozen", accent: false },
   ];
 

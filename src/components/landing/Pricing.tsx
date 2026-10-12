@@ -1,6 +1,15 @@
 import { CtaLink } from "@/components/ui/CtaLink";
 import { menuStats } from "@/lib/db";
 import { DELIVERY_FEE, FREE_DELIVERY_OVER, PORTIONS, VOLUME_TIERS, money, priceBreakdown } from "@/lib/plan";
+import market from "../../../data/market-prices.json";
+
+/** Cents a gram of protein, from the same rounded protein figure the card shows, so a reader can check the division. */
+const centsPerGram = (price: number, protein: number) => Math.round((price / protein) * 100);
+
+const joinWords = (xs: string[]) =>
+  xs.length <= 1 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+const sits = (n: number) => (n === 1 ? "sits" : "sit");
+const COUNT_WORDS = ["no", "one", "two", "three", "four", "five", "six"];
 
 const PORTION_NOTE: Record<string, string> = {
   regular: "Suits roughly a 1,500 to 1,900 calorie day",
@@ -19,6 +28,23 @@ export default async function Pricing() {
     15,
   );
 
+  // Where our four sizes fall against the single-meal prices the group recorded in Stage 2.
+  const low = Math.min(...market.brands.map((b) => b.low));
+  const high = Math.max(...market.brands.map((b) => b.high));
+  const inside = PORTIONS.filter((p) => p.price >= low && p.price <= high).map((p) => p.label);
+  const above = PORTIONS.filter((p) => p.price > high).map((p) => p.label);
+  const below = PORTIONS.filter((p) => p.price < low).map((p) => p.label);
+  const accessed = new Date(market.accessed).toLocaleDateString("en-AU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+  const first = PORTIONS[0];
+  const last = PORTIONS[PORTIONS.length - 1];
+  const centsFirst = centsPerGram(first.price, Math.round(stats.avgProtein * first.multiplier));
+  const centsLast = centsPerGram(last.price, Math.round(stats.avgProtein * last.multiplier));
+
   return (
     <section id="pricing" className="scroll-mt-20 bg-bone text-ink">
       <div className="shell py-24 md:py-32">
@@ -28,6 +54,10 @@ export default async function Pricing() {
           <p className="reveal mt-6 text-base leading-relaxed text-ink/65">
             No subscription, no lock in, no minimum term. Order three days or fourteen. The only thing that
             moves the price is how much food is in the tray and how many trays you order.
+          </p>
+          <p className="reveal mt-4 text-base leading-relaxed text-ink/65">
+            The bigger the tray, the better the value: protein costs about {centsFirst} cents a gram in{" "}
+            {first.label} and about {centsLast} cents in {last.label}.
           </p>
         </div>
 
@@ -46,7 +76,7 @@ export default async function Pricing() {
                 <div className="flex items-baseline justify-between">
                   <h3 className="text-lg font-semibold tracking-[-0.035em]">{p.label}</h3>
                   {p.key === "large" ? (
-                    <span className="eyebrow rounded-full bg-signal px-2.5 py-1 text-ink">Most ordered</span>
+                    <span className="eyebrow rounded-full bg-signal px-2.5 py-1 text-ink">A good place to start</span>
                   ) : null}
                 </div>
 
@@ -76,10 +106,27 @@ export default async function Pricing() {
                     <dt className={p.key === "large" ? "text-bone/55" : "text-ink/55"}>Typical protein</dt>
                     <dd className="font-medium">{protein}g</dd>
                   </div>
+                  <div className="flex justify-between">
+                    <dt className={p.key === "large" ? "text-bone/55" : "text-ink/55"}>Protein costs</dt>
+                    <dd className="font-medium">{centsPerGram(p.price, protein)}c a gram</dd>
+                  </div>
                 </dl>
               </div>
             );
           })}
+        </div>
+
+        <div className="reveal mt-4 rounded-2xl border border-ink/15 bg-white p-8">
+          <h3 className="eyebrow text-ink/45">Where this sits</h3>
+          <p className="mt-5 max-w-[72ch] text-base leading-relaxed text-ink/65">
+            We priced {COUNT_WORDS[market.brands.length] ?? market.brands.length} other brands on their own sites on {accessed}:{" "}
+            {joinWords(market.brands.map((b) => b.name))}. Their single meals run from {money(low)} to {money(high)}.{" "}
+            {inside.length ? `${joinWords(inside)} ${sits(inside.length)} inside that range. ` : ""}
+            {above.length
+              ? `${joinWords(above)} ${sits(above.length)} above it, which only works if the bigger tray is real value for the customer, so it is the pricing we most need to test. `
+              : ""}
+            {below.length ? `${joinWords(below)} ${sits(below.length)} below it.` : ""}
+          </p>
         </div>
 
         {/* Volume and delivery, stated plainly rather than buried in a footnote. */}
@@ -103,7 +150,8 @@ export default async function Pricing() {
               </tbody>
             </table>
             <p className="mt-5 text-sm leading-relaxed text-ink/55">
-              Delivery is {money(DELIVERY_FEE)} across Melbourne metro, free over {money(FREE_DELIVERY_OVER)}.
+              Delivery is a flat {money(DELIVERY_FEE)} across Melbourne metro and free over{" "}
+              {money(FREE_DELIVERY_OVER)}, so a bigger week costs less per meal.
             </p>
           </div>
 

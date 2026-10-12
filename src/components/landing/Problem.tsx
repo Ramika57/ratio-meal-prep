@@ -105,14 +105,22 @@ function Heading({ centered = false }: { centered?: boolean }) {
     <>
       <p className="eyebrow reveal text-ink/45">01 · The problem</p>
       <h2 className={`reveal mt-5 text-display-m font-semibold ${centered ? "" : "max-w-[14ch]"}`}>
-        Nobody quits because the training got hard.
+        Eating well falls apart on a busy Wednesday.
       </h2>
       <p
         className={`reveal mt-6 text-base leading-relaxed text-ink/65 ${centered ? "" : "max-w-[40ch]"}`}
         style={{ "--reveal-delay": "80ms" } as React.CSSProperties}
       >
-        They quit because Sunday costs four hours, the containers do not fit in the fridge, and by Wednesday it is a
-        chicken wrap from the food court and a promise to start again Monday.
+        Planning the meals, shopping for ingredients, cooking, cleaning up. For someone just starting out, that is
+        exactly where good intentions give way. The Sunday night promise to meal prep rarely survives the week.
+      </p>
+      <p
+        className={`reveal mt-4 text-base leading-relaxed text-ink/65 ${centered ? "" : "max-w-[40ch]"}`}
+        style={{ "--reveal-delay": "140ms" } as React.CSSProperties}
+      >
+        Most meal brands talk to the committed gym-goer, with heavy macro talk and intense branding. If you are a
+        beginner, that can feel intimidating. So we are not talking to the bodybuilder. We are talking to the person
+        who wants to eat better without it taking over their week.
       </p>
     </>
   );

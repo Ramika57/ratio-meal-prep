@@ -1,7 +1,8 @@
 # RATIO
 
-High protein, low carb meal prep for people who train, portioned to a calorie target the
-customer sets. Built as the customer facing artefact for **ECX2320 Venture Sprint, Stage 1**.
+Premade, macro-balanced meals for people just starting out, in four tray sizes. Built as the customer
+facing artefact for **ECX2320 Venture Sprint, Stage 1**. The `pitch-alignment` branch carries the wording of
+the group presentation script (see `docs/pitch-alignment.md`).
 
 Melbourne. Prototype. No payment is processed and no meals are cooked.
 

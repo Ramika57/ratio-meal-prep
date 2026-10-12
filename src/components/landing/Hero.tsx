@@ -2,6 +2,7 @@ import Image from "next/image";
 import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { menuStats } from "@/lib/db";
+import { PORTIONS, money } from "@/lib/plan";
 import { CtaLink } from "@/components/ui/CtaLink";
 
 /**
@@ -33,21 +34,22 @@ export default async function Hero() {
       />
 
       <div className="shell relative z-10 pt-20 text-center md:pt-24">
-        <p className="eyebrow reveal text-signal/90">Melbourne · High protein · Low carb</p>
+        <p className="eyebrow reveal text-signal/90">Melbourne · Ready to eat · Made for beginners</p>
 
         <h1
           className="reveal mx-auto mt-5 max-w-[16ch] text-display-xl font-semibold"
           style={{ "--reveal-delay": "90ms" } as React.CSSProperties}
         >
-          Hit your macros without cooking.
+          Eating well, made easy.
         </h1>
 
         <p
           className="reveal mx-auto mt-5 max-w-[54ch] text-base leading-relaxed text-bone/65 md:mt-6 md:text-lg"
           style={{ "--reveal-delay": "170ms" } as React.CSSProperties}
         >
-          Set a goal, set the calories you actually want to eat, and choose how many days.
-          We cook to that number, print the macros on the lid, and deliver it chilled.
+          Premade, macro-balanced meals, delivered chilled and ready to eat. Built for people just starting out:
+          pick the size that matches how much you eat in a day, and we take care of the planning, the shopping
+          and the cooking.
         </p>
 
         <div
@@ -69,7 +71,7 @@ export default async function Hero() {
           className="reveal mt-4 text-xs text-mute tnum md:mt-5 md:text-sm"
           style={{ "--reveal-delay": "320ms" } as React.CSSProperties}
         >
-          {stats.count} meals · {stats.avgProtein}g protein and {stats.avgCarbs}g carbs on average · from $11.95 a meal
+          {stats.count} meals · {stats.avgProtein}g protein a meal on average · Regular from {money(PORTIONS[0].price)} a meal
         </p>
       </div>
 

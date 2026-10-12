@@ -1,21 +1,22 @@
+import { PORTIONS } from "@/lib/plan";
+
 const STEPS = [
   {
     n: "01",
-    title: "Set the target",
+    title: "Pick a goal and a number",
     body:
-      "Choose cut, maintain or build, then set the calories you want to eat in a day. Protein is held at 30 to 40 percent of your energy depending on the goal, and carbs stay low. The split is arithmetic, not a guess.",
+      "Choose Cut to lose fat, Maintain to hold steady or Build to add muscle, then set roughly how many calories you eat in a day. The builder starts at a suggested number for your goal and you can move it. Protein is held at 30 to 40 percent of your energy and carbs stay low.",
   },
   {
     n: "02",
-    title: "Choose the week",
-    body:
-      "Three to fourteen days, two or three meals a day. Portion size follows your number: Regular, Large or XL. Pick your meals, or let the builder fill the gaps with whatever gets the average closest to target.",
+    title: "Choose your week",
+    body: `Three to fourteen days, two or three meals a day. Your number suggests a tray size, from ${PORTIONS[0].label} to ${PORTIONS[PORTIONS.length - 1].label}. Choose your own meals, or let the builder fill the gaps.`,
   },
   {
     n: "03",
     title: "Cook nothing",
     body:
-      "Delivered chilled on Sunday, never frozen. Every lid prints the calories and the three macros. Four minutes in the microwave, and the rest of your day is yours to fill.",
+      "Delivered chilled on Sunday, never frozen. Every lid prints the calories, protein, carbs and fat. Four minutes in the microwave, and the rest of your day is yours.",
   },
 ];
 

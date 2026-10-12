@@ -8,8 +8,8 @@ export default function Footer() {
           <div>
             <div className="text-lg font-semibold tracking-[-0.05em]">RATIO</div>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-mute">
-              High protein, low carb meal prep, portioned to the number you set. Cooked in Melbourne,
-              delivered chilled.
+              Eating well, made easy. Premade, macro-balanced meals for people just starting out. Cooked in
+              Melbourne, delivered chilled.
             </p>
           </div>
 
@@ -23,9 +23,9 @@ export default function Footer() {
             ]}
           />
           <FooterCol
-            title="Nutrition"
+            title="The numbers"
             links={[
-              { href: "/#macros", label: "The macro math" },
+              { href: "/#macros", label: "How the numbers work" },
               { href: "/#faq", label: "Questions" },
             ]}
           />

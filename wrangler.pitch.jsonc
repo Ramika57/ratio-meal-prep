@@ -1,0 +1,20 @@
+{
+  // The group presentation build. A separate Worker and a separate D1 database, so the submitted Stage 1
+  // site (ratio-meals) and its analytics are untouched by anything done while presenting.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ratio-meals-pitch",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ratio-meals-pitch-db",
+      "database_id": "f5e09e29-63c4-4bcc-91bf-e595562151a0"
+    }
+  ]
+}

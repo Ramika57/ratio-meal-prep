@@ -9,10 +9,10 @@ export default function CtaBand() {
         aria-hidden
       />
       <div className="shell py-28 text-center md:py-40">
-        <h2 className="reveal mx-auto max-w-[15ch] text-display-l font-semibold">Set the number. We cook to it.</h2>
+        <h2 className="reveal mx-auto max-w-[15ch] text-display-l font-semibold">Eating well, made easy.</h2>
         <p className="reveal mx-auto mt-6 max-w-[42ch] text-lg leading-relaxed text-bone/60">
-          Two minutes in the builder gives you a costed week, the exact macros, and the gap you still need
-          to fill yourself.
+          Two minutes in the builder gives you a costed week, what is in every meal, and what is left for you to
+          eat yourself.
         </p>
         <div className="reveal mt-9">
           <CtaLink href="/build" location="cta_band" label="build_your_plan">

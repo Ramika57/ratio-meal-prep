@@ -4,13 +4,13 @@ import RevealRoot from "@/components/ui/RevealRoot";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RATIO | Hit your macros without cooking",
+  title: "RATIO | Eating well, made easy",
   description:
-    "High protein, low carb meal prep portioned to the calorie target you set. Choose your goal, your calories and your days. Cooked in Melbourne, delivered chilled.",
+    "Premade, macro-balanced meals for people just starting out. Pick the size that fits how much you eat in a day. Cooked in Melbourne, delivered chilled and ready to eat.",
   openGraph: {
-    title: "RATIO | Hit your macros without cooking",
+    title: "RATIO | Eating well, made easy",
     description:
-      "High protein, low carb meal prep portioned to the calorie target you set. Cooked in Melbourne, delivered chilled.",
+      "Premade, macro-balanced meals for people just starting out. Cooked in Melbourne, delivered chilled and ready to eat.",
     type: "website",
   },
 };

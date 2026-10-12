@@ -48,7 +48,7 @@ const pricing = src("src/components/landing/Pricing.tsx");
 const cta = src("src/components/ui/CtaLink.tsx");
 
 check(
-  /Hit your macros without cooking/.test(hero),
+  /Eating well, made easy/.test(hero),
   "Headline names the job to be done, not the technology",
   "src/components/landing/Hero.tsx should lead with the customer's job.",
 );

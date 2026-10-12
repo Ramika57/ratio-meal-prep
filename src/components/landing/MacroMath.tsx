@@ -44,7 +44,7 @@ export default function MacroMath() {
     <section id="macros" className="scroll-mt-20 border-y border-bone/10 bg-ink-2">
       <div className="shell py-24 md:py-32">
         <div className="max-w-[54ch]">
-          <p className="eyebrow reveal text-mute">04 · The macro math</p>
+          <p className="eyebrow reveal text-mute">04 · How the numbers work</p>
           <h2 className="reveal mt-5 text-display-m font-semibold">
             Here is the arithmetic. Check it before you trust it.
           </h2>
