@@ -17,27 +17,37 @@ two derived figures changed. The builder, prices, portions, delivery rule and ev
 | FAQ | Led with how macros are calculated | Leads with "I am new to this. Where do I start?" |
 | Tagline, metadata, footer, CTA | Macro and gym wording | "Eating well, made easy" |
 
-## What the script says that the repo cannot support
+## What the script says, checked against evidence (updated 2026-10-23)
 
-These were left off the site on purpose. Each needs a source before it is said or published.
+My first version of this section said the MACROS claims could not be supported. That was wrong for MACROS: I had relied on a search
+summary. On 23 October the company's own pages were read (Stage 4 round 2, `evidence/macros_*_2026-10-23.*` in the ECX2320 `stage4` folder).
 
-- **MACROS and Workout Meals.** Neither is in `data/research.json` or the Stage 2 census. The brands the group
-  priced are My Muscle Chef, Dineamic, Muscle Meals Direct and Youfoodz.
-- **"$10.50 to $17.70".** The Stage 2 bands run from $10.79 (Youfoodz) to $16.95 (Dineamic). With that range
-  Regular ($13.90) and Large ($16.40) sit inside it and XL ($19.40) and XXL ($22.90) sit above it, which is the
-  structure the script describes.
-- **"A flat $15 fee, waived above a minimum spend", for MACROS, My Muscle Chef and Workout Meals.** Not in any
-  group evidence. Stage 2 recorded the opposite for Youfoodz ($9.99 shipping at every box size, never waived) and
-  that My Muscle Chef waives shipping on subscription.
-- **"Eight-meal minimum".** The site has no such rule. Free delivery is $120 after discount: eight Large meals
-  ($131.20) clear it, eight Regular ($111.20) do not.
-- **"30.4% ... about 1,620,000".** 30.4% of Greater Melbourne's 5,435,590 is about 1,650,000. The survey behind
-  the percentage is not in the group's files.
+**Confirmed, and now on the site (the "Where this sits" line):**
+
+- **MACROS exists, serves Melbourne and publishes macros.** 120 products, 72 single meals that pass the Stage 2 rule, delivery to over 1,900
+  postcodes, a Melbourne page.
+- **"A flat $15 fee, waived above a minimum spend": true of MACROS.** Its Melbourne page says "Orders over $150 enjoy free shipping and orders
+  under $150 with a flat $15 delivery fee", and its cart enforces a $65 minimum order.
+- **"$10.50 to $17.70": the top end is MACROS's dearest single meal** (a 450g Japanese Miso Salmon at $17.70). The lowest single meal price
+  found anywhere is $10.79 (Youfoodz) and $10.95 (My Muscle Chef), so the script's "ten fifty" is about 30 cents under anything on a menu. With
+  the range $10.79 to $17.70, Regular ($13.90) and Large ($16.40) sit inside it and XL ($19.40) and XXL ($22.90) sit above it, as the script says.
+
+**Still not supported:**
+
+- **Workout Meals.** One search found nothing to read. It is in no group evidence.
+- **"My Muscle Chef ... use the same approach of a flat fee that disappears above a minimum spend."** Stage 2 recorded that My Muscle Chef waives
+  shipping on a subscription, not above a spend. Youfoodz charges $9.99 a box at every size and never waives it. So "competitors" in general is
+  too wide; MACROS is the one that does exactly this.
+- **"Eight-meal minimum".** No competitor's rule and not RATIO's: MACROS's minimum is $65 (about 5.6 of its cheapest meals), and RATIO's smallest
+  profitable order is 1 to 3 trays depending on the courier cost. Stage 4 found that RATIO's free-delivery line at $120 is the thing that bites:
+  an order that crosses it earns $2.68 to $5.65 less than one tray smaller.
+- **"30.4% ... about 1,620,000".** 30.4% of Greater Melbourne's 5,435,590 is about 1,650,000. The survey behind the percentage is not in the
+  group's files.
 
 ## Where it is deployed
 
 - **Presentation build:** https://ratio-meals-pitch.dry-star-c5f7.workers.dev (Worker `ratio-meals-pitch`, version
-  `de43d8c1`, 2026-10-12). Config: `wrangler.pitch.jsonc`. It has its own D1 database, `ratio-meals-pitch-db`, so
+  `cdc3252e`, redeployed 2026-10-23 with the MACROS band; first deployed 2026-10-12). Config: `wrangler.pitch.jsonc`. It has its own D1 database, `ratio-meals-pitch-db`, so
   clicking through it while presenting writes nothing to the Stage 1 analytics.
 - **Submitted Stage 1 site:** the `ratio-meals` Worker, version `2c8ad02f` (2026-08-30). Not touched, and the
   `main` branch is not touched, so the GitHub Pages site is unchanged.

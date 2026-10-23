@@ -1,11 +1,36 @@
 {
-  "source": "ECX2320 Stage 2 competitor census, copied from the venture-wireframe repo's src/venture/census.json (brands array). Each band was read from the company's own site.",
-  "accessed": "2026-09-09",
-  "note": "Single-meal prices in AUD. Muscle Meals Direct's low is its weekly subscription price (its single price is 15.95). Youfoodz shows prices only after a postcode is entered, was priced at 3000, and charges 9.99 shipping per box on top. The overall range therefore runs from Youfoodz's low to Dineamic's high.",
+  "source": "ECX2320 Stage 2 competitor census (copied from the venture-wireframe repo's src/venture/census.json, brands array) for the first four brands, read 2026-09-09; MACROS read from its own store on 2026-10-23 (Stage 4 round 2, evidence/macros_full_menu_2026-10-23.tsv in the ECX2320 stage4 folder). Each band was read from the company's own site.",
+  "note": "Single-meal prices in AUD. Muscle Meals Direct's low is its weekly subscription price (its single price is 15.95). Youfoodz shows prices only after a postcode is entered, was priced at 3000, and charges 9.99 shipping per box on top. MACROS sells most meals at 300g (11.70), 350g (12.20) and 450g (13.20), and its dearest single meal is a 450g salmon at 17.70. The overall range runs from Youfoodz's low to MACROS's high.",
   "brands": [
-    { "name": "My Muscle Chef", "low": 10.95, "high": 13.95 },
-    { "name": "Dineamic", "low": 11.95, "high": 16.95 },
-    { "name": "Muscle Meals Direct", "low": 14.36, "high": 15.95 },
-    { "name": "Youfoodz", "low": 10.79, "high": 11.99 }
+    {
+      "name": "My Muscle Chef",
+      "low": 10.95,
+      "high": 13.95,
+      "accessed": "2026-09-09"
+    },
+    {
+      "name": "Dineamic",
+      "low": 11.95,
+      "high": 16.95,
+      "accessed": "2026-09-09"
+    },
+    {
+      "name": "Muscle Meals Direct",
+      "low": 14.36,
+      "high": 15.95,
+      "accessed": "2026-09-09"
+    },
+    {
+      "name": "Youfoodz",
+      "low": 10.79,
+      "high": 11.99,
+      "accessed": "2026-09-09"
+    },
+    {
+      "name": "MACROS",
+      "low": 11.7,
+      "high": 17.7,
+      "accessed": "2026-10-23"
+    }
   ]
 }

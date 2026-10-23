@@ -34,12 +34,11 @@ export default async function Pricing() {
   const inside = PORTIONS.filter((p) => p.price >= low && p.price <= high).map((p) => p.label);
   const above = PORTIONS.filter((p) => p.price > high).map((p) => p.label);
   const below = PORTIONS.filter((p) => p.price < low).map((p) => p.label);
-  const accessed = new Date(market.accessed).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  const fmt = (iso: string) =>
+    new Date(iso).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const dates = market.brands.map((b) => b.accessed).sort();
+  const accessed =
+    dates[0] === dates[dates.length - 1] ? `on ${fmt(dates[0])}` : `between ${fmt(dates[0])} and ${fmt(dates[dates.length - 1])}`;
   const first = PORTIONS[0];
   const last = PORTIONS[PORTIONS.length - 1];
   const centsFirst = centsPerGram(first.price, Math.round(stats.avgProtein * first.multiplier));
@@ -119,7 +118,7 @@ export default async function Pricing() {
         <div className="reveal mt-4 rounded-2xl border border-ink/15 bg-white p-8">
           <h3 className="eyebrow text-ink/45">Where this sits</h3>
           <p className="mt-5 max-w-[72ch] text-base leading-relaxed text-ink/65">
-            We priced {COUNT_WORDS[market.brands.length] ?? market.brands.length} other brands on their own sites on {accessed}:{" "}
+            We priced {COUNT_WORDS[market.brands.length] ?? market.brands.length} other brands on their own sites {accessed}:{" "}
             {joinWords(market.brands.map((b) => b.name))}. Their single meals run from {money(low)} to {money(high)}.{" "}
             {inside.length ? `${joinWords(inside)} ${sits(inside.length)} inside that range. ` : ""}
             {above.length
