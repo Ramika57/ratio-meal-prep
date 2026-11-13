@@ -1,6 +1,6 @@
 # RATIO
 
-Premade, macro-balanced meals for people just starting out, in four tray sizes. Built as the customer
+Premade, macro-balanced meals for people just starting out, in three tray sizes. Built as the customer
 facing artefact for **ECX2320 Venture Sprint, Stage 1**. The `pitch-alignment` branch carries the wording of
 the group presentation script (see `docs/pitch-alignment.md`).
 
@@ -274,7 +274,7 @@ All of it lives in `src/lib/plan.ts`. Nothing is hardcoded in a component.
 - Energy split by goal: cut 40/18/42, maintain 35/22/43, build 30/35/35, as protein/carbs/fat.
 - Coverage: two meals a day covers 55 percent of intake, three covers 75 percent. The rest is
   the customer's own breakfast and snacks, and the builder shows the gap rather than hiding it.
-- Four tray sizes at 1.0, 1.28, 1.6 and 1.95 times the base recipe.
+- Three tray sizes at 1.0, 1.28 and 1.6 times the base recipe (Regular $13.90, Large $16.40, XL $19.40).
 
 ### One thing worth knowing before you demo it
 
@@ -288,6 +288,17 @@ remainder from the selected basket. Across all 36 combinations of goal, calorie 
 per day, 30 land within 10 percent of target. The six that do not are all at 3,500 kcal, where a
 single tray would have to carry 960 kcal, and the builder says so on screen instead of quietly
 missing.
+
+**Update, 13 November 2026: XXL was removed.** The group decided on three tray sizes, so the fourth size
+(1.95 times the base recipe, $22.90) is gone from the prices, the builder and the order check. XL is now the
+largest tray, and the cost is at the top of the calorie range. `node scripts/tray-sweep.mjs` runs a 36
+combination grid (3 goals, calorie targets of 1,500, 1,900, 2,300, 2,800, 3,200 and 3,500, 2 or 3 meals a day)
+on whatever sizes `src/lib/plan.ts` holds. With four sizes it put 27 of 36 within 10 percent of target, and
+16 of the 18 combinations that sit inside each goal's own calorie band. With three it puts 18 of 36 within 10
+percent, and 11 of those 18. Every new miss is a 2,800 kcal or higher target, where the average tray falls
+12 to 34 percent short of target. The 30 of 36 above comes from an earlier script that is not in the
+repository, so the two figures are not the same grid and should not be compared. The builder still shows the
+shortfall on screen.
 
 ---
 

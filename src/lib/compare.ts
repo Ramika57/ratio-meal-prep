@@ -1,5 +1,6 @@
 import researchData from "../../data/research.json";
 import { menuStats } from "./db";
+import { PORTIONS } from "./plan";
 
 type SampledMeal = { kcal: number; protein: number; carbs: number };
 
@@ -51,7 +52,7 @@ export async function comparisonRows() {
     url: "",
     accessed: new Date().toISOString().slice(0, 10),
     sample: stats.count,
-    price: { low: 13.9, high: 22.9 },
+    price: { low: PORTIONS[0].price, high: PORTIONS[PORTIONS.length - 1].price },
     protein: stats.avgProtein,
     carbs: stats.avgCarbs,
     kcal: stats.avgKcal,

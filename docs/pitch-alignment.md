@@ -17,6 +17,22 @@ two derived figures changed. The builder, prices, portions, delivery rule and ev
 | FAQ | Led with how macros are calculated | Leads with "I am new to this. Where do I start?" |
 | Tagline, metadata, footer, CTA | Macro and gym wording | "Eating well, made easy" |
 
+## XXL removed (2026-11-13)
+
+The group decided on three tray sizes: Regular $13.90, Large $16.40 and XL $19.40. XXL ($22.90, 1.95 times the base recipe) is gone. This
+supersedes the "four sizes Regular to XXL" and "27c XXL" rows above, which describe the build at the time.
+
+- **Code:** `PORTIONS`, the `PortionKey` type, the order check in `db.ts` (it now reads `PORTIONS`, so the next change cannot leave the two out of step),
+  the pricing note and grid (three columns), the ticker ("Three tray sizes"), the competitor table's RATIO price range (now read from `PORTIONS`)
+  and the analytics labels. The "from Regular to XL" step text, the cents a gram of protein and the proof strip already read the last entry of
+  `PORTIONS`, so they now say XL (28c a gram, against 32c for Regular).
+- **XL's note** now reads "Suits roughly a 2,400 to 3,500 calorie day", since it covers the days XXL used to.
+- **Cost:** on a 36 combination sweep (`node scripts/tray-sweep.mjs`), the recommended tray lands within 10 percent of target in 18 combinations, not
+  27, and in 11 of the 18 that sit inside each goal's own calorie band, not 16. The misses are all at 2,800 kcal or more.
+- **Orders already placed with XXL:** none. `ratio-meals-pitch-db` held 0 orders and 3 analytics events (none naming XXL) when this was read on 13 November 2026. A stored XXL order would have shown as Regular on its order page, because `portion()` falls back to the first size.
+- **Not changed:** `ecx2320-stage1.md`, `concept-checklist.md` and the history in `appendix-d-ai.md`, which describe the Stage 1 build as handed in, and the
+  submitted `ratio-meals` Worker and the GitHub Pages site.
+
 ## What the script says, checked against evidence (updated 2026-10-23)
 
 My first version of this section said the MACROS claims could not be supported. That was wrong for MACROS: I had relied on a search
@@ -30,7 +46,8 @@ summary. On 23 October the company's own pages were read (Stage 4 round 2, `evid
   under $150 with a flat $15 delivery fee", and its cart enforces a $65 minimum order.
 - **"$10.50 to $17.70": the top end is MACROS's dearest single meal** (a 450g Japanese Miso Salmon at $17.70). The lowest single meal price
   found anywhere is $10.79 (Youfoodz) and $10.95 (My Muscle Chef), so the script's "ten fifty" is about 30 cents under anything on a menu. With
-  the range $10.79 to $17.70, Regular ($13.90) and Large ($16.40) sit inside it and XL ($19.40) and XXL ($22.90) sit above it, as the script says.
+  the range $10.79 to $17.70, Regular ($13.90) and Large ($16.40) sit inside it and XL ($19.40) sits above it. The script also names XXL ($22.90),
+  which was removed on 13 November 2026 (below).
 
 **Still not supported:**
 

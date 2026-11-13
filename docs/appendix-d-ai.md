@@ -38,6 +38,11 @@ changed to draw from the goal's own meal pool rather than the whole menu average
 result to 30 of 36 combinations inside 10 percent, with the six failures all at 3,500 kcal where
 a single tray would have to carry 960 kcal.
 
+*Update, 13 November 2026.* The group later removed the fourth tray size (XXL), so the site has three sizes
+again. `scripts/tray-sweep.mjs` is a re-runnable version of the sweep on a grid of its own; the 30 of 36 above
+is from the earlier script and is kept as the record of what was found at the time. See the README's nutrition
+model section for the current figures.
+
 The value was not the code. It was the sweep: checking a product rule against its whole input
 space in seconds, which surfaced a flaw that a demo of one happy path would never have shown.
 

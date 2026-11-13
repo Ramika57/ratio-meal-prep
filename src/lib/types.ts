@@ -1,5 +1,5 @@
 export type Goal = "cut" | "maintain" | "build";
-export type PortionKey = "regular" | "large" | "xl" | "xxl";
+export type PortionKey = "regular" | "large" | "xl";
 export type MealsPerDay = 2 | 3;
 export type ComponentRole = "protein" | "carb" | "veg" | "fat";
 

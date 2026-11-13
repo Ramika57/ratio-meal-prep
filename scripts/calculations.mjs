@@ -90,7 +90,7 @@ for (const c of research.competitors ?? []) {
   );
 }
 say(
-  `| **RATIO (this artefact)** | Melbourne | $13.90 to $22.90 by tray size | **${round(ratio.protein)}g** | **${round(
+  `| **RATIO (this artefact)** | Melbourne | $13.90 to $19.40 by tray size | **${round(ratio.protein)}g** | **${round(
     ratio.carbs,
   )}g** | **${Math.round(ratio.kcal)}** | **${round(ratio.density)}g** | pre revenue | ${new Date()
     .toISOString()

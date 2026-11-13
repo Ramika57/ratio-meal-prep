@@ -52,15 +52,16 @@ export const KCAL_STEP = 50;
 export const COVERAGE: Record<MealsPerDay, number> = { 2: 0.55, 3: 0.75 };
 
 /**
- * Four sizes rather than three. With three, a 1,900 kcal cut on three meals a
- * day landed 16 percent under target because the gap between Regular and Large
- * was wider than the accuracy the product promises.
+ * Three sizes. A fourth, XXL at 1.95 times the base recipe and $22.90, was
+ * removed by the group, so XL is the largest tray and a large day (from about
+ * 2,800 kcal) is covered less closely than before. The builder shows the
+ * shortfall on screen rather than hiding it. Run scripts/tray-sweep.mjs for
+ * how often the recommendation lands within 10 percent of the target.
  */
 export const PORTIONS: { key: PortionKey; label: string; multiplier: number; price: number }[] = [
   { key: "regular", label: "Regular", multiplier: 1, price: 13.9 },
   { key: "large", label: "Large", multiplier: 1.28, price: 16.4 },
   { key: "xl", label: "XL", multiplier: 1.6, price: 19.4 },
-  { key: "xxl", label: "XXL", multiplier: 1.95, price: 22.9 },
 ];
 
 export const DAY_OPTIONS = [3, 5, 7, 10, 14];

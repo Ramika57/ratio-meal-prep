@@ -14,8 +14,7 @@ const COUNT_WORDS = ["no", "one", "two", "three", "four", "five", "six"];
 const PORTION_NOTE: Record<string, string> = {
   regular: "Suits roughly a 1,500 to 1,900 calorie day",
   large: "Suits roughly a 1,900 to 2,400 calorie day",
-  xl: "Suits roughly a 2,400 to 2,900 calorie day",
-  xxl: "Suits roughly a 2,900 to 3,500 calorie day",
+  xl: "Suits roughly a 2,400 to 3,500 calorie day",
 };
 
 export default async function Pricing() {
@@ -28,7 +27,7 @@ export default async function Pricing() {
     15,
   );
 
-  // Where our four sizes fall against the single-meal prices the group recorded in Stage 2.
+  // Where our tray sizes fall against the single-meal prices the group recorded in Stage 2.
   const low = Math.min(...market.brands.map((b) => b.low));
   const high = Math.max(...market.brands.map((b) => b.high));
   const inside = PORTIONS.filter((p) => p.price >= low && p.price <= high).map((p) => p.label);
@@ -60,7 +59,7 @@ export default async function Pricing() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-4 md:mt-16 lg:grid-cols-3">
           {PORTIONS.map((p, i) => {
             const kcal = Math.round(stats.avgKcal * p.multiplier);
             const protein = Math.round(stats.avgProtein * p.multiplier);

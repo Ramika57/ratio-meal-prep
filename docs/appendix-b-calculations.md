@@ -1,6 +1,6 @@
 # Appendix B: Calculations
 
-Generated 2026-08-26 by `scripts/calculations.mjs`.
+Generated 2026-11-13 by `scripts/calculations.mjs`.
 
 Every number below is computed from a file in `data/`. Nothing is typed in by hand, so re-running this script after changing the menu or the evidence file regenerates the whole appendix. Calculations marked **BLOCKED** are missing a verified input; the missing input is named rather than estimated.
 
@@ -14,7 +14,7 @@ Read from each company's own live website on the access date, not from a coupon 
 | Dineamic | Melbourne, Australian owned independent | $11.95 to $12.95 | 32.8g | 36.8g | 426 | 7.7g | Homepage claims 'OVER 3700+ 5 STAR REVIEWS', plus '4.5-star across 1,200+ reviews' and '4.6-star across 220+ reviews' from two named platforms. | 2026-08-26 |
 | Muscle Meals Direct | Delivers to Melbourne among other cities | $15.95 | not published | not published | not published | n/a | No review count or customer number published on the homepage. | 2026-08-26 |
 | Youfoodz | National | not published | not published | not published | not published | n/a | States over 80 meal options every week. | 2026-08-26 |
-| **RATIO (this artefact)** | Melbourne | $13.90 to $22.90 by tray size | **43.5g** | **16.3g** | **409** | **10.6g** | pre revenue | 2026-08-26 |
+| **RATIO (this artefact)** | Melbourne | $13.90 to $19.40 by tray size | **43.5g** | **16.3g** | **409** | **10.6g** | pre revenue | 2026-11-13 |
 
 Sample sizes: My Muscle Chef n=7, Dineamic n=4, Muscle Meals Direct n=0, Youfoodz n=0, RATIO n=20.
 

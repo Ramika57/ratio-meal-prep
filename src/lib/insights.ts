@@ -37,7 +37,6 @@ const PRETTY: Record<string, string> = {
   regular: "Regular",
   large: "Large",
   xl: "XL",
-  xxl: "XXL",
   mobile: "Mobile",
   tablet: "Tablet",
   desktop: "Desktop",

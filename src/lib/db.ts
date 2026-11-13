@@ -1,6 +1,6 @@
 import mealsData from "../../data/meals.json";
 import type { Meal, Order, OrderInput } from "./types";
-import { perMealTarget, priceBreakdown, selectionAverage, selectionCount } from "./plan";
+import { PORTIONS, perMealTarget, priceBreakdown, selectionAverage, selectionCount } from "./plan";
 import { getStore } from "./store";
 
 /**
@@ -94,7 +94,7 @@ export async function validateOrder(input: OrderInput): Promise<string | null> {
     return "Daily calories out of range.";
   }
   if (!Number.isFinite(plan.days) || plan.days < 1 || plan.days > 21) return "Days out of range.";
-  if (!["regular", "large", "xl", "xxl"].includes(plan.portion)) return "Unknown portion size.";
+  if (!PORTIONS.some((p) => p.key === plan.portion)) return "Unknown portion size.";
 
   const expected = plan.days * plan.mealsPerDay;
   const count = selectionCount(selection);

@@ -22,7 +22,7 @@ export default async function Ticker() {
     "No subscription",
     "Melbourne metro",
     `${s.lowCarbCount} meals under 20g carbs`,
-    "Four tray sizes",
+    "Three tray sizes",
   ];
 
   return (
